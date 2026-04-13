@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DonutChart from "./DonutChart";
 import BarChart2 from "./BarChart";
+import LangStateList from "./LangStateList";
 
 type LanguageDatum = { label: string; hours: number };
 type ChartType = "Donut" | "Bar";
@@ -45,7 +46,7 @@ export default function LangChart() {
   const totalHours = languages.reduce((sum, l) => sum + l.hours, 0);
 
   return (
-    <div className=" my-5 w-full border border-(--color-border) rounded-lg">
+    <div className="  mb-10 w-full border border-(--color-border) dark:bg-[#1b1718]/50 bg-white rounded-lg">
       <div className="flex items-center justify-between px-7 py-3 border-b border-(--color-border)">
         <div className="flex flex-col ">
           <span className="text-md text-(--color-text-primary) font-semibold text-xl">
@@ -75,15 +76,18 @@ export default function LangChart() {
         </div>
       </div>
 
-      <div className="flex pt-10 pb-5 px-10">
-
-        {
-          activeTab === "Donut" ? (
+      <div className="flex items-stretch gap-8 px-6 py-4 h-[450px] overflow-hidden">
+        <div className="flex-1 flex items-center justify-center min-w-0">
+          {activeTab === "Donut" ? (
             <DonutChart languages={languages} getColor={getColor} />
           ) : (
             <BarChart2 languages={languages} getColor={getColor} />
-          )
-        }
+          )}
+        </div>
+
+        <div className="w-100 shrink-0 h-full overflow-hidden">
+          <LangStateList languages={languages} getColor={getColor}/>
+        </div>
       </div>
     </div>
   );

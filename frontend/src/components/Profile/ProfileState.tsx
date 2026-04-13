@@ -10,7 +10,7 @@ function ProfileState(props: Props) {
 
   return (
     <div className="px-10">
-      <div className=" my-5">
+      <div className=" my-8">
         <ProfileStateRow />
       </div>
       <div>

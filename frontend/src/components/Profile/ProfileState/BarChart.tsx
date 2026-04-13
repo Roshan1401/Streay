@@ -8,15 +8,17 @@ interface BarChartProps {
 
 export default function BarChart2({ languages, getColor }: BarChartProps) {
   return (
-    <ResponsiveContainer width="50%" height={400}>
-      <BarChart data={languages}>
-        <Tooltip />
-        <Bar dataKey="hours" radius={[10, 10, 0, 0]} barSize={25}>
-          {languages.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={getColor(index)} />
-          ))}
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
+    <div className="w-full h-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={languages}>
+          <Tooltip />
+          <Bar dataKey="hours" radius={[10, 10, 0, 0]} barSize={25}>
+            {languages.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={getColor(index)} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
