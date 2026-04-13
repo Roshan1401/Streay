@@ -1,34 +1,28 @@
 import { useState } from "react";
 
-interface Props {}
-type ProfileStateRowProps = "Lang Chart" | "Top Repo";
+type Tab = "Lang Chart" | "Top Repo";
 
-function ProfileStateRow(props: Props) {
-  const {} = props;
-  const states: ProfileStateRowProps[] = ["Lang Chart", "Top Repo"];
-  const [activeState, setActiveState] =
-    useState<ProfileStateRowProps>("Lang Chart");
+function ProfileStateRow() {
+  const tabs: Tab[] = ["Lang Chart", "Top Repo"];
+  const [activeTab, setActiveTab] = useState<Tab>("Lang Chart");
 
   return (
-    <div className="flex flex-row  gap-2 items-center rounded-2xl bg-neutral-900 justify-center p-1   border border-(--color-border)">
-      {states.map((state) => {
-        const isActive = activeState === state;
-        return (
-          <button
-            key={state}
-            type="button"
-            onClick={() => setActiveState(state)}
-            className={[
-              "rounded-2xl flex-1 cursor-pointer px-6 py-2  text-lg tracking-tight font-bold transition-colors",
-              isActive
-                ? "text-(--color-text-primary) bg-(--color-bg-primary)  "
-                : "text-(--color-text-secondary)",
-            ].join(" ")}
-          >
-            {state}
-          </button>
-        );
-      })}
+    <div className="flex flex-row items-center rounded-full bg-neutral-900 p-1 border border-neutral-700">
+      {tabs.map((tab) => (
+        <button
+          key={tab}
+          type="button"
+          onClick={() => setActiveTab(tab)}
+          className={[
+            "flex-1 rounded-full px-8 py-2.5 text-md font-semibold tracking-tight transition-colors cursor-pointer",
+            activeTab === tab
+              ? "bg-white text-neutral-900"
+              : "text-neutral-400 hover:text-neutral-200",
+          ].join(" ")}
+        >
+          {tab}
+        </button>
+      ))}
     </div>
   );
 }
