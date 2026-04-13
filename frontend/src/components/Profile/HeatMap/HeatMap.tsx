@@ -11,7 +11,7 @@ function HeatMap(props: Props) {
 
   return (
     <div className="px-10">
-      <HeatMapCalender />;
+      <HeatMapCalender />
     </div>
   );
 }

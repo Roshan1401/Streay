@@ -119,7 +119,7 @@ function HeatMapCalender(props: Props) {
                           className="w-10 h-10 rounded-md cursor-pointer m-1 border border-(--color-border-secondary) transition-transform hover:scale-110"
                           style={{ backgroundColor: color }}
                         />
-                        <div className="hidden group-hover:flex group-hover:flex-col absolute z-1000 top-5 -left-26 border border-(--color-border-secondary) bg-(--color-bg-primary) text-(--color-text-primary) text-ms rounded-md p-2 whitespace-nowrap">
+                        <div className="hidden group-hover:flex group-hover:flex-col font-semibold absolute z-1000 top-5 -left-26 border border-(--color-border-secondary) o bg-(--color-bg-primary) text-(--color-text-primary) text-ms rounded-md p-2 whitespace-nowrap">
                           <span>{day.date}</span>
                           <span>{day.hours} hour</span>
                         </div>
