@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 
 interface Props {}
 type LeaderboardRow = "24 Hours" | "7 Days" | "30 Days";

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import activityData from "./activity";
 
 interface Props {}
@@ -6,7 +6,15 @@ interface Props {}
 function HeatMapCalender(props: Props) {
   const {} = props;
   const [activity] = useState(activityData);
+  const gridScrollRef = useRef<HTMLDivElement>(null);
   const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  useEffect(() => {
+    const element = gridScrollRef.current;
+    if (!element) return;
+
+    element.scrollLeft = element.scrollWidth;
+  }, []);
 
   const getWeeks = () => {
     const weeks: (typeof activity)[] = [];
@@ -53,21 +61,20 @@ function HeatMapCalender(props: Props) {
 
   const getIntensity = (hours: number) => {
     if (hours <= 0) return 0;
-    console.log(hours / maxHours);
     return hours / maxHours;
   };
 
   const getColor = (intensity: number) => {
     if (intensity === 0) return "#ffffff10";
 
-    return `rgba(241, 146, 46, ${intensity})`;
+    return `rgba(241, 146, 46, ${intensity}) dark:rgba(241, 146, 46, ${intensity})`;
   };
 
   const weeks = getWeeks();
 
   return (
-    <div className="bg-(--color-surface) border border-(--color-border) rounded-xl p-6 my-4">
-      <div className="flex justify-between items-center mb-5 flex-wrap gap-3">
+    <div className="bg-(--color-surface)  border border-(--color-border) rounded-xl  my-4">
+      <div className="flex justify-between items-center p-6 flex-wrap gap-3">
         <h3 className="text-base font-semibold text-(--color-text-primary) m-0">
           Contribution Activity
         </h3>
@@ -82,33 +89,47 @@ function HeatMapCalender(props: Props) {
         </div>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto pb-2">
-        <div className="grid grid-rows-7 gap-2 shrink-0 min-w-8 text-left text-sm font-semibold text-(--color-text-secondary)">
-          {dayLabels.map((label) => (
-            <div key={label} className="h-10 flex items-center">
-              {label}
-            </div>
-          ))}
-        </div>
+      <div className="p-6 pt-0">
+        <div className="flex items-start ">
+          <div className="felx flex-col gap-2 mr-3">
+            {dayLabels.map((label) => (
+              <div
+                key={label}
+                className="h-13 flex items-center text-sm text-(--color-text-secondary) font-semibold"
+              >
+                {label}
+              </div>
+            ))}
+          </div>
 
-        <div className="flex gap-1">
-          {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="grid grid-rows-7 gap-1">
-              {week.map((day, dayIndex) => {
-                const intensity = getIntensity(day.hours);
-                const color = getColor(intensity);
-                return (
-                  <div
-                    key={dayIndex}
-                    className={`w-10 h-10 rounded-md cursor-pointer m-1 border border-(--color-border-secondary) transition-transform hover:scale-125 
-                    }`}
-                    style={{ backgroundColor: color }}
-                    title={day.date ? `${day.date}: ${day.hours} hours` : ""}
-                  />
-                );
-              })}
+          <div
+            ref={gridScrollRef}
+            className="flex gap-1 py-1 flex-row overflow-hidden scroll-p-2.5 px-1"
+          >
+            <div className="grid grid-flow-col auto-cols-max gap-2 ">
+              {weeks.map((week, weekIndex) => (
+                <div key={weekIndex} className="flex flex-col  gap-1">
+                  {week.map((day, dayIndex) => {
+                    const intensity = getIntensity(day.hours);
+                    const color = getColor(intensity);
+                    return (
+                      <div className="relative group">
+                        <div
+                          key={dayIndex}
+                          className="w-10 h-10 rounded-md cursor-pointer m-1 border border-(--color-border-secondary) transition-transform hover:scale-110"
+                          style={{ backgroundColor: color }}
+                        />
+                        <div className="hidden group-hover:flex group-hover:flex-col absolute z-1000 top-5 -left-26 border border-(--color-border-secondary) bg-(--color-bg-primary) text-(--color-text-primary) text-ms rounded-md p-2 whitespace-nowrap">
+                          <span>{day.date}</span>
+                          <span>{day.hours} hour</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

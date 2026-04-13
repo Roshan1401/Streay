@@ -1,4 +1,3 @@
-import React from "react";
 import banner from "../../assets/banner.jpg";
 import profilImg from "../../assets/image.png";
 
