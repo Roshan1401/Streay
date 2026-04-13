@@ -79,9 +79,9 @@ export default function LangChart() {
       <div className="flex items-stretch gap-8 px-6 py-4 h-[450px] overflow-hidden">
         <div className="flex-1 flex items-center justify-center min-w-0">
           {activeTab === "Donut" ? (
-            <DonutChart languages={languages} getColor={getColor} />
+            <DonutChart  languages={languages} getColor={getColor} />
           ) : (
-            <BarChart2 languages={languages} getColor={getColor} />
+            <BarChart2  languages={languages} getColor={getColor} />
           )}
         </div>
 
