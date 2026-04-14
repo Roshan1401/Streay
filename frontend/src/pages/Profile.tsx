@@ -1,7 +1,7 @@
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import Status from "../components/Profile/Status";
 import HeatMap from "../components/Profile/HeatMap/HeatMap";
-import ProfileState from "../components/Profile/ProfileState";
+import ProfileState from "../components/Profile/ProfileState/ProfileState";
 
 interface Props {}
 

@@ -43,7 +43,7 @@ export default function LangChart() {
   const totalHours = languages.reduce((sum, l) => sum + l.hours, 0);
 
   return (
-    <div className="  mb-10 w-full border border-(--color-border) dark:bg-[#1b1718]/50 bg-white rounded-lg">
+    <div className="  mb-10 w-full border border-(--color-border) dark:bg-[#1b1718]/50 bg-white rounded-xl">
       <div className="flex items-center justify-between px-7 py-3 border-b border-(--color-border)">
         <div className="flex flex-col ">
           <span className="text-md text-(--color-text-primary) font-semibold text-xl">

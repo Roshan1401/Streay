@@ -1,10 +1,12 @@
-import { useState } from "react";
-
 type Tab = "Lang Chart" | "Top Repo";
 
-function ProfileStateRow() {
+interface ProfileStateRowProps {
+  activeTab: Tab;
+  onTabChange: (tab: Tab) => void;
+}
+
+function ProfileStateRow({ activeTab, onTabChange }: ProfileStateRowProps) {
   const tabs: Tab[] = ["Lang Chart", "Top Repo"];
-  const [activeTab, setActiveTab] = useState<Tab>("Lang Chart");
 
   return (
     <div className="flex flex-row items-center rounded-full bg-neutral-900 p-1 border border-neutral-700">
@@ -12,7 +14,7 @@ function ProfileStateRow() {
         <button
           key={tab}
           type="button"
-          onClick={() => setActiveTab(tab)}
+          onClick={() => onTabChange(tab)}
           className={[
             "flex-1 rounded-full px-8 py-2.5 text-md font-semibold tracking-tight transition-colors cursor-pointer",
             activeTab === tab

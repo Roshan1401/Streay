@@ -13,9 +13,7 @@ function ProfileState(props: Props) {
       <div className=" my-8">
         <ProfileStateRow />
       </div>
-      <div>
-        <LangChart />
-      </div>
+      <div>{/* <LangChart /> */}</div>
     </div>
   );
 }
