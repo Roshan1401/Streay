@@ -137,7 +137,7 @@ export function SocialLinkModal({
           <h2 className="text-xl font-bold text-(--color-text-primary)">Add Social Link</h2>
           <button
             onClick={handleClose}
-            className="text-gray-500 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            className="text-gray-500 cursor-pointer rounded-full hover:bg-neutral-200 p-2 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
