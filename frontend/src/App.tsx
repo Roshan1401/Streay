@@ -21,16 +21,16 @@ function App() {
           <Leftbar onThemeToggle={toggleTheme} isDarkTheme={theme} />
         </div>
 
-        <div className="min-w-0 flex-1">
-          {/* <Leaderboard /> */}
+        {/* <div className="min-w-0 flex-1">
+          <Leaderboard />
           <Profile />
         </div>
 
-        <div className="sticky top-0 h-screen shrink-0 overflow-hidden">
+        <div className="hidden md:block   sticky top-0 h-screen shrink-0 overflow-hidden">
           <Rightbar />
         </div>
       </div>
-      <div>
+      <div> */}
         {/* <Login /> */}
       </div>
     </div>

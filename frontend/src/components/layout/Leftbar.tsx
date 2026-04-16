@@ -1,54 +1,76 @@
 import { useState } from "react";
+import { Trophy, Compass, Users, Rocket, User } from "lucide-react";
 import profilImg from "../../assets/image.png";
-
 
 interface Props {
   onThemeToggle: () => void;
   isDarkTheme?: boolean;
 }
 
-const navItems = ["Leaderboard", "Explore", "Community", "Get Started"];
+const navItems = [
+  { name: "Leaderboard", icon: Trophy },
+  { name: "Explore", icon: Compass },
+  { name: "Community", icon: Users },
+  { name: "Get Started", icon: Rocket },
+  { name: "Profile", icon: User },
+];
 
 function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
   const [activeItem, setActiveItem] = useState("Leaderboard");
 
   return (
-    <div className="flex min-h-screen   ">
-     
-      <div className=" flex flex-col w-70 gap-6 border-r border-(--color-border) bg-(--color-bg-primary) ">
-        <div className="flex p-8 border-b border-(--color-border)  items-center gap-3 ">
+    <div className="flex lg:min-h-screen   ">
+      <div className="fixed border-t  lg:border-t-0 py-2 bottom-0 flex justify-between w-full flex lg:static lg:flex-col lg:w-70 lg:gap-6 lg:border-r border-(--color-border) bg-(--color-bg-primary) ">
+        <div
+          className="
+        hidden lg:flex 
+         px-10 py-8 border-b border-(--color-border)  items-center gap-3 "
+        >
           <span className="h-3 w-3 rounded-full bg-orange-500" />
-          <h1 className="text-xl font-bold tracking-tight text-(--color-text-primary)">
+          <h1 className="text-2xl font-bold tracking-tight text-(--color-text-primary)">
             Devsteak
           </h1>
         </div>
 
-        <nav className="flex flex-col px-8 gap-2">
+        <nav className="flex w-full  justify-center md:justify-between md:px-6   lg:flex-col lg:px-8 gap-6  lg:gap-2">
           {navItems.map((item) => {
-            const isActive = activeItem === item;
+            const isActive = activeItem === item.name;
+            const Icon = item.icon;
 
             return (
               <button
-                key={item}
+                key={item.name}
                 type="button"
-                onClick={() => setActiveItem(item)}
+                onClick={() => setActiveItem(item.name)}
                 className={[
-                  "rounded-md border-b-2 cursor-pointer px-3 py-2 text-lg text-left font-medium transition-colors",
+                  "flex-col lg:flex-row text-xs gap-2 lg:rounded-md lg:border-b-2 cursor-pointer lg:px-3 lg:py-2 lg:text-xl text-left font-medium transition-colors flex items-center lg:gap-3",
                   isActive
-                    ? "border-orange-500 bg-orange-500/20 text-(--color-text-primary)"
+                    ? "lg:border-orange-500 text-orange-500 lg:bg-orange-500/20 lg:text-(--color-text-primary)"
                     : "border-transparent text-(--color-text-secondary) hover:bg-orange-500/15 hover:text-(--color-text-primary)",
+                  `${item.name === "Profile" ? "lg:hidden flex" : ""}`,
                 ].join(" ")}
               >
-                {item}
+                <div
+                  className={[
+                    "flex items-center justify-center rounded-full  p-2",
+                    isActive
+                      ? "dark:bg-orange-900 bg-orange-100 lg:bg-transparent "
+                      : "",
+                  ].join(" ")}
+                >
+                  <Icon className="h-5 w-5" />
+                </div>
+                {item.name}
               </button>
             );
           })}
         </nav>
 
-        <div className="flex flex-col  justify-end flex-1 p-8 gap-4">
+        <div className="lg:flex lg:flex-col  justify-end flex-1 lg:p-8 gap-4">
           <div
             onClick={onThemeToggle}
-            className="rounded-md flex justify-between p-2 cursor-pointer border border-(--color-border-secondary) text-orange-500 transition-colors hover:bg-orange-500/10"
+            className=" fixed rounded-full  right-4 bg-(--color-bg-secondary) top-2 lg:static
+            lg:rounded-md lg:flex lg:justify-between p-2 cursor-pointer border border-(--color-border-secondary) text-orange-500 transition-colors hover:bg-orange-500/10"
           >
             {isDarkTheme ? (
               <svg
@@ -70,14 +92,14 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
               </svg>
             )}
             <button
-              className={`w-9 h-5   flex items-center cursor-pointer relative rounded-4xl ${isDarkTheme ? "bg-orange-500" : "bg-gray-400"}`}
+              className={`w-9 h-5 hidden lg:block  flex items-center cursor-pointer relative rounded-4xl ${isDarkTheme ? "bg-orange-500" : "bg-gray-400"}`}
             >
               <div
                 className={`size-5 border border-(--color-border) transition-all duration-300  absolute left-0 top-0 bg-white rounded-full ${isDarkTheme ? "left-4  border-0" : "left-0"}`}
               ></div>
             </button>
           </div>
-          {/* <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-orange-500/30 bg-(--color-bg-primary) px-3 py-2 text-sm text-orange-500 font-bold  transition-colors hover:border-orange-500/60  active:border-orange-500 active:bg-orange-500/20 active:text-orange-100">
+          <button className="lg:flex hidden cursor-pointer items-center justify-center gap-2 rounded-md border border-orange-500/30 bg-(--color-bg-primary) px-3 py-2 text-sm text-orange-500 font-bold  transition-colors hover:border-orange-500/60  active:border-orange-500 active:bg-orange-500/20 active:text-orange-100">
             <svg
               className="h-5 w-5"
               fill="currentColor"
@@ -87,24 +109,24 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
               <path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
             </svg>
             <span>Sign In</span>
-          </button> */}
-          <div className="flex items-center  border border-(--color-border-secondary) dark:border-black hover:border-orange-500 gap-5 hover:bg-(--color-bg-secondary) cursor-pointer rounded-full p-2">
-          <div className="size-12 rounded-full  dark:border-black  overflow-hidden">
-          <img
-            src={profilImg}
-            className="w-full h-full object-cover"
-            alt="Profile"
-          />
-        </div>
-        <div className="flex flex-col">
-        <span className="text-(--color-text-primary) text-md font-semibold">
-            Roshan Patil
-          </span>
-          <span className="text-(--color-text-secondary) text-sm">
-            @patilrosha99
-          </span>
-        </div>
-          </div>
+          </button>
+          {/* <div className="flex  hidden lg:flex items-center  border border-(--color-border-secondary) dark:border-black hover:border-orange-500 gap-5 hover:bg-(--color-bg-secondary) cursor-pointer rounded-full p-2">
+            <div className="size-12 rounded-full  dark:border-black  overflow-hidden relative">
+              <img
+                src={profilImg}
+                className="w-full h-full object-cover"
+                alt="Profile"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-(--color-text-primary) text-md font-semibold">
+                Roshan Patil
+              </span>
+              <span className="text-(--color-text-secondary) text-sm">
+                @patilrosha99
+              </span>
+            </div>
+          </div> */}
         </div>
       </div>
     </div>
