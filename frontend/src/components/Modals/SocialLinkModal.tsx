@@ -1,4 +1,4 @@
-import { useState, type JSX } from "react";
+import { useState } from "react";
 import {
   GithubIcon,
   InstagramIcon,
@@ -90,7 +90,7 @@ export function SocialLinkModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-[400px] max-w-[90vw] rounded-xl border border-(--color-border) bg-(--color-bg-primary) p-6 shadow-2xl">
+      <div className="w-100 max-w-[90vw] rounded-xl border border-(--color-border) bg-(--color-bg-primary) p-6 shadow-2xl">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-bold text-(--color-text-primary)">
             Add Social Link

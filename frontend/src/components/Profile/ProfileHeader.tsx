@@ -9,8 +9,6 @@ import {
 import EditModal from "../Modals/EditModal";
 import { Pencil, Plus } from "lucide-react";
 
-interface Props {}
-
 function SocialLinkButton({
   svg,
   label,
@@ -34,7 +32,7 @@ function SocialLinkButton({
   );
 }
 
-function ProfileHeader(props: Props) {
+function ProfileHeader() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([
     {
       platform: "github",

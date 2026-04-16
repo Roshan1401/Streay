@@ -245,7 +245,7 @@ function Leaderboard() {
                         </span>
                       </div>
                       <div className="col-span-4 flex items-center gap-3">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-base font-bold text-white">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full from-purple-500 to-pink-500 text-base font-bold text-white">
                           {user.avatar}
                         </div>
                         <div>
