@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Trophy, Compass, Users, Rocket, User } from "lucide-react";
+import { Trophy, Compass, Users, Rocket, User, Signal } from "lucide-react";
 import profilImg from "../../assets/image.png";
 
 interface Props {
@@ -7,9 +7,31 @@ interface Props {
   isDarkTheme?: boolean;
 }
 
+function LeaderboardSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      aria-hidden="true"
+      data-slot="icon"
+      className="h-5 w-5"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
+      ></path>
+    </svg>
+  );
+}
+
 const navItems = [
-  { name: "Leaderboard", icon: Trophy },
+  { name: "Leaderboard", icon: LeaderboardSvg },
   { name: "Explore", icon: Compass },
+  { name: "Rank", icon: Trophy },
   { name: "Community", icon: Users },
   { name: "Get Started", icon: Rocket },
   { name: "Profile", icon: User },
@@ -28,7 +50,7 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
           </h1>
         </div>
 
-        <nav className="flex w-full justify-center gap-6 md:justify-between md:px-6 lg:flex-col lg:gap-2">
+        <nav className="flex w-full justify-center gap-8 px-1 md:justify-between md:px-8 lg:flex-col lg:gap-2">
           {navItems.map((item) => {
             const isActive = activeItem === item.name;
             const Icon = item.icon;
@@ -44,6 +66,7 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
                     ? "text-orange-500 lg:border-orange-500 lg:bg-orange-500/20 lg:text-(--color-text-primary)"
                     : "border-transparent text-(--color-text-secondary) hover:bg-orange-500/15 hover:text-(--color-text-primary)",
                   `${item.name === "Profile" ? "flex lg:hidden" : ""}`,
+                  `${item.name === "Get Started" ? "hidden lg:flex" : ""}`,
                 ].join(" ")}
               >
                 <div
