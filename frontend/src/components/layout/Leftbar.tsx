@@ -1,17 +1,20 @@
 import { useState } from "react";
+import profilImg from "../../assets/image.png";
+
 
 interface Props {
   onThemeToggle: () => void;
   isDarkTheme?: boolean;
 }
 
-const navItems = ["Leaderboard", "Community", "Get Started"];
+const navItems = ["Leaderboard", "Explore", "Community", "Get Started"];
 
 function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
   const [activeItem, setActiveItem] = useState("Leaderboard");
 
   return (
     <div className="flex min-h-screen   ">
+     
       <div className=" flex flex-col w-70 gap-6 border-r border-(--color-border) bg-(--color-bg-primary) ">
         <div className="flex p-8 border-b border-(--color-border)  items-center gap-3 ">
           <span className="h-3 w-3 rounded-full bg-orange-500" />
@@ -74,7 +77,7 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
               ></div>
             </button>
           </div>
-          <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-orange-500/30 bg-(--color-bg-primary) px-3 py-2 text-sm text-orange-500 font-bold  transition-colors hover:border-orange-500/60  active:border-orange-500 active:bg-orange-500/20 active:text-orange-100">
+          {/* <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-orange-500/30 bg-(--color-bg-primary) px-3 py-2 text-sm text-orange-500 font-bold  transition-colors hover:border-orange-500/60  active:border-orange-500 active:bg-orange-500/20 active:text-orange-100">
             <svg
               className="h-5 w-5"
               fill="currentColor"
@@ -84,7 +87,24 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
               <path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
             </svg>
             <span>Sign In</span>
-          </button>
+          </button> */}
+          <div className="flex items-center  border border-(--color-border-secondary) hover:border-orange-500 gap-5 hover:bg-(--color-bg-secondary) cursor-pointer rounded-full p-2">
+          <div className="size-12 rounded-full border border-orange-400 dark:border-black  overflow-hidden">
+          <img
+            src={profilImg}
+            className="w-full h-full object-cover"
+            alt="Profile"
+          />
+        </div>
+        <div className="flex flex-col">
+        <span className="text-(--color-text-primary) text-md font-semibold">
+            Roshan Patil
+          </span>
+          <span className="text-(--color-text-secondary) text-sm">
+            @patilrosha99
+          </span>
+        </div>
+          </div>
         </div>
       </div>
     </div>
