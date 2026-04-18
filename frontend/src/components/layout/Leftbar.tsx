@@ -23,7 +23,7 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
 
   return (
     <div className="flex lg:min-h-screen">
-      <div className="fixed bottom-0 flex w-full justify-between border-t border-(--color-border) bg-(--color-bg-primary) py-2 lg:static lg:w-60 lg:flex-col lg:gap-6 lg:border-t-0 lg:border-r xl:w-65">
+      <div className="backdrop-blur-4xl fixed bottom-0 z-10 flex w-full justify-between border-t border-(--color-border) bg-(--color-bg-primary) py-2 lg:static lg:w-60 lg:flex-col lg:gap-6 lg:border-t-0 lg:border-r xl:w-65">
         <div className="hidden items-center gap-3 border-b border-(--color-border) px-9 py-8 lg:flex">
           <span className="h-3 w-3 rounded-full bg-orange-500" />
           <h1 className="text-2xl font-bold tracking-tight text-(--color-text-primary)">

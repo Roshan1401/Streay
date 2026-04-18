@@ -74,7 +74,7 @@ function HeatMapCalender(props: Props) {
 
   return (
     <div className="my-4 rounded-xl border border-(--color-border) bg-(--color-surface)">
-      <div className="flex flex-col items-center justify-between gap-3 p-6 md:flex-wrap">
+      <div className="flex flex-col items-center justify-between gap-3 p-6 md:flex-row">
         <h3 className="m-0 text-base font-semibold text-(--color-text-primary)">
           Contribution Activity
         </h3>

@@ -5,7 +5,7 @@ interface props {
 
 export default function LangStateList({ languages, getColor }: props) {
   return (
-    <div className="scrollbar-hide flex h-full flex-col gap-4 overflow-y-auto [scrollbar-width:none]">
+    <div className="scrollbar-hide md::w-full flex h-full w-90 flex-col gap-3 overflow-y-auto py-4 [scrollbar-width:none] sm:gap-4 sm:py-10 lg:py-0">
       {languages.map((lang, index) => (
         <List
           key={index}
@@ -28,22 +28,22 @@ function List({
   color: string;
 }) {
   return (
-    <div className="flex cursor-pointer items-center justify-between gap-2 rounded-2xl border border-(--color-border) bg-(--color-bg-primary) px-5 py-4 transition-colors duration-200 hover:bg-(--color-bg-secondary)">
-      <div className="flex items-center gap-4">
+    <div className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-(--color-border) bg-(--color-bg-primary) px-3 py-3 transition-colors duration-200 hover:bg-(--color-bg-secondary) sm:gap-4 sm:px-5 sm:py-4 lg:px-5">
+      <div className="flex items-center gap-3 sm:gap-4">
         <span
-          className="h-5 w-5 rounded-full"
+          className="h-4 w-4 shrink-0 rounded-full sm:h-5 sm:w-5"
           style={{ backgroundColor: color }}
         />
-        <span className="text-xl font-semibold text-(--color-text-primary)">
+        <span className="truncate text-base font-semibold text-(--color-text-primary) sm:text-lg lg:text-xl">
           {language}
         </span>
       </div>
 
-      <div className="flex flex-col">
-        <span className="text-xl font-semibold text-(--color-text-primary)">
+      <div className="flex shrink-0 flex-col items-end text-right">
+        <span className="text-base font-semibold text-(--color-text-primary) sm:text-lg lg:text-xl">
           {hours}
         </span>
-        <span className="text-sm font-medium text-(--color-text-secondary)">
+        <span className="text-xs font-medium text-(--color-text-secondary) sm:text-sm">
           50.3%
         </span>
       </div>

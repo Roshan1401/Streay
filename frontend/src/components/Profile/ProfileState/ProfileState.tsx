@@ -22,12 +22,12 @@ function ProfileState(props: Props) {
   };
 
   return (
-    <div className="px-10">
+    <div className="px-4 xl:px-10">
       <div className="my-8">
         <ProfileStateRow activeTab={activeTab} onTabChange={handleTabChange} />
       </div>
       <div
-        className={`my-10 flex h-130 w-full items-center justify-center transition-all duration-200 ease-out ${
+        className={`my-10 flex h-auto w-full items-center justify-center transition-all duration-200 ease-out ${
           isTransitioning
             ? "translate-y-2 opacity-0"
             : "translate-y-0 opacity-100"

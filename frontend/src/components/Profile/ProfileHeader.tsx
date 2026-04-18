@@ -79,7 +79,7 @@ function ProfileHeader() {
         </div>
       </div>
       <div className="relative pt-15 md:pt-22 xl:pt-32">
-        <div className="flex flex-col gap-1 px-7 md:gap-2 md:px-10">
+        <div className="flex flex-col gap-1 px-4 md:gap-2 xl:px-10">
           <span className="text-2xl font-bold text-(--color-text-primary) md:text-4xl">
             Roshan Patil
           </span>

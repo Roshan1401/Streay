@@ -43,25 +43,25 @@ export default function LangChart() {
   const totalHours = languages.reduce((sum, l) => sum + l.hours, 0);
 
   return (
-    <div className="w-full rounded-xl border border-(--color-border) bg-white dark:bg-[#1b1718]/50">
-      <div className="flex items-center justify-between border-b border-(--color-border) px-7 py-3">
-        <div className="flex flex-col">
-          <span className="text-md text-xl font-semibold text-(--color-text-primary)">
+    <div className="h-auto w-full rounded-xl border border-(--color-border) bg-white dark:bg-[#1b1718]/50">
+      <div className="flex flex-col border-b border-(--color-border) p-6 md:flex-row md:items-center md:justify-between md:px-7 md:py-3">
+        <div className="flex flex-row justify-between gap-2 md:flex-col md:justify-normal md:gap-0">
+          <span className="text-md font-semibold text-(--color-text-primary) xl:text-xl">
             Language Distribution
           </span>
-          <span className="font-medium text-(--color-text-secondary)">
+          <span className="text-sm font-medium text-(--color-text-secondary) xl:text-lg">
             Total: {totalHours}h
           </span>
         </div>
 
-        <div className="flex flex-row items-center rounded-full border border-neutral-700 bg-neutral-900 p-1">
+        <div className="mt-2 flex w-fit flex-row items-center gap-2 rounded-lg border border-neutral-700 bg-neutral-900 p-1.5 md:gap-0 md:rounded-full">
           {charts.map((chart) => (
             <button
               key={chart}
               type="button"
               onClick={() => setActiveTab(chart)}
               className={[
-                "text-md flex-1 cursor-pointer rounded-full px-8 py-2.5 font-semibold tracking-tight transition-colors",
+                "md:text-md flex-1 cursor-pointer rounded-md px-2 py-1 text-sm font-semibold tracking-tight transition-colors md:rounded-full md:px-8 md:py-2.5",
                 activeTab === chart
                   ? "bg-white text-neutral-900"
                   : "text-neutral-400 hover:text-neutral-200",
@@ -73,8 +73,8 @@ export default function LangChart() {
         </div>
       </div>
 
-      <div className="flex h-112.5 items-stretch gap-8 overflow-hidden px-6 py-12">
-        <div className="flex min-w-0 flex-1 items-center justify-center">
+      <div className="flex flex-col items-stretch gap-10 overflow-hidden px-4 py-6 sm:px-6 sm:py-12 lg:flex-row lg:gap-8">
+        <div className="flex min-w-0 flex-1 items-center justify-center pt-10 md:p-0">
           {activeTab === "Donut" ? (
             <DonutChart languages={languages} getColor={getColor} />
           ) : (
@@ -82,7 +82,7 @@ export default function LangChart() {
           )}
         </div>
 
-        <div className="h-full w-100 shrink-0 overflow-hidden">
+        <div className="h-80 w-100 shrink-0 overflow-hidden xl:h-101">
           <LangStateList languages={languages} getColor={getColor} />
         </div>
       </div>

@@ -115,7 +115,7 @@ function ChartIcon() {
 
 function Status() {
   return (
-    <div className="grid grid-cols-1 gap-5 px-7 md:grid-cols-2 md:px-10 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-5 px-4 md:grid-cols-2 lg:grid-cols-4 xl:px-10">
       <StatusItem label="Steak" value={4} unit="days" icon={<FlameIcon />} />
       <StatusItem
         label="Total Hours"

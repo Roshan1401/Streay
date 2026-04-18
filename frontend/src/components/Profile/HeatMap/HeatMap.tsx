@@ -10,7 +10,7 @@ function HeatMap(props: Props) {
   startDate.setDate(endDate.getDate() - 364);
 
   return (
-    <div className="px-7 md:px-10">
+    <div className="px-4 xl:px-10">
       <HeatMapCalender />
     </div>
   );
