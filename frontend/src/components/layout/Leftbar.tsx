@@ -49,7 +49,7 @@ function Navbar({
                 type="button"
                 onClick={() => setActiveItem(item.name)}
                 className={[
-                  "flex cursor-pointer flex-col items-center gap-2 text-left text-xs font-medium transition-colors lg:flex-row lg:gap-3 lg:rounded-md lg:border-b-2 lg:px-3 lg:py-2 lg:text-xl",
+                  "flex cursor-pointer flex-col items-center gap-2 text-left text-xs font-medium transition-colors lg:flex-row lg:gap-3 lg:rounded-md lg:border-b-2 lg:px-3 lg:py-2 lg:text-lg xl:text-xl",
                   isActive
                     ? "text-orange-500 lg:border-orange-500 lg:bg-orange-500/20 lg:text-(--color-text-primary)"
                     : "border-transparent text-(--color-text-secondary) hover:bg-orange-500/15 hover:text-(--color-text-primary)",
@@ -65,7 +65,7 @@ function Navbar({
                       : "",
                   ].join(" ")}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-4 w-4 xl:h-5 xl:w-5" />
                 </div>
                 {item.name}
               </button>
