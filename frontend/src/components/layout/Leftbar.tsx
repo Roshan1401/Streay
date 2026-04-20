@@ -7,6 +7,7 @@ import { Sun, Moon } from "lucide-react";
 interface Props {
   onThemeToggle: () => void;
   isDarkTheme?: boolean;
+  scrolled?: boolean;
 }
 
 const navItems = [
@@ -18,12 +19,18 @@ const navItems = [
   { name: "Profile", icon: User },
 ];
 
-function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
+function Navbar({
+  onThemeToggle,
+  isDarkTheme = false,
+  scrolled = false,
+}: Props) {
   const [activeItem, setActiveItem] = useState("Leaderboard");
 
   return (
     <div className="flex lg:min-h-screen">
-      <div className="backdrop-blur-4xl fixed bottom-0 z-10 flex w-full justify-between border-t border-(--color-border) bg-(--color-bg-primary) py-2 lg:static lg:w-60 lg:flex-col lg:gap-6 lg:border-t-0 lg:border-r xl:w-65">
+      <div
+        className={`fixed bottom-0 flex w-full justify-between border-t border-(--color-border) bg-(--color-bg-primary)/50 py-2 backdrop-blur-lg transition-all duration-300 lg:static lg:w-60 lg:flex-col lg:gap-6 lg:border-t-0 lg:border-r lg:bg-(--color-bg-primary) xl:w-65`}
+      >
         <div className="hidden items-center gap-3 border-b border-(--color-border) px-9 py-8 lg:flex">
           <span className="h-3 w-3 rounded-full bg-orange-500" />
           <h1 className="text-2xl font-bold tracking-tight text-(--color-text-primary)">
@@ -31,7 +38,7 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
           </h1>
         </div>
 
-        <nav className="flex w-full justify-center gap-8 px-1 md:justify-between md:px-8 lg:flex-col lg:gap-2">
+        <nav className="flex w-full justify-between px-4 md:justify-between md:px-8 lg:flex-col lg:gap-2">
           {navItems.map((item) => {
             const isActive = activeItem === item.name;
             const Icon = item.icon;
@@ -69,7 +76,7 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
         <div className="flex-1 justify-end gap-4 lg:flex lg:flex-col lg:p-6">
           <div
             onClick={onThemeToggle}
-            className="fixed top-2 right-4 cursor-pointer rounded-full border border-(--color-border-secondary) bg-(--color-bg-secondary) p-2 text-orange-500 transition-colors hover:bg-orange-500/10 lg:static lg:flex lg:justify-between lg:rounded-md"
+            className="fixed right-3 bottom-25 cursor-pointer rounded-full border border-(--color-border-secondary) bg-(--color-bg-secondary) p-2 text-orange-500 transition-colors hover:bg-orange-500/10 md:right-8 lg:static lg:flex lg:justify-between lg:rounded-md"
           >
             {isDarkTheme ? (
               <Moon className="h-5 w-5" />

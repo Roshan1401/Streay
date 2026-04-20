@@ -17,7 +17,7 @@ function App() {
       className={`min-h-screen w-full bg-(--color-bg-primary) ${theme ? "dark" : ""}`}
     >
       <div className="flex min-h-screen w-full">
-        <div className="sticky top-0 h-screen shrink-0 overflow-hidden">
+        <div className="sticky top-0 z-10 h-screen shrink-0 overflow-hidden">
           <Leftbar onThemeToggle={toggleTheme} isDarkTheme={theme} />
         </div>
 
@@ -26,7 +26,7 @@ function App() {
           <Profile />
         </div>
 
-        <div className="sticky top-0 hidden h-screen shrink-0 overflow-hidden lg:block">
+        <div className="sticky top-0 hidden h-screen shrink-0 overflow-y-auto lg:block [&::-webkit-scrollbar]:w-2">
           <Rightbar />
         </div>
       </div>

@@ -8,7 +8,7 @@ function Rightbar(props: Props) {
   const {} = props;
 
   return (
-    <div className="flex min-h-screen flex-col gap-6 border-l border-(--color-border) bg-(--color-bg-primary) px-7 py-6 lg:w-60 xl:w-65">
+    <div className="flex min-h-screen flex-col gap-6 border-l border-(--color-border) bg-(--color-bg-primary) px-7 py-6 lg:w-60 xl:w-75">
       <div className="flex flex-col items-center justify-center gap-4">
         <div className="size-30 overflow-hidden rounded-full border border-orange-400 dark:border-black">
           <img

@@ -5,7 +5,7 @@ interface props {
 
 export default function LangStateList({ languages, getColor }: props) {
   return (
-    <div className="scrollbar-hide md::w-full flex h-full w-90 flex-col gap-3 overflow-y-auto py-4 [scrollbar-width:none] sm:gap-4 sm:py-10 lg:py-0">
+    <div className="scrollbar-hide w-full space-y-2 overflow-y-auto [scrollbar-width:none]">
       {languages.map((lang, index) => (
         <List
           key={index}
@@ -28,7 +28,7 @@ function List({
   color: string;
 }) {
   return (
-    <div className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-(--color-border) bg-(--color-bg-primary) px-3 py-3 transition-colors duration-200 hover:bg-(--color-bg-secondary) sm:gap-4 sm:px-5 sm:py-4 lg:px-5">
+    <div className="flex cursor-pointer items-center justify-between gap-3 rounded-xl border border-(--color-border) bg-(--color-bg-primary) px-3 py-3 transition-colors duration-200 hover:bg-(--color-bg-secondary) sm:gap-4 sm:px-5 sm:py-4 lg:px-5">
       <div className="flex items-center gap-3 sm:gap-4">
         <span
           className="h-4 w-4 shrink-0 rounded-full sm:h-5 sm:w-5"
