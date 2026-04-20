@@ -80,13 +80,13 @@ function ProfileHeader() {
       </div>
       <div className="relative pt-15 md:pt-22 xl:pt-32">
         <div className="flex flex-col gap-1 px-4 md:gap-2 xl:px-10">
-          <span className="text-2xl font-bold text-(--color-text-primary) md:text-4xl">
+          <span className="text-2xl font-bold text-(--color-text-primary) md:text-3xl xl:text-4xl">
             Roshan Patil
           </span>
-          <span className="text-md text-(--color-text-secondary) md:text-xl">
+          <span className="text-md text-(--color-text-secondary) md:text-lg xl:text-xl">
             @patilrosha99
           </span>
-          <span className="mt-1 text-lg text-(--color-text-primary) md:mt-2 md:text-2xl">
+          <span className="mt-1 text-lg text-(--color-text-primary) md:mt-2 md:text-xl xl:text-2xl">
             Learning web dev
           </span>
           <div className="mt-7 flex flex-col items-center gap-5 md:flex-row">
@@ -111,13 +111,15 @@ function ProfileHeader() {
             </button>
           </div>
         </div>
-        <div className="absolute top-10 right-3 p-4 md:top-17 lg:top-29 lg:right-5">
+        <div className="absolute top-10 right-3 p-4 md:top-17 lg:top-18 lg:right-5 xl:top-28">
           <button
             onClick={() => setzIsEditModalOpen(true)}
             className="flex w-fit cursor-pointer items-center gap-3 rounded-xl border border-(--color-border-secondary) bg-orange-500 px-2 py-2 text-white shadow-2xl transition-all duration-100 hover:scale-105 md:rounded-lg md:px-4"
           >
-            <Pencil className="h-5 w-5" />
-            <span className="hidden text-xl font-bold md:flex">Edit</span>
+            <Pencil className="h-4 w-4 xl:h-5 xl:w-5" />
+            <span className="hidden text-lg font-bold md:flex xl:text-xl">
+              Edit
+            </span>
           </button>
         </div>
       </div>

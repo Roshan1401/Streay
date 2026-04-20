@@ -9,16 +9,16 @@ interface StatusItemProps {
 
 function StatusItem({ label, value, unit, icon }: StatusItemProps) {
   return (
-    <div className="flex justify-between rounded-xl border border-(--color-border-secondary) bg-white p-4 md:px-6 md:py-5 dark:bg-[#1b1718]/50">
+    <div className="flex justify-between rounded-xl border border-(--color-border-secondary) bg-white p-4 xl:px-6 xl:py-5 dark:bg-[#1b1718]/50">
       <div className="flex flex-col gap-1">
-        <p className="text-md text-(--color-text-secondary) lg:text-xl">
+        <p className="lg:text-md text-sm text-(--color-text-secondary) xl:text-xl">
           {label}
         </p>
         <div className="flex gap-1.5">
-          <span className="text-2xl font-bold text-(--color-text-primary) lg:text-3xl">
+          <span className="text-2xl font-bold text-(--color-text-primary) lg:text-xl xl:text-3xl">
             {value}
           </span>
-          <span className="text-md flex items-end text-(--color-text-secondary) lg:text-xl">
+          <span className="flex items-end text-sm text-(--color-text-secondary) lg:text-sm xl:text-xl">
             {unit}
           </span>
         </div>
@@ -36,7 +36,7 @@ function FlameIcon() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="h-5 w-5 text-orange-500"
+      className="h-4 w-4 shrink-0 text-orange-500 xl:h-5 xl:w-5"
       aria-hidden="true"
     >
       <path
@@ -61,7 +61,7 @@ function ClockIcon() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="h-5 w-5 text-blue-500"
+      className="h-4 w-4 shrink-0 text-blue-500 xl:h-5 xl:w-5"
       aria-hidden="true"
     >
       <path
@@ -81,7 +81,7 @@ function CodeIcon() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="h-5 w-5 text-purple-500"
+      className="h-4 w-4 shrink-0 text-purple-500 lg:hidden xl:h-5 xl:w-5"
       aria-hidden="true"
     >
       <path
@@ -101,7 +101,7 @@ function ChartIcon() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="h-5 w-5 text-emerald-500"
+      className="h-4 w-4 shrink-0 text-emerald-500 xl:h-5 xl:w-5"
       aria-hidden="true"
     >
       <path
@@ -115,7 +115,7 @@ function ChartIcon() {
 
 function Status() {
   return (
-    <div className="grid grid-cols-1 gap-5 px-4 md:grid-cols-2 lg:grid-cols-4 xl:px-10">
+    <div className="grid grid-cols-1 gap-5 px-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-5 xl:px-10">
       <StatusItem label="Steak" value={4} unit="days" icon={<FlameIcon />} />
       <StatusItem
         label="Total Hours"
