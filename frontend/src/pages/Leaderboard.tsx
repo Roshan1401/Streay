@@ -1,8 +1,8 @@
 import { GithubIcon } from "../assets/Icons";
 import LeaderboardRow from "../components/leaderboard/LeaderboardRow";
 import profileimg from "../assets/image.png";
-import { ArrowDownCircle } from "lucide-react";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { useState } from "react";
 
 interface LeaderboardUser {
   rank: number;
@@ -183,12 +183,7 @@ const sampleData: LeaderboardUser[] = [
 ];
 
 function Leaderboard() {
-  const getRankBadge = (rank: number) => {
-    if (rank === 1) return { bg: "bg-yellow-500", text: "text-yellow-900" };
-    if (rank === 2) return { bg: "bg-gray-400", text: "text-gray-700" };
-    if (rank === 3) return { bg: "bg-amber-600", text: "text-amber-100" };
-    return { bg: "bg-neutral-800", text: "text-neutral-400" };
-  };
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 
   return (
     <div className="px-5 py-5 xl:px-15">
@@ -213,10 +208,10 @@ function Leaderboard() {
               <div className="col-span-4 text-right">Top Languages</div>
             </div>
             <div className="space-y-1">
-              {sampleData.map((user) => {
+              {sampleData.map((user, index) => {
                 return (
                   <div
-                    key={user.rank}
+                    key={index}
                     className="mx-2 my-3 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) md:m-0 md:rounded-none md:border-0 md:border-t"
                   >
                     <div className="flex cursor-pointer items-center gap-2 p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6">
@@ -250,9 +245,19 @@ function Leaderboard() {
                       <div className="mt-1 flex-1 items-center text-right font-mono text-xs font-medium text-(--color-text-primary) sm:text-sm md:col-span-3 md:text-center md:text-base md:font-semibold">
                         {user.timeSpent}
                       </div>
-                      <button className="md:hidden">
-                        <IoIosArrowDown className="mt-1 h-5 w-5 text-(--color-text-secondary)" />
+                      <button
+                        className="md:hidden"
+                        onClick={() =>
+                          setOpenDropdown(index === openDropdown ? null : index)
+                        }
+                      >
+                        {index === openDropdown ? (
+                          <IoIosArrowUp className="mt-1 h-5 w-5 text-(--color-text-secondary)" />
+                        ) : (
+                          <IoIosArrowDown className="mt-1 h-5 w-5 text-(--color-text-secondary)" />
+                        )}
                       </button>
+
                       <div className="hidden justify-end gap-2 md:col-span-4 md:flex">
                         {user.languages.map((lang, i) => (
                           <span
@@ -266,6 +271,39 @@ function Leaderboard() {
                             {lang.name}
                           </span>
                         ))}
+                      </div>
+                    </div>
+                    <div
+                      className={`flex flex-col overflow-hidden border-t border-(--color-border) transition-all duration-500 ease-in-out md:hidden ${
+                        openDropdown === index
+                          ? "max-h-40 opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 px-4 py-3">
+                        <GithubIcon className="h-4 w-4 text-(--color-text-secondary)" />
+                        <span className="text-sm font-medium text-(--color-text-secondary)">
+                          Roshan1401
+                        </span>
+                      </div>
+                      <div className="border-t border-(--color-border) px-4 py-3">
+                        <div className="mb-2 text-sm font-medium text-(--color-text-secondary)">
+                          Top Languages
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {user.languages.map((lang, i) => (
+                            <span
+                              key={i}
+                              className="rounded-md px-2.5 py-1 text-xs font-medium"
+                              style={{
+                                backgroundColor: `${lang.color}20`,
+                                color: lang.color,
+                              }}
+                            >
+                              {lang.name}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
