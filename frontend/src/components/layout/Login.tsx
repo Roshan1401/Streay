@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { GithubIcon, TwitterIcon } from "../../assets/Icons";
+import { supabase } from "../supabase.ts";
 
-const AuthPage = () => {
+const Login = () => {
   const [blink, setBlink] = useState(true);
   const [status, setStatus] = useState<string | null>(null);
 
@@ -12,10 +13,19 @@ const AuthPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleLogin = (provider: "github" | "twitter") => {
+  const handleLogin = async (provider: "github" | "twitter") => {
     setStatus(provider);
-    // your oauth logic here
-    // signIn(provider)
+    console.log(`Initiating login with ${provider}...`);
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: provider,
+        options: {
+          redirectTo: `${window.location.origin}/leaderboard`,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   };
 
   return (
@@ -106,4 +116,4 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default Login;

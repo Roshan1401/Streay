@@ -16,3 +16,5 @@ const useUserStore = create<UserState>((set) => ({
   setLoading: (loading) => set({ loading }),
   logOut: () => set({ user: null }),
 }));
+
+export default useUserStore;

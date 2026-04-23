@@ -6,11 +6,38 @@ import Profile from "./pages/Profile";
 import Login from "./components/layout/Login";
 import Leaderboard from "./pages/Leaderboard";
 import { Outlet } from "react-router-dom";
+import useUserStore from "./store/useUserStore";
+import { supabase } from "./components/supabase";
 
 function App() {
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("theme");
     return savedTheme === "dark" ? true : false;
+  });
+
+  const setUser = useUserStore((state) => state.setUser);
+  const setLoading = useUserStore((state) => state.setLoading);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        const user = session?.user ?? null;
+
+        if (!user) return;
+        setUser(user);
+        setLoading(false);
+        console.log("Auth state changed:", _event, user);
+      },
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   });
 
   function toggleTheme() {

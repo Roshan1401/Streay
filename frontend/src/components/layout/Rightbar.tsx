@@ -2,12 +2,23 @@ import { CircleAlert, CopyIcon, ExternalLinkIcon } from "lucide-react";
 import { SignOutIcon } from "../../assets/Icons/index";
 import profilImg from "../../assets/image.png";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabase";
 
 interface Props {}
 
 function Rightbar(props: Props) {
   const {} = props;
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      alert("An error occurred while logging out. Please try again.");
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col gap-6 border-l border-(--color-border) bg-(--color-bg-primary) px-7 py-6 lg:w-55 xl:w-75">
@@ -120,7 +131,10 @@ function Rightbar(props: Props) {
           </button>
         </div>
 
-        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-orange-500/30 bg-(--color-bg-primary) px-3 py-2 text-xs font-bold text-orange-500 transition-colors hover:border-orange-500/60 active:border-orange-500 active:bg-orange-500/20 active:text-orange-100 xl:text-sm">
+        <button
+          className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-orange-500/30 bg-(--color-bg-primary) px-3 py-2 text-xs font-bold text-orange-500 transition-colors hover:border-orange-500/60 active:border-orange-500 active:bg-orange-500/20 active:text-orange-100 xl:text-sm"
+          onClick={handleLogout}
+        >
           <SignOutIcon className="h-4 w-4 xl:h-5 xl:w-5" />
           <span>Sign Out</span>
         </button>
