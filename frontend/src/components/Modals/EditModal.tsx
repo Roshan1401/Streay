@@ -124,20 +124,20 @@ export default function EditModal({
       : [];
 
   const inputClass = (hasError: boolean) =>
-    `w-full rounded-md border bg-transparent p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:text-white ${
+    `w-full rounded-md border bg-transparent p-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:text-white sm:p-3 ${
       hasError ? "border-red-500" : "border-(--color-border)"
     }`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-175 rounded-2xl border border-(--color-border) bg-white p-8 dark:bg-[#0b0809]">
-        <h2 className="mb-6 text-2xl font-semibold text-(--color-text-primary)">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="w-full max-w-sm rounded-2xl border border-(--color-border) bg-white p-4 dark:bg-[#0b0809] sm:max-w-md sm:p-6 md:max-w-lg md:p-8 lg:max-w-xl">
+        <h2 className="mb-4 text-xl font-semibold text-(--color-text-primary) sm:mb-6 md:text-2xl">
           Edit Information
         </h2>
 
         {/* ── Page 1 ── */}
         {page === 1 && (
-          <div className="min-h-[340px] space-y-4">
+          <div className="min-h-[280px] space-y-3 sm:min-h-[340px] sm:space-y-4">
             {(
               [
                 {
@@ -157,7 +157,7 @@ export default function EditModal({
               ] as const
             ).map(({ label, value, setter, key, placeholder }) => (
               <div key={key}>
-                <label className="mb-2 block text-lg font-medium text-gray-700 dark:text-gray-300">
+                <label className="mb-1 block text-base font-medium text-gray-700 dark:text-gray-300 sm:mb-2 md:text-lg">
                   {label}
                 </label>
                 <input
@@ -179,7 +179,7 @@ export default function EditModal({
             ))}
 
             <div>
-              <label className="mb-2 block text-lg font-medium text-gray-700 dark:text-gray-300">
+              <label className="mb-1 block text-base font-medium text-gray-700 dark:text-gray-300 sm:mb-2 md:text-lg">
                 Bio
               </label>
               <textarea
@@ -188,7 +188,7 @@ export default function EditModal({
                   setBio(e.target.value.slice(0, 150));
                   if (errors.bio) clearError("bio");
                 }}
-                className={`h-24 resize-none ${inputClass(errors.bio)}`}
+                className={`h-20 resize-none p-2 sm:h-24 sm:p-3 ${inputClass(errors.bio)}`}
                 placeholder="Write something about yourself..."
               />
               <div className="flex justify-between">
@@ -205,9 +205,9 @@ export default function EditModal({
 
         {/* ── Page 2 ── */}
         {page === 2 && (
-          <div className="min-h-[340px] space-y-4">
+          <div className="min-h-[280px] space-y-3 sm:min-h-[340px] sm:space-y-4">
             <div>
-              <label className="mb-2 block text-lg font-medium text-gray-700 dark:text-gray-300">
+              <label className="mb-1 block text-base font-medium text-gray-700 dark:text-gray-300 sm:mb-2 md:text-lg">
                 Country
               </label>
               <Select
@@ -237,7 +237,7 @@ export default function EditModal({
             </div>
 
             <div>
-              <label className="mb-2 block text-lg font-medium text-gray-700 dark:text-gray-300">
+              <label className="mb-1 block text-base font-medium text-gray-700 dark:text-gray-300 sm:mb-2 md:text-lg">
                 State
               </label>
               <Select
@@ -265,7 +265,7 @@ export default function EditModal({
             </div>
 
             <div>
-              <label className="mb-2 block text-lg font-medium text-gray-700 dark:text-gray-300">
+              <label className="mb-1 block text-base font-medium text-gray-700 dark:text-gray-300 sm:mb-2 md:text-lg">
                 City
               </label>
               <Select
@@ -290,21 +290,21 @@ export default function EditModal({
         )}
 
         {/* ── Footer ── */}
-        <div className="mt-6 flex gap-3">
+        <div className="mt-4 flex gap-2 sm:mt-6 sm:gap-3">
           {page === 2 && (
             <button
               onClick={() => {
                 setErrors({});
                 setPage(1);
               }}
-              className="flex-1 cursor-pointer rounded-md border border-(--color-border) px-4 py-2 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-800"
+              className="flex-1 cursor-pointer rounded-md border border-(--color-border) px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-800 sm:px-4 md:text-base"
             >
               Previous
             </button>
           )}
           <button
             onClick={page === 1 ? handleNext : handleSave}
-            className="flex-1 cursor-pointer rounded-md bg-orange-500 px-4 py-2 text-white transition-colors hover:bg-orange-600"
+            className="flex-1 cursor-pointer rounded-md bg-orange-500 px-3 py-2 text-sm text-white transition-colors hover:bg-orange-600 sm:px-4 md:text-base"
           >
             {page === 1 ? "Next" : "Save"}
           </button>
