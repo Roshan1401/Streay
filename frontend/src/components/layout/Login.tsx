@@ -70,14 +70,14 @@ const Login = () => {
           </button>
 
           <button
-            onClick={() => handleLogin("twitter")}
-            className="mb-6 flex w-full cursor-pointer items-center gap-3 rounded-lg border border-[#30363d] bg-[#0d1117] p-4 transition-colors duration-200 hover:border-[#e05c5c]"
+            disabled
+            className="mb-6 flex w-full cursor-pointer items-center gap-3 rounded-lg border border-[#30363d] bg-[#0d1117] p-4 blur-xs transition-colors duration-200 hover:border-[#e05c5c]"
           >
             <TwitterIcon className="h-5 w-5 text-[#e6edf3]" />
             <div className="flex-1 text-left">
               <p className="text-[13px] text-[#e6edf3]">[ 2 ] Twitter / X</p>
               <p className="mt-0.5 text-[11px] text-[#666]">
-                continue with twitter oauth
+                continue with twitter auth
               </p>
             </div>
             <span className="text-[11px] text-[#444]">↵</span>
