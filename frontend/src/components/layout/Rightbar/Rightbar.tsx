@@ -1,13 +1,10 @@
-import { CircleAlert, CopyIcon, ExternalLinkIcon } from "lucide-react";
+import { CircleAlert, CopyIcon } from "lucide-react";
 import { SignOutIcon } from "../../../assets/Icons/index";
-import profilImg from "../../assets/image.png";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase";
+import ProfileSection from "./ProfileSection";
 
-interface Props {}
-
-function Rightbar(props: Props) {
-  const {} = props;
+function Rightbar() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -22,35 +19,7 @@ function Rightbar(props: Props) {
 
   return (
     <div className="flex min-h-screen flex-col gap-6 border-l border-(--color-border) bg-(--color-bg-primary) px-7 py-6 lg:w-55 xl:w-75">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <div className="size-25 overflow-hidden rounded-full border border-orange-400 xl:size-30 dark:border-black">
-          <img
-            src={profilImg}
-            className="h-full w-full object-cover"
-            alt="Profile"
-          />
-        </div>
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-xl font-semibold text-(--color-text-primary) xl:text-2xl">
-            Roshan Patil
-          </span>
-          <span className="xl:text-md text-sm text-(--color-text-secondary)">
-            @patilrosha99
-          </span>
-          <span className="text-md mt-2 text-(--color-text-secondary) xl:text-lg">
-            Learning React
-          </span>
-        </div>
-
-        <button
-          className="text-md flex w-full cursor-pointer items-center justify-center gap-3 rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white shadow-2xl transition-all duration-200 hover:scale-102 hover:bg-orange-400 xl:text-xl"
-          onClick={() => navigate("/profile")}
-        >
-          <span>View Profile</span>
-          <ExternalLinkIcon className="h-4 w-4 xl:h-5 xl:w-5" />
-        </button>
-      </div>
-
+      <ProfileSection />
       <div className="flex flex-col gap-3">
         <h3 className="text-center text-xs font-semibold tracking-wider text-(--color-text-secondary) uppercase">
           Today's Activity
