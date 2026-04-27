@@ -1,4 +1,3 @@
-import React from "react";
 import ActivityCard from "./ActivityCard";
 
 function ActivitySection() {
