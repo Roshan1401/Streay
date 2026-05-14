@@ -1,5 +1,6 @@
 import { SignOutIcon } from "../../../assets/Icons/index";
 import { CircleAlert, CopyIcon } from "lucide-react";
+import { getApiToken } from "../../../api/token";
 
 interface ActionProps {
   handleLogout: () => void;
@@ -10,7 +11,14 @@ function ActionsSection(props: ActionProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-(--color-border-secondary) bg-(--color-bg-secondary) px-3 py-2 text-(--color-text-primary) transition-all hover:border-orange-500/50 hover:bg-orange-500/10 active:border-orange-500 active:bg-orange-500/20 active:text-orange-500">
+      <button
+        className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-(--color-border-secondary) bg-(--color-bg-secondary) px-3 py-2 text-(--color-text-primary) transition-all hover:border-orange-500/50 hover:bg-orange-500/10 active:border-orange-500 active:bg-orange-500/20 active:text-orange-500"
+        onClick={() =>
+          getApiToken().then((token) => {
+            console.log(token);
+          })
+        }
+      >
         <CopyIcon className="h-4 w-4 xl:h-5 xl:w-5" />
         <span className="text-xs font-medium xl:text-sm">Copy API token</span>
       </button>
