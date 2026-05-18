@@ -38,6 +38,7 @@ export async function activate(context: vscode.ExtensionContext) {
         }
 
         await context.secrets.store("devsteak_api_token", token);
+        await context.secrets.store("devsteak_user_id", data.user_id);
 
         vscode.window.showInformationMessage(
           "Successfully connected to DevSteak!",
