@@ -9,6 +9,10 @@ export async function activate(context: vscode.ExtensionContext) {
   const token = await context.secrets.get("devsteak_api_token");
   const user_id = await context.secrets.get("devsteak_user_id");
 
+  vscode.window.showInformationMessage(
+    `DevSteak extension activated. API token ${token ? "found" : "not found"}. User ID ${user_id ? "found" : "not found"}.`,
+  );
+
   if (token && user_id) {
     globalUserId = user_id;
 
@@ -54,17 +58,17 @@ export async function activate(context: vscode.ExtensionContext) {
 
         globalUserId = data.user_id;
 
-        await supabase
-          .from("users")
+        const { error: updateError } = await supabase
+          .from("profiles")
           .update({ is_extension_active: true })
           .eq("id", data.user_id);
 
+        if (updateError)
+          console.error("Failed to update profile:", updateError);
         startTracking(context);
         startSendingSessions(context);
 
-        vscode.window.showInformationMessage(
-          "Successfully connected to DevSteak!",
-        );
+        vscode.window.showInformationMessage("API token saved successfully.");
       } catch (error: unknown) {
         vscode.window.showErrorMessage(
           "Failed to connect to DevSteak: " + error,
@@ -81,7 +85,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
       if (globalUserId) {
         await supabase
-          .from("users")
+          .from("profiles")
           .update({ is_extension_active: false })
           .eq("id", globalUserId);
 
@@ -91,5 +95,29 @@ export async function activate(context: vscode.ExtensionContext) {
     },
   );
 
-  context.subscriptions.push(connectAccount, disconnectAccount);
+  const checkToken = vscode.commands.registerCommand(
+    "devsteak.checkToken",
+    async () => {
+      const token = await context.secrets.get("devsteak_api_token");
+      const user_id = await context.secrets.get("devsteak_user_id");
+
+      console.log("Token:", token);
+      console.log("User ID:", user_id);
+
+      vscode.window.showInformationMessage(
+        `Token: ${token ? "✅ Found" : "❌ Not found"} | User ID: ${user_id ? "✅ Found" : "❌ Not found"}`,
+      );
+    },
+  );
+
+  context.subscriptions.push(connectAccount, disconnectAccount, checkToken);
+}
+
+export async function deactivate() {
+  if (!globalUserId) return;
+
+  await supabase
+    .from("profiles")
+    .update({ is_extension_active: false })
+    .eq("id", globalUserId);
 }

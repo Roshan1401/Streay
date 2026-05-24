@@ -13,7 +13,7 @@ let lastActivityTime: number = 0;
 let isIdle: boolean = false;
 let sessions: Session[] = [];
 
-function saveCurrentSession() {
+export function saveCurrentSession() {
   if (!currentLanguage || sessionStartTime === 0) return;
 
   if (Date.now() - sessionStartTime < 5000) {
@@ -28,8 +28,23 @@ function saveCurrentSession() {
     recorded_at: new Date().toISOString(),
   };
 
-  sessions.push(session);
-  console.log("Session saved:", session);
+  const existingLanguage = sessions.find(
+    (s) => s.language === session.language,
+  );
+
+  if (existingLanguage) {
+    existingLanguage.duration += session.duration;
+    existingLanguage.recorded_at = session.recorded_at;
+    vscode.window.showInformationMessage(
+      `Session updated: ${existingLanguage.language} - ${existingLanguage.duration} seconds`,
+    );
+  } else {
+    sessions.push(session);
+    console.log("Session saved:", session);
+    vscode.window.showInformationMessage(
+      `Session saved: ${session.language} - ${session.duration} seconds`,
+    );
+  }
   sessionStartTime = 0;
 }
 
@@ -42,17 +57,17 @@ export function startTracking(context: vscode.ExtensionContext) {
   const editorListner = vscode.window.onDidChangeActiveTextEditor((editor) => {
     if (!editor) return;
 
-    saveCurrentSession();
-
     const language = editor.document.languageId;
-
     if (language === "plaintext") return;
-    if (language !== currentLanguage) {
-      currentLanguage = language;
-      sessionStartTime = Date.now();
-      lastActivityTime = Date.now();
-      isIdle = false;
-    }
+    vscode.window.showInformationMessage(
+      `Switched to ${editor.document.languageId} file. Tracking session...`,
+    );
+
+    saveCurrentSession();
+    currentLanguage = language;
+    sessionStartTime = Date.now();
+    lastActivityTime = Date.now();
+    isIdle = false;
   });
 
   const documentListner = vscode.workspace.onDidChangeTextDocument(() => {
