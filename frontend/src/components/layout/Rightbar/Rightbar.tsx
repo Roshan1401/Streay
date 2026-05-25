@@ -9,7 +9,7 @@ import { ExternalLinkIcon } from "lucide-react";
 import { useEffect } from "react";
 import ProfileSectionSkeleton from "../../../Skeletons/ProfileSectionSkeleton";
 import ActivitySectionSkeleton from "../../../Skeletons/ActivitySectionSkeleton";
-import ActionsSectionSkeleton from "../../../Skeletons/ActionSection.Skeleton";
+import ActionsSectionSkeleton from "../../../Skeletons/ActionSectionSkeleton";
 
 function Rightbar() {
   const { user, loading, logOut } = useUserStore();
