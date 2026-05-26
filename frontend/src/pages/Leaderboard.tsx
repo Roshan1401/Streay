@@ -4,9 +4,9 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { MedalIcon } from "../assets/Icons/index";
 import { fetchLeaderboard } from "../queries/fetchLeaderboard";
-import { getLanguageColor } from "../queries/languageColor";
 import LeaderboardSkeleton from "../Skeletons/LeaderboardSkeleton";
 import { formatTime } from "../utils/formatTime";
+import { getLanguageColor, getLanguageIcon } from "../utils/languageConfig";
 
 interface LeaderboardUser {
   rank: number;
@@ -38,9 +38,11 @@ function Leaderboard() {
     };
 
     fetchData();
-    setInterval(() => {
+    const interval = setInterval(() => {
       fetchData();
     }, 300000); // Fetch new data every 5 minutes
+
+    return () => clearInterval(interval);
   }, [activeRow]);
 
   return (
@@ -65,8 +67,8 @@ function Leaderboard() {
               <div className="">
                 <div className="text-md sticky top-0 z-10 hidden grid-cols-12 gap-4 bg-(--color-bg-secondary) px-8 py-4 font-semibold tracking-wide text-(--color-text-secondary) md:grid lg:px-4 xl:px-8">
                   <div className="col-span-1">Rank</div>
-                  <div className="col-span-4 text-left">Developer</div>
-                  <div className="col-span-3 text-center">Time Spent</div>
+                  <div className="col-span-5 text-left">Developer</div>
+                  <div className="col-span-2 text-center">Time Spent</div>
                   <div className="col-span-4 text-right">Top Languages</div>
                 </div>
                 <div className="space-y-1">
@@ -99,7 +101,7 @@ function Leaderboard() {
                                 )}
                               </span>
                             </div>
-                            <div className="col-span-4 flex items-center gap-3">
+                            <div className="col-span-5 flex items-center gap-3">
                               <div className="size-8 overflow-hidden rounded-full transition-all duration-75 ease-out hover:scale-103 md:size-11 dark:border-black">
                                 <img
                                   src={user.avatar_url}
@@ -119,7 +121,13 @@ function Leaderboard() {
                                 </div>
                               </div>
                             </div>
-                            <div className="mt-1 flex-1 items-center text-right font-mono text-xs font-medium text-(--color-text-primary) sm:text-sm md:col-span-3 md:text-center md:text-base md:font-semibold">
+                            <div
+                              className={`mt-1 flex-1 items-center text-right font-mono text-xs font-medium sm:text-sm md:col-span-2 md:text-center md:text-base md:font-semibold ${
+                                user.rank === 1
+                                  ? "text-orange-500 md:rounded-lg md:bg-orange-500/10 md:py-1"
+                                  : "text-(--color-text-primary) md:rounded-lg md:bg-neutral-100 md:py-1 dark:md:bg-neutral-900/50"
+                              }`}
+                            >
                               {formatTime(user.timeSpent)}
                             </div>
                             <button
@@ -141,13 +149,14 @@ function Leaderboard() {
                               {user.byLanguage.map((lang, i) => (
                                 <span
                                   key={i}
-                                  className="rounded-md px-2.5 py-1 text-sm font-medium"
+                                  className="flex h-10 w-10 items-center justify-center rounded-md p-1.5 text-2xl font-medium"
                                   style={{
                                     backgroundColor: `${getLanguageColor(lang.language)}20`,
                                     color: getLanguageColor(lang.language),
+                                    border: `0.5px solid ${getLanguageColor(lang.language)}`,
                                   }}
                                 >
-                                  {lang.language}
+                                  {getLanguageIcon(lang.language)}
                                 </span>
                               ))}
                             </div>
@@ -173,13 +182,14 @@ function Leaderboard() {
                                 {user.byLanguage.map((lang, i) => (
                                   <span
                                     key={i}
-                                    className="rounded-md px-2.5 py-1 text-xs font-medium"
+                                    className="rounded-md p-1.5 text-xl font-medium"
                                     style={{
                                       backgroundColor: `${getLanguageColor(lang.language)}20`,
                                       color: getLanguageColor(lang.language),
+                                      border: `0.5px solid ${getLanguageColor(lang.language)}`,
                                     }}
                                   >
-                                    {lang.language}
+                                    {getLanguageIcon(lang.language)}{" "}
                                   </span>
                                 ))}
                               </div>

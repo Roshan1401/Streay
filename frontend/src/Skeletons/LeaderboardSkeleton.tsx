@@ -13,8 +13,8 @@ function LeaderboardSkeleton() {
         {/* Desktop Header */}
         <div className="text-md sticky top-0 z-10 hidden grid-cols-12 gap-4 bg-(--color-bg-secondary) px-8 py-4 md:grid lg:px-4 xl:px-8">
           <div className="col-span-1 h-4 w-10 animate-pulse rounded bg-gray-300 dark:bg-neutral-700" />
-          <div className="col-span-4 h-4 w-24 animate-pulse rounded bg-gray-300 dark:bg-neutral-700" />
-          <div className="col-span-3 mx-auto h-4 w-24 animate-pulse rounded bg-gray-300 dark:bg-neutral-700" />
+          <div className="col-span-5 h-4 w-24 animate-pulse rounded bg-gray-300 dark:bg-neutral-700" />
+          <div className="col-span-2 mx-auto h-4 w-24 animate-pulse rounded bg-gray-300 dark:bg-neutral-700" />
           <div className="col-span-4 ml-auto h-4 w-28 animate-pulse rounded bg-gray-300 dark:bg-neutral-700" />
         </div>
 
@@ -32,7 +32,7 @@ function LeaderboardSkeleton() {
                 </div>
 
                 {/* Developer */}
-                <div className="col-span-4 flex items-center gap-3">
+                <div className="col-span-5 flex items-center gap-3">
                   <div className="h-8 w-8 animate-pulse rounded-full bg-gray-300 md:h-11 md:w-11 dark:bg-neutral-700" />
                   <div className="flex flex-col gap-2">
                     <div className="mx-2 h-4 w-15 animate-pulse rounded bg-gray-300 sm:w-20 md:mx-0 md:w-24 dark:bg-neutral-700" />
@@ -41,7 +41,7 @@ function LeaderboardSkeleton() {
                 </div>
 
                 {/* Time Spent */}
-                <div className="col-span-3 flex justify-center">
+                <div className="col-span-2 flex justify-center">
                   <div className="h-4 w-10 animate-pulse rounded bg-gray-300 md:w-16 dark:bg-neutral-700" />
                 </div>
 
