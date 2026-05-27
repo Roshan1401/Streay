@@ -1,15 +1,6 @@
 import { supabase } from "../lib/supabase";
-type range = "24h" | "7day" | "30day";
-
-export const getStartRange = (range: range): string => {
-  const ms = {
-    "24h": 24 * 60 * 60 * 1000,
-    "7day": 7 * 24 * 60 * 60 * 1000,
-    "30day": 30 * 24 * 60 * 60 * 1000,
-  };
-
-  return new Date(Date.now() - ms[range]).toISOString();
-};
+import type { range } from "../types/types";
+import { getStartRange } from "./getStartRange";
 
 export async function fetchLeaderboard(range: range) {
   const { data, error } = await supabase
