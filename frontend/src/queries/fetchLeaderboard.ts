@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 type range = "24h" | "7day" | "30day";
 
-const getStartRange = (range: range): string => {
+export const getStartRange = (range: range): string => {
   const ms = {
     "24h": 24 * 60 * 60 * 1000,
     "7day": 7 * 24 * 60 * 60 * 1000,
