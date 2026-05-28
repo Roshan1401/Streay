@@ -1,18 +1,14 @@
 import { useState, useEffect } from "react";
-import useUserStore from "../store/useUserStore";
 import { supabase } from "../lib/supabase";
 
-export function useExtensionStatus() {
-  const { user } = useUserStore((state) => ({ user: state.user }));
+export function useExtensionStatus(userId: string) {
   const [isActive, setIsActive] = useState(false);
 
-  useEffect(() => {
-    if (!user) return;
-
+  const fetchStatus = async () => {
     supabase
       .from("profiles")
       .select("is_extension_active")
-      .eq("id", user.id)
+      .eq("id", userId)
       .single()
       .then(({ data, error }) => {
         if (error) {
@@ -22,7 +18,11 @@ export function useExtensionStatus() {
         }
         setIsActive(data?.is_extension_active);
       });
+  };
+  useEffect(() => {
+    if (!userId) return;
 
+    fetchStatus();
     const channel = supabase
       .channel("extension_status")
       .on(
@@ -31,7 +31,7 @@ export function useExtensionStatus() {
           event: "UPDATE",
           schema: "public",
           table: "profiles",
-          filter: `id=eq.${user.id}`,
+          filter: `id=eq.${userId}`,
         },
         (payload) => {
           setIsActive(payload.new.is_extension_active);
@@ -42,7 +42,7 @@ export function useExtensionStatus() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user]);
-  return isActive;
+  }, [userId]);
+  return { isActive, fetchStatus };
 }
 supabase;
