@@ -9,6 +9,10 @@ interface ProfileState {
     bio: string | null;
     avatar_url: string;
   } | null;
+  socialLinks: {
+    platform: string;
+    url: string;
+  }[];
   loading: boolean;
   setProfile: (profile: ProfileState["profile"]) => void;
   setLoading: (loading: boolean) => void;
@@ -19,6 +23,7 @@ const useProfileStore = create<ProfileState>((set) => ({
   profile: null,
   loading: true,
   setProfile: (profile) => set({ profile }),
+  socialLinks: [],
   setLoading: (loading) => set({ loading }),
   fetchProfile: async () => {
     set({ loading: true });
@@ -31,11 +36,18 @@ const useProfileStore = create<ProfileState>((set) => ({
         set({ profile: null, loading: false });
         return;
       }
-      console.log("Fetching profile for user ID:", user.id);
 
       const { data, error } = await supabase
         .from("profiles")
-        .select("*")
+        .select(
+          `
+    *,
+    social_links (    
+      platform,
+      url
+    )
+  `,
+        )
         .eq("id", user.id)
         .single();
 
@@ -45,7 +57,11 @@ const useProfileStore = create<ProfileState>((set) => ({
         return;
       }
 
-      set({ profile: data, loading: false });
+      set({
+        profile: data,
+        socialLinks: data.social_links ?? [],
+        loading: false,
+      });
     } catch (error) {
       console.error("Unexpected error:", error);
       set({ profile: null, loading: false });
