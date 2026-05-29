@@ -83,7 +83,7 @@ function ActionsSection(props: ActionProps) {
             </div>
           </div>
           <span
-            className={`hidden rounded-md px-2 py-1 text-xs font-semibold xl:flex ${isActive ? "bg-green-900/30 text-green-400" : "bg-orange-900/30 text-orange-500"}`}
+            className={`hidden rounded-md px-2 py-1 text-xs font-semibold xl:flex ${isActive ? "bg-green-400/20 text-green-800 dark:bg-green-900/30 dark:text-green-400" : "bg-orange-400/20 text-orange-500 dark:bg-orange-900/30"}`}
           >
             {isActive ? "Active" : "Inactive"}
           </span>
