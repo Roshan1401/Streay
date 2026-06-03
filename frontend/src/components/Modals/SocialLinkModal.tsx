@@ -7,7 +7,7 @@ import {
   WebsiteIcon,
   YouTubeIcon,
 } from "../../assets/Icons/index";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 export interface SocialLink {
   platform: string;
@@ -20,6 +20,10 @@ interface SocialLinkModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAddLink: (link: SocialLink) => void;
+  /** Links already on the profile — shown with remove controls */
+  existingLinks: SocialLink[];
+  /** Wire up when ready; optional so UI works without backend */
+  onRemoveLink?: (platform: string) => void;
   existingPlatforms: string[];
 }
 
@@ -60,6 +64,8 @@ export function SocialLinkModal({
   isOpen,
   onClose,
   onAddLink,
+  existingLinks,
+  onRemoveLink,
   existingPlatforms,
 }: SocialLinkModalProps) {
   const [selectedPlatform, setSelectedPlatform] = useState<SocialLink | null>(
@@ -102,6 +108,48 @@ export function SocialLinkModal({
             <Plus className="h-5 w-5 rotate-45" />
           </button>
         </div>
+
+        {existingLinks.length > 0 && !selectedPlatform && (
+          <div className="mb-6">
+            <h3 className="mb-3 text-sm font-semibold text-(--color-text-secondary)">
+              Your links
+            </h3>
+            <div className="space-y-2">
+              {existingLinks.map((link) => (
+                <div
+                  key={link.platform}
+                  className="flex items-center gap-3 rounded-lg border border-(--color-border-secondary) p-3"
+                >
+                  <div className="shrink-0 text-(--color-text-primary)">
+                    {link.svg}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-medium text-(--color-text-primary)">
+                      {link.label}
+                    </span>
+                    <span className="block truncate text-sm text-(--color-text-secondary)">
+                      {link.url}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onRemoveLink?.(link.platform)}
+                    aria-label={`Remove ${link.label}`}
+                    className="shrink-0 cursor-pointer rounded-lg p-2 text-(--color-text-secondary) transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/40"
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {existingLinks.length > 0 && availablePlatforms.length > 0 && (
+          <h3 className="mb-3 text-sm font-semibold text-(--color-text-secondary)">
+            Add new link
+          </h3>
+        )}
 
         {availablePlatforms.length === 0 ? (
           <p className="py-4 text-center text-gray-500">

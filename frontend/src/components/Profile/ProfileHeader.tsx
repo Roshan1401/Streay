@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import banner from "../../assets/banner.jpg";
-import profileImg from "../../assets/image.png";
 import {
   SocialLinkModal,
   platforms,
@@ -8,8 +7,10 @@ import {
 } from "../Modals/SocialLinkModal";
 import EditModal from "../Modals/EditModal";
 import { Pencil, Plus } from "lucide-react";
-import useProfileStore from "../../store/useProfileStore";
 import { supabase } from "../../lib/supabase";
+import type { PublicProfile } from "../../types/types";
+
+const EMPTY_SOCIAL_LINKS: { platform: string; url: string }[] = [];
 
 function SocialLinkButton({
   svg,
@@ -34,9 +35,8 @@ function SocialLinkButton({
   );
 }
 
-function ProfileHeader() {
-  const profileData = useProfileStore((state) => state.profile);
-  const socialLinksFromStore = useProfileStore((state) => state.socialLinks);
+function ProfileHeader({ profileData }: { profileData: PublicProfile | null }) {
+  const profile = profileData?.profile || null;
 
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
 
@@ -44,7 +44,8 @@ function ProfileHeader() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
-    const finalResult = socialLinksFromStore.map((link) => {
+    const links = profileData?.socialLinks ?? EMPTY_SOCIAL_LINKS;
+    const finalResult = links.map((link) => {
       const platformInfo = platforms.find((p) => p.platform === link.platform);
       return {
         platform: link.platform,
@@ -55,16 +56,42 @@ function ProfileHeader() {
     });
 
     setSocialLinks(finalResult);
-  }, [socialLinksFromStore]);
+  }, [profileData?.socialLinks]);
 
   const handleAddLink = async (link: SocialLink) => {
+    if (!profile?.id) return;
+
+    const previous = socialLinks;
     setSocialLinks([...socialLinks, link]);
 
-    await supabase.from("social_links").insert({
-      user_id: profileData?.id,
+    const { error } = await supabase.from("social_links").insert({
+      user_id: profile.id,
       platform: link.platform,
       url: link.url,
     });
+
+    if (error) {
+      setSocialLinks(previous);
+      console.error("Failed to add social link:", error.message);
+    }
+  };
+
+  const handleRemoveLink = async (platform: string) => {
+    if (!profile?.id) return;
+
+    const previous = socialLinks;
+    setSocialLinks(socialLinks.filter((l) => l.platform !== platform));
+
+    const { error } = await supabase
+      .from("social_links")
+      .delete()
+      .eq("user_id", profile.id)
+      .eq("platform", platform);
+
+    if (error) {
+      setSocialLinks(previous);
+      console.error("Failed to remove social link:", error.message);
+    }
   };
 
   return (
@@ -73,6 +100,8 @@ function ProfileHeader() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAddLink={handleAddLink}
+        onRemoveLink={handleRemoveLink}
+        existingLinks={socialLinks}
         existingPlatforms={socialLinks.map((l) => l.platform)}
       />
 
@@ -80,9 +109,9 @@ function ProfileHeader() {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         initialData={{
-          name: profileData?.name || "",
-          username: profileData?.username || "",
-          bio: profileData?.bio || "",
+          name: profile?.name || "",
+          username: profile?.username || "",
+          bio: profile?.bio || "",
         }}
       />
 
@@ -96,7 +125,7 @@ function ProfileHeader() {
         </div>
         <div className="lg:-bottom-15.7 absolute -bottom-12 left-4 size-26 transform overflow-hidden rounded-full border-2 border-orange-400 transition-all duration-200 hover:scale-105 md:-bottom-18 md:left-6 md:size-36 xl:-bottom-25 xl:left-1/8 xl:size-50 xl:-translate-x-1/2 2xl:left-30 dark:border-black">
           <img
-            src={profileImg}
+            src={profile?.avatar_url}
             className="h-full w-full object-cover"
             alt="Profile"
           />
@@ -105,13 +134,13 @@ function ProfileHeader() {
       <div className="relative pt-15 md:pt-22 xl:pt-32">
         <div className="flex flex-col gap-1 px-4 md:gap-2 xl:px-10">
           <span className="text-2xl font-bold text-(--color-text-primary) md:text-3xl xl:text-4xl">
-            {profileData?.name || "Adam"}
+            {profile?.name || "Adam"}
           </span>
           <span className="text-md text-(--color-text-secondary) md:text-lg xl:text-xl">
-            @{profileData?.username || "@adamBoka"}
+            @{profile?.username || "adamBoka"}
           </span>
           <span className="mt-1 text-lg text-(--color-text-secondary) md:mt-2 md:text-xl xl:text-2xl">
-            {profileData?.bio || "I am the first man on earth"}
+            {profile?.bio || "I am the first man on earth"}
           </span>
           <div className="mt-7 flex flex-col items-center gap-5 md:flex-row">
             <div className="grid grid-cols-3 gap-2 md:flex">

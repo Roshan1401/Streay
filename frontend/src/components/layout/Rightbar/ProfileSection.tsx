@@ -1,11 +1,10 @@
 import profilImg from "../../../assets/image.png";
 import { ExternalLinkIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useProfileStore from "../../../store/useProfileStore";
 
 function ProfileSection() {
   const profile = useProfileStore((state) => state.profile);
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
@@ -28,13 +27,12 @@ function ProfileSection() {
         </span>
       </div>
 
-      <button
+      <Link to={`/profile/${profile?.username}`}
         className="text-md flex w-full cursor-pointer items-center justify-center gap-3 rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white shadow-2xl transition-all duration-200 hover:scale-102 hover:bg-orange-400 xl:text-xl"
-        onClick={() => navigate("/profile")}
       >
         <span>View Profile</span>
         <ExternalLinkIcon className="h-4 w-4 xl:h-5 xl:w-5" />
-      </button>
+      </Link >
     </div>
   );
 }
