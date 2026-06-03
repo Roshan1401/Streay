@@ -85,7 +85,7 @@ export default function EditModal({
   };
 
   const handleNext = () => {
-    if (validate({ name, username, bio })) setPage(2);
+    if (validate({ name, username })) setPage(2);
   };
 
   const handleSave = () => {
@@ -208,15 +208,11 @@ export default function EditModal({
                 value={bio}
                 onChange={(e) => {
                   setBio(e.target.value.slice(0, 150));
-                  if (errors.bio) clearError("bio");
                 }}
                 className={`h-20 resize-none p-2 sm:h-24 sm:p-3 ${inputClass(errors.bio)}`}
                 placeholder="Write something about yourself..."
               />
               <div className="flex justify-between">
-                {errors.bio && (
-                  <p className="text-sm text-red-500">Bio is required</p>
-                )}
                 <p className="mt-1 ml-auto text-sm text-gray-500 dark:text-gray-400">
                   {bio.length}/150
                 </p>
