@@ -76,6 +76,7 @@ export function usePublicProfile(username: string) {
           hours: item.total_seconds / 3600,
         })) ?? [],
       );
+      await new Promise(resolve => setTimeout(resolve, 1000));
       setLoading(false);
     };
     fetchAll();
