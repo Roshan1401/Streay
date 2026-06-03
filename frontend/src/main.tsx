@@ -14,7 +14,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/" element={<App />}>
         <Route index element={<Navigate to="leaderboard" />} />
         <Route path="leaderboard" element={<Leaderboard />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="profile/:username" element={<Profile />} />
         <Route path="explore" element={<Explore />} />
         <Route path="rank" element={<Rank />} />
       </Route>
