@@ -7,7 +7,7 @@ function ProfileHeaderSkeleton() {
           <div className="h-40 skeleton border-b border-(--color-border) md:h-50 xl:h-70" />
           
           {/* Avatar skeleton */}
-          <div className="lg:-bottom-15.7 absolute -bottom-12 left-4 size-26 skeleton border-2 border-(--color-border) md:-bottom-18 md:left-6 md:size-36 xl:-bottom-25 xl:left-1/8 xl:size-50 xl:-translate-x-1/2 2xl:left-30" />
+          <div className="lg:-bottom-15.7 absolute rounded-full -bottom-12 left-4 size-26 skeleton  md:-bottom-18 md:left-6 md:size-36 xl:-bottom-25 xl:left-1/8 xl:size-50 xl:-translate-x-1/2 2xl:left-30" />
         </div>
   
         {/* Content skeleton */}
@@ -15,13 +15,13 @@ function ProfileHeaderSkeleton() {
           <div className="flex flex-col gap-3 px-4 xl:px-10">
             
             {/* Name */}
-            <div className="h-7 w-48 skeleton md:h-9 md:w-64 xl:h-11 xl:w-80" />
+            <div className="h-7 w-48 skeleton rounded-md md:h-9 md:w-64 xl:h-11 xl:w-80" />
             
             {/* Username */}
-            <div className="h-5 w-32 skeleton md:h-6 md:w-40" />
+            <div className="h-5 w-32 skeleton rounded-md md:h-6 md:w-40" />
             
             {/* Bio */}
-            <div className="h-5 w-72 skeleton md:h-6 md:w-96" />
+            <div className="h-5 w-72 skeleton rounded-md md:h-6 md:w-96" />
   
             {/* Social links skeleton */}
             <div className="mt-7 flex flex-col items-center gap-5 md:flex-row">
@@ -29,7 +29,7 @@ function ProfileHeaderSkeleton() {
                 {[1, 2].map((i) => (
                   <div
                     key={i}
-                    className="h-9 w-24 skeleton"
+                    className="h-9 w-24 rounded-md skeleton"
                   />
                 ))}
               </div>

@@ -4,7 +4,7 @@ function StatusSkeleton() {
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}
-            className="flex h-25 w-full justify-between rounded-xl skeleton border border-(--color-border-secondary)  p-4 xl:px-6 xl:py-5 dark:bg-[#1b1718]/50"
+            className="flex h-25 w-full justify-between rounded-xl skeleton border border-(--color-border-secondary)   p-4 xl:px-6 xl:py-5 "
           />
         ))}
       </div>
