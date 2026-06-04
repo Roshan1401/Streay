@@ -8,6 +8,10 @@ import LeaderboardIcon from "./LeaderboardIcon";
 import SignInIcon from "./SignInIcon";
 import SignOutIcon from "./SignOutIcon";
 import MedalIcon from "./MedalIcon";
+import FlameIcon from "./FlameIcon";
+import ClockIcon from "./ClockIcon";
+import CodeIcon from "./CodeIcon";
+import ChartIcon from "./ChartIcon";
 export {
   GithubIcon,
   InstagramIcon,
@@ -19,4 +23,8 @@ export {
   SignInIcon,
   SignOutIcon,
   MedalIcon,
+  FlameIcon,
+  ClockIcon,
+  CodeIcon,
+  ChartIcon,
 };
