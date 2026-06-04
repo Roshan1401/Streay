@@ -81,7 +81,7 @@ function Leaderboard() {
                           key={index}
                           className="mx-2 my-3 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) md:m-0 md:rounded-none md:border-0 md:border-t"
                         >
-                          <div className="flex cursor-pointer items-center gap-2 p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6 lg:px-4 lg:py-8 xl:px-8">
+                          <div className="flex cursor-pointer items-center gap-2 p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6 border-t border-(--color-border) lg:px-4 lg:py-8 xl:px-8">
                             <div className="col-span-1 flex">
                               <span
                                 className={`flex items-center justify-center rounded-full px-2 py-1 text-xs font-semibold drop-shadow-2xl md:size-9 md:text-lg lg:px-3 ${

@@ -121,11 +121,11 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
             </button>
           ) : profileLoading ? (
             <div className="hidden items-center gap-5 rounded-full p-2 lg:flex">
-              <div className="size-12 animate-pulse rounded-full bg-gray-300 dark:bg-neutral-700" />
+              <div className="size-12 skeleton rounded-full" />
 
               <div className="flex flex-col gap-2">
-                <div className="h-4 w-28 animate-pulse rounded-md bg-gray-300 dark:bg-neutral-700" />
-                <div className="h-3 w-20 animate-pulse rounded-md bg-gray-300 dark:bg-neutral-700" />
+                <div className="h-4 w-28 skeleton rounded-md" />
+                <div className="h-3 w-20 skeleton rounded-md" />
               </div>
             </div>
           ) : (

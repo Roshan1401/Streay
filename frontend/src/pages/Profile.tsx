@@ -5,8 +5,9 @@ import ProfileState from "../components/Profile/ProfileState/ProfileState";
 import { useParams } from "react-router-dom";
 import { usePublicProfile } from "../hooks/usePublicProfile";
 import ProfileHeaderSkeleton from "../Skeletons/ProfileHeaderSkeleton";
+import StatusSkeleton from "../Skeletons/StatusSkeleton";
 
-function Profile() {
+function Profile() {  
   const { username } = useParams();
   const { profile, loading } = usePublicProfile(username || "");
 
@@ -20,7 +21,11 @@ function Profile() {
         <ProfileHeader profileData={profile} />
       )}
       <div className="mt-10">
-        <Status />
+        {loading ? (
+          <StatusSkeleton />
+        ) : (
+          <Status />
+        )}
       </div>
       <div>
         <HeatMap />

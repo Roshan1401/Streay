@@ -1,41 +1,50 @@
-export default function ProfileHeaderSkeleton() {
-    return(
-        <div>
+// ProfileHeaderSkeleton.tsx
+function ProfileHeaderSkeleton() {
+    return (
+      <div>
+        {/* Banner skeleton */}
         <div className="relative">
-          <div className="skeleton h-40 border-b border-(--color-border) md:h-50 xl:h-70" />
-  
-          <div className="lg:-bottom-15.7 skeleton absolute -bottom-12 left-4 size-26 rounded-full  md:-bottom-18 md:left-6 md:size-36 xl:-bottom-25 xl:left-1/8 xl:size-50 xl:-translate-x-1/2 2xl:left-30" />
+          <div className="h-40 skeleton border-b border-(--color-border) md:h-50 xl:h-70" />
+          
+          {/* Avatar skeleton */}
+          <div className="lg:-bottom-15.7 absolute -bottom-12 left-4 size-26 skeleton border-2 border-(--color-border) md:-bottom-18 md:left-6 md:size-36 xl:-bottom-25 xl:left-1/8 xl:size-50 xl:-translate-x-1/2 2xl:left-30" />
         </div>
   
+        {/* Content skeleton */}
         <div className="relative pt-15 md:pt-22 xl:pt-32">
-          <div className="flex flex-col gap-2 px-4 xl:px-10">
-            <div className="skeleton h-8 w-40 rounded-md md:h-10 md:w-56" />
+          <div className="flex flex-col gap-3 px-4 xl:px-10">
+            
+            {/* Name */}
+            <div className="h-7 w-48 skeleton md:h-9 md:w-64 xl:h-11 xl:w-80" />
+            
+            {/* Username */}
+            <div className="h-5 w-32 skeleton md:h-6 md:w-40" />
+            
+            {/* Bio */}
+            <div className="h-5 w-72 skeleton md:h-6 md:w-96" />
   
-            <div className="skeleton h-5 w-28 rounded-md md:w-36" />
-  
-            <div className="mt-2 flex flex-col gap-2">
-              <div className="skeleton h-5 w-full max-w-md rounded-md" />
-              <div className="skeleton h-5 w-3/4 max-w-sm rounded-md" />
-            </div>
-  
+            {/* Social links skeleton */}
             <div className="mt-7 flex flex-col items-center gap-5 md:flex-row">
               <div className="grid grid-cols-3 gap-2 md:flex">
-                {Array.from({ length: 3 }).map((_, index) => (
+                {[1, 2].map((i) => (
                   <div
-                    key={index}
-                    className="skeleton h-10 w-28 rounded-lg"
+                    key={i}
+                    className="h-9 w-24 skeleton"
                   />
                 ))}
               </div>
-  
-              <div className="skeleton h-11 w-full rounded-lg md:w-32 md:rounded-full" />
-            </div>
+              {/* Add link button skeleton */}
+              <div className="h-9 w-full skeleton md:h-9 md:w-9 md:rounded-full" />
+            </div>  
           </div>
   
+          {/* Edit button skeleton */}
           <div className="absolute top-10 right-3 p-4 md:top-17 lg:top-18 lg:right-5 xl:top-28">
-            <div className="skeleton h-10 w-10 rounded-xl md:h-11 md:w-28" />
+            <div className="h-9 w-9 skeleton md:h-9 md:w-20 md:rounded-lg" />
           </div>
         </div>
       </div>
     )
-}
+  }
+  
+  export default ProfileHeaderSkeleton
