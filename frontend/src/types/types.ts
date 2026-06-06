@@ -23,5 +23,12 @@ interface PublicProfile {
       }[]
     | null;
 }
+interface PublicProfileStats {
+  total_seconds: number;
+  total_languages: number;
+  current_streak: number;
+  avg_hours : number;
+  language_breakdown: Record<string, number>;
+}
 
-export type { range, UserActivityStats, PublicProfile };
+export type { range, UserActivityStats, PublicProfile , PublicProfileStats };
