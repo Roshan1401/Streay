@@ -1,16 +1,22 @@
 interface props {
-  languages: { label: string; hours: number }[];
+  languages: { language: string; hours: number }[];
+  totalHours: number;
   getColor: (index: number) => string;
 }
 
-export default function LangStateList({ languages, getColor }: props) {
+export default function LangStateList({
+  languages,
+  totalHours,
+  getColor,
+}: props) {
   return (
     <div className="scrollbar-hide w-full space-y-2 overflow-y-auto [scrollbar-width:none]">
       {languages.map((lang, index) => (
         <List
           key={index}
-          language={lang.label}
+          language={lang.language}
           hours={lang.hours}
+          totalHours={totalHours}
           color={getColor(index)}
         />
       ))}
@@ -22,10 +28,12 @@ function List({
   language,
   hours,
   color,
+  totalHours,
 }: {
   language: string;
   hours: number;
   color: string;
+  totalHours: number;
 }) {
   return (
     <div className="flex cursor-pointer items-center justify-between gap-3 rounded-xl border border-(--color-border) bg-(--color-bg-primary) px-3 py-3 transition-colors duration-200 hover:bg-(--color-bg-secondary) sm:gap-4 sm:px-5 sm:py-4 lg:px-3 lg:py-3">
@@ -35,16 +43,16 @@ function List({
           style={{ backgroundColor: color }}
         />
         <span className="truncate text-base font-semibold text-(--color-text-primary) sm:text-lg xl:text-xl">
-          {language}
+          {language.charAt(0).toUpperCase() + language.slice(1)}
         </span>
       </div>
 
       <div className="flex shrink-0 flex-col items-end text-right">
         <span className="text-base font-semibold text-(--color-text-primary) sm:text-lg xl:text-xl">
-          {hours}
+          {hours}h
         </span>
         <span className="text-xs font-medium text-(--color-text-secondary) sm:text-sm">
-          50.3%
+          {((hours / totalHours) * 100).toFixed(1)}%
         </span>
       </div>
     </div>

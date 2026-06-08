@@ -5,13 +5,13 @@ import type { ChartOptions } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface DonutChartProps {
-  languages: { label: string; hours: number }[];
+  languages: { language: string; hours: number }[];
   getColor: (index: number) => string;
 }
 
 export default function DonutChart({ languages, getColor }: DonutChartProps) {
   const data = {
-    labels: languages.map((lang) => lang.label),
+    labels: languages.map((lang) => lang.language),
     datasets: [
       {
         data: languages.map((lang) => lang.hours),

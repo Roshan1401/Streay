@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ProfileStateRow from "./ProfileStateRow";
 import TopRepo from "./TopRepo";
 import LangChart from "./LangChart";
 
 type Tab = "Lang Chart" | "Top Repo";
 
-interface Props {}
+interface ProfileStats {
+  languageStats: Record<string, number>;
+  totalHours: number;
+}
 
-function ProfileState(props: Props) {
-  const {} = props;
+function ProfileState({ languageStats, totalHours }: ProfileStats) {
+  const languages = useMemo(() => {
+    if (!languageStats) {
+      return [];
+    }
+    return Object.entries(languageStats).map(([language, seconds]) => ({
+      language,
+      hours: parseFloat((seconds / 3600).toFixed(2)),
+    }));
+  }, [languageStats]);
+
   const [activeTab, setActiveTab] = useState<Tab>("Lang Chart");
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -33,7 +45,11 @@ function ProfileState(props: Props) {
             : "translate-y-0 opacity-100"
         }`}
       >
-        {activeTab === "Lang Chart" ? <LangChart /> : <TopRepo />}
+        {activeTab === "Lang Chart" ? (
+          <LangChart languages={languages} totalHours={totalHours} />
+        ) : (
+          <TopRepo />
+        )}
       </div>
     </div>
   );

@@ -7,14 +7,13 @@ import ProfileHeaderSkeleton from "../Skeletons/ProfileHeaderSkeleton";
 import StatusSkeleton from "../Skeletons/StatusSkeleton";
 import HeatMapCalender from "../components/Profile/HeatMap/HeatMapCalender";
 import HeatMapCalenderSkeleton from "../Skeletons/HeatMapCalenderSkeleton";
+import ProfileStateSkeleton from "../Skeletons/ProfileStateSkeleton";
 
-function Profile() {  
+function Profile() {
   const { username } = useParams();
-  const { profile, loading , stats, heatmapData } = usePublicProfile(username || "");
-
-  console.log("ProfileStats data:", stats);
-  console.log("Profile data:", profile);
-  console.log("Heatmap data:", heatmapData);
+  const { profile, loading, stats, heatmapData } = usePublicProfile(
+    username || "",
+  );
 
   return (
     <div>
@@ -24,24 +23,24 @@ function Profile() {
         <ProfileHeader profileData={profile} />
       )}
       <div className="mt-10">
+        {loading ? <StatusSkeleton /> : <Status stats={stats} />}
+      </div>
+      <div>
         {loading ? (
-          <StatusSkeleton />
+          <HeatMapCalenderSkeleton />
         ) : (
-          <Status stats={stats}/>
+          <HeatMapCalender heatmapData={heatmapData} />
         )}
       </div>
       <div>
-        {
-          loading ? (
-            <HeatMapCalenderSkeleton />
-          ) :(
-
-            <HeatMapCalender heatmapData={heatmapData} />
-          )
-        }
-      </div>
-      <div>
-        <ProfileState />
+        {loading ? (
+          <ProfileStateSkeleton />
+        ) : (
+          <ProfileState
+            languageStats={stats?.language_breakdown ?? {}}
+            totalHours={stats?.total_hours ?? 0}
+          />
+        )}
       </div>
     </div>
   );

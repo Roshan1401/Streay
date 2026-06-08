@@ -1,7 +1,7 @@
 import { BarChart, Bar, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
 interface BarChartProps {
-  languages: { label: string; hours: number }[];
+  languages: { language: string; hours: number }[];
   getColor: (index: number) => string;
 }
 

@@ -3,26 +3,13 @@ import DonutChart from "./DonutChart";
 import BarChart2 from "./BarChart";
 import LangStateList from "./LangStateList";
 
-type LanguageDatum = { label: string; hours: number };
+interface LangChartProps {
+  languages: { language: string; hours: number }[];
+  totalHours: number;
+}
 type ChartType = "Donut" | "Bar";
 
-export default function LangChart() {
-  const languages: LanguageDatum[] = [
-    { label: "JavaScript", hours: 120 },
-    { label: "Python", hours: 80 },
-    { label: "TypeScript", hours: 60 },
-    { label: "Go", hours: 40 },
-    { label: "Rust", hours: 20 },
-    { label: "C++", hours: 10 },
-    { label: "Java", hours: 5 },
-    { label: "Ruby", hours: 2 },
-    { label: "PHP", hours: 1 },
-    { label: "PHP", hours: 1 },
-    { label: "PHP", hours: 1 },
-    { label: "PHP", hours: 1 },
-    { label: "PHP", hours: 1 },
-  ];
-
+export default function LangChart({ languages, totalHours }: LangChartProps) {
   const getColor = (index: number) => {
     const colors = [
       "#f97316",
@@ -39,8 +26,6 @@ export default function LangChart() {
 
   const charts: ChartType[] = ["Donut", "Bar"];
   const [activeTab, setActiveTab] = useState<ChartType>("Donut");
-
-  const totalHours = languages.reduce((sum, l) => sum + l.hours, 0);
 
   return (
     <div className="h-auto w-full rounded-xl border border-(--color-border) bg-white dark:bg-[#1b1718]/50">
@@ -83,7 +68,11 @@ export default function LangChart() {
         </div>
 
         <div className="mt-5 flex max-h-87.5 shrink-0 overflow-hidden">
-          <LangStateList languages={languages} getColor={getColor} />
+          <LangStateList
+            languages={languages}
+            getColor={getColor}
+            totalHours={totalHours}
+          />
         </div>
       </div>
     </div>
