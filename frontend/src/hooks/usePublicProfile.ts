@@ -83,8 +83,6 @@ export function usePublicProfile(username: string) {
       } : null);
 
       setHeatmapData(dailyData);
-
-      await new Promise((resolve) => setTimeout(resolve, 500)); 
       setLoading(false);
 
     };
