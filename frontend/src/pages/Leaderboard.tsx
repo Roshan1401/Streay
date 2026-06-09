@@ -8,32 +8,30 @@ import LeaderboardSkeleton from "../Skeletons/LeaderboardSkeleton";
 import { formatTime } from "../utils/formatTime";
 import { getLanguageColor, getLanguageIcon } from "../utils/languageConfig";
 import { Link } from "react-router-dom";
+import type { Range } from "../types/types";
 
 interface LeaderboardUser {
   rank: number;
-  name: string;
-  username: string;
+  name: string | null;
+  username: string | null;
   avatar_url: string;
-  timeSpent: string;
+  timeSpent: number;
   byLanguage: {
     language: string;
     hours: string;
   }[];
 }
 
-type range = "24h" | "7day" | "30day";
-
 function Leaderboard() {
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-  const [activeRow, setActiveRow] = useState<string>("24h");
+  const [activeRow, setActiveRow] = useState<Range>("24h");
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      const data = await fetchLeaderboard(activeRow as range);
+      const data = await fetchLeaderboard(activeRow);
       setLeaderboardData(data);
       setLoading(false);
     };
@@ -106,7 +104,7 @@ function Leaderboard() {
                             <div className="col-span-5 flex items-center gap-3">
                               <div className="size-8 overflow-hidden rounded-full transition-all duration-75 ease-out hover:scale-103 md:size-11 dark:border-black">
                                 <img
-                                  src={user.avatar_url}
+                                  src={user?.avatar_url}
                                   className="h-full w-full object-cover"
                                   alt="Profile"
                                 />
@@ -133,7 +131,7 @@ function Leaderboard() {
                                   : "text-(--color-text-primary) md:rounded-lg md:bg-neutral-100 md:py-1 dark:md:bg-neutral-900/50"
                               }`}
                             >
-                              {formatTime(Math.floor(parseInt(user.timeSpent)))}
+                              {formatTime(Math.floor(user.timeSpent))}
                             </div>
                             <button
                               className="md:hidden"
