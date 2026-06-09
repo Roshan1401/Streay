@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactNode } from "react";
 import {
   FlameIcon,
   ClockIcon,
@@ -11,7 +11,7 @@ interface StatusItemProps {
   label: string;
   value: string | number;
   unit: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
 }
 
 function StatusItem({ label, value, unit, icon }: StatusItemProps) {
@@ -39,7 +39,7 @@ function  Status({stats}: {stats: PublicProfileStats | null}) {
   return (
     <div className="grid grid-cols-1 gap-5 px-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-5 xl:px-10">
       <StatusItem
-        label="Steak"
+        label="Streak"
         value={stats?.current_streak || 0}
         unit="days"
         icon={
