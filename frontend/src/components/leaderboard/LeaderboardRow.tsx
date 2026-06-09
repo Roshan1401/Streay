@@ -1,14 +1,13 @@
-import { useState } from "react";
+import type { Range } from "../../types/types";
 
 interface Props {
-  activeRow: string;
-  setActiveRow: (row: string) => void;
+  activeRow: Range;
+  setActiveRow: (row: Range) => void;
 }
-type LeaderboardRow = "24h" | "7day" | "30day";
 
 function LeaderboardRow(props: Props) {
   const { activeRow, setActiveRow } = props;
-  const days: LeaderboardRow[] = ["24h", "7day", "30day"];
+  const days: Range[] = ["24h", "7day", "30day"];
 
   return (
     <div className="inline-flex items-center justify-center gap-2 rounded-4xl border border-(--color-border) bg-neutral-900 px-2 py-1">
