@@ -36,10 +36,25 @@ interface ChartProps {
   getColor: (index: number) => string;
 }
 
+interface SearchResult {
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+}
+interface ProfileRPC {
+  id: string;
+  name: string;
+  username: string;
+  avatar_url: string;
+}
+
 export type {
   Range,
   UserActivityStats,
   PublicProfile,
   PublicProfileStats,
   ChartProps,
+  SearchResult,
+  ProfileRPC,
 };
