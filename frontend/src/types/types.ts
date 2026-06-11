@@ -41,12 +41,14 @@ interface SearchResult {
   name: string;
   username: string;
   avatar: string;
+  is_extension_active: boolean;
 }
 interface ProfileRPC {
   id: string;
   name: string;
   username: string;
   avatar_url: string;
+  is_extension_active: boolean;
 }
 
 export type {

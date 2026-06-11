@@ -6,11 +6,12 @@ interface Props {
   name: string;
   username: string;
   avatar?: string;
+  is_extension_active: boolean;
   addRecentSearch?: (user: SearchResult) => void;
   removeRecentSearch?: (id: string) => void;
 }
 
-function DevloperCard({ id, name, username, avatar, addRecentSearch, removeRecentSearch }: Props) {
+function DevloperCard({ id, name, username, avatar, is_extension_active, addRecentSearch, removeRecentSearch }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -22,7 +23,7 @@ function DevloperCard({ id, name, username, avatar, addRecentSearch, removeRecen
           onMouseDown={(e) => {
             e.preventDefault();
             navigate(`/profile/${username}`)
-            addRecentSearch?.({ id, name, username, avatar: avatar ?? "" })
+            addRecentSearch?.({ id, name, username, is_extension_active, avatar: avatar ?? "" })
           }}
         >
           <div className="relative shrink-0">
@@ -31,7 +32,11 @@ function DevloperCard({ id, name, username, avatar, addRecentSearch, removeRecen
               alt="userAvatar"
               className="size-11 rounded-full object-cover ring-2 ring-orange-400 ring-offset-2 ring-offset-white dark:ring-offset-neutral-900"
             />
-            <span className="absolute right-0 bottom-0 size-2.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-neutral-900" />
+            {
+              !is_extension_active && (
+                <span className="absolute right-0 bottom-0 size-2.5 rounded-full bg-gray-400 ring-2 ring-white dark:ring-neutral-900" />
+              )
+            }
           </div>
           <div className="flex min-w-0 flex-col gap-0.5">
             <span className="truncate text-sm font-semibold text-(--color-text-primary)">

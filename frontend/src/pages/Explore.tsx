@@ -36,6 +36,7 @@ function Explore() {
         name: profile.name,
         username: profile.username,
         avatar: profile.avatar_url,
+        is_extension_active: profile.is_extension_active,
       }))
     );
     setLoading(false);
