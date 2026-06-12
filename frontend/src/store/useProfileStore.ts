@@ -32,14 +32,17 @@ const useProfileStore = create<ProfileState>((set) => ({
     set({ loading: true });
     try {
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
+        data: { session },
+        error: refreshError,
+      } = await supabase.auth.refreshSession();
 
-      if (!user) {
+      if (refreshError || !session?.user) {
+        console.error("Session refresh failed:", refreshError?.message);
         set({ profile: null, loading: false });
         return;
       }
 
+      const user = session.user;
       const { data, error } = await supabase
         .from("profiles")
         .select(
