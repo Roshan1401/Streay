@@ -11,32 +11,43 @@ interface Props {
   removeRecentSearch?: (id: string) => void;
 }
 
-function DevloperCard({ id, name, username, avatar, is_extension_active, addRecentSearch, removeRecentSearch }: Props) {
+function DevloperCard({
+  id,
+  name,
+  username,
+  avatar,
+  is_extension_active,
+  addRecentSearch,
+  removeRecentSearch,
+}: Props) {
   const navigate = useNavigate();
 
   return (
     <>
-      <div className="flex cursor-pointer items-center justify-between gap-3 px-4 py-2 hover:bg-(--color-bg-secondary)">
-
-        <div
-          className="flex items-center gap-3 min-w-0"
-          onMouseDown={(e) => {
-            e.preventDefault();
-            navigate(`/profile/${username}`)
-            addRecentSearch?.({ id, name, username, is_extension_active, avatar: avatar ?? "" })
-          }}
-        >
+      <div
+        className="flex cursor-pointer items-center justify-between gap-3 px-4 py-2 hover:bg-(--color-bg-secondary)"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          navigate(`/profile/${username}`);
+          addRecentSearch?.({
+            id,
+            name,
+            username,
+            is_extension_active,
+            avatar: avatar ?? "",
+          });
+        }}
+      >
+        <div className="flex min-w-0 items-center gap-3">
           <div className="relative shrink-0">
             <img
               src={avatar}
               alt="userAvatar"
               className="size-11 rounded-full object-cover ring-2 ring-orange-400 ring-offset-2 ring-offset-white dark:ring-offset-neutral-900"
             />
-            {
-              !is_extension_active && (
-                <span className="absolute right-0 bottom-0 size-2.5 rounded-full bg-gray-400 ring-2 ring-white dark:ring-neutral-900" />
-              )
-            }
+            {!is_extension_active && (
+              <span className="absolute right-0 bottom-0 size-2.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-neutral-900" />
+            )}
           </div>
           <div className="flex min-w-0 flex-col gap-0.5">
             <span className="truncate text-sm font-semibold text-(--color-text-primary)">
@@ -54,7 +65,7 @@ function DevloperCard({ id, name, username, avatar, is_extension_active, addRece
               e.stopPropagation();
               removeRecentSearch(id);
             }}
-            className="text-orange-400 cursor-pointer hover:bg-orange-300/20 rounded-full py-1 px-2 text-sm font-semibold"
+            className="cursor-pointer rounded-full px-2 py-1 text-sm font-semibold text-orange-400 hover:bg-orange-300/20"
           >
             ✕
           </button>
