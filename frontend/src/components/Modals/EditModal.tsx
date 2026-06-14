@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
+import {
+  Camera,
+  User,
+  AtSign,
+  MessageSquareQuote,
+  X,
+  ArrowRight,
+} from "lucide-react";
+import banner from "../../assets/banner.jpg";
 
-// ── Types ──────────────────────────────────────────────────────────────────
 interface SelectedCountry {
   isoCode: string;
   name: string;
@@ -29,6 +37,8 @@ interface EditModalProps {
     name?: string;
     username?: string;
     bio?: string;
+    avatar_url?: string;
+    banner_url?: string;
     country?: string;
     state?: string;
     city?: string;
@@ -37,10 +47,21 @@ interface EditModalProps {
     name: string;
     username: string;
     bio: string;
+    avatar_url: string;
+    banner_url: string;
     country: string;
     state: string;
     city: string;
   }) => void;
+}
+
+interface FilePreview {
+  file: File;
+  preview: string;
+}
+interface SelectedFiles {
+  avatar_url: FilePreview | null;
+  banner_url: FilePreview | null;
 }
 
 const countryOptions: SelectOption[] = Country.getAllCountries().map((c) => ({
@@ -49,13 +70,45 @@ const countryOptions: SelectOption[] = Country.getAllCountries().map((c) => ({
 }));
 
 const selectStyles = (hasError: boolean) => ({
-  control: (base: object) => ({
+  control: (base: object, state: { isFocused: boolean }) => ({
     ...base,
-    borderColor: hasError ? "#ef4444" : undefined,
+    backgroundColor: "var(--color-bg-secondary)",
+    borderColor: hasError
+      ? "#ef4444"
+      : state.isFocused
+        ? "#f97316"
+        : "var(--color-border)",
+    boxShadow: "none",
+    "&:hover": {
+      borderColor: hasError ? "#ef4444" : "var(--color-border)",
+    },
+  }),
+  menu: (base: object) => ({
+    ...base,
+    backgroundColor: "var(--color-bg-secondary)",
+    border: "1px solid var(--color-border)",
+    zIndex: 9999,
   }),
   menuPortal: (base: object) => ({
     ...base,
     zIndex: 9999,
+  }),
+  menuList: (base: object) => ({
+    ...base,
+    backgroundColor: "var(--color-bg-secondary)",
+  }),
+  option: (
+    base: object,
+    state: { isFocused: boolean; isSelected: boolean },
+  ) => ({
+    ...base,
+    backgroundColor: state.isSelected
+      ? "#f97316"
+      : state.isFocused
+        ? "var(--color-bg-primary)"
+        : "transparent",
+    color: state.isSelected ? "#ffffff" : "var(--color-text-primary)",
+    cursor: "pointer",
   }),
   singleValue: (base: object) => ({
     ...base,
@@ -64,6 +117,28 @@ const selectStyles = (hasError: boolean) => ({
   input: (base: object) => ({
     ...base,
     color: "var(--color-text-primary)",
+  }),
+  placeholder: (base: object) => ({
+    ...base,
+    color: "var(--color-text-secondary)",
+  }),
+  indicatorSeparator: (base: object) => ({
+    ...base,
+    backgroundColor: "var(--color-border)",
+  }),
+  dropdownIndicator: (base: object) => ({
+    ...base,
+    color: "var(--color-text-secondary)",
+    "&:hover": {
+      color: "var(--color-text-primary)",
+    },
+  }),
+  clearIndicator: (base: object) => ({
+    ...base,
+    color: "var(--color-text-secondary)",
+    "&:hover": {
+      color: "var(--color-text-primary)",
+    },
   }),
 });
 
@@ -104,10 +179,36 @@ export default function EditModal({
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
+  const [avatar_url, setAvatarUrl] = useState<string>("");
+  const [banner_url, setBannerUrl] = useState<string>("");
   const [country, setCountry] = useState<SelectedCountry | null>(null);
   const [state, setState] = useState<SelectedState | null>(null);
   const [city, setCity] = useState<SelectedCity | null>(null);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
+
+  const [selectedFile, setSelectedFile] = useState<SelectedFiles>({
+    avatar_url: null,
+    banner_url: null,
+  });
+
+  const handleFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    type: "avatar_url" | "banner_url",
+  ) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    const preview = URL.createObjectURL(file);
+
+    setSelectedFile((prev) => ({
+      ...prev,
+      [type]: {
+        file,
+        preview,
+      },
+    }));
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -117,6 +218,8 @@ export default function EditModal({
     setName(initialData?.name ?? "");
     setUsername(initialData?.username ?? "");
     setBio(initialData?.bio ?? "");
+    setAvatarUrl(initialData?.avatar_url ?? "");
+    setBannerUrl(initialData?.banner_url ?? "");
 
     const resolvedCountry = resolveCountry(initialData?.country);
     const resolvedState = resolvedCountry
@@ -134,6 +237,8 @@ export default function EditModal({
     initialData?.name,
     initialData?.username,
     initialData?.bio,
+    initialData?.avatar_url,
+    initialData?.banner_url,
     initialData?.country,
     initialData?.state,
     initialData?.city,
@@ -162,6 +267,8 @@ export default function EditModal({
         name,
         username,
         bio,
+        avatar_url: selectedFile.avatar_url?.preview || avatar_url,
+        banner_url: selectedFile.banner_url?.preview || banner_url,
         country: country?.name ?? "",
         state: state?.name ?? "",
         city: city?.name ?? "",
@@ -197,99 +304,146 @@ export default function EditModal({
     return options;
   })();
 
-  const inputClass = (hasError: boolean) =>
-    `w-full rounded-md border bg-transparent p-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:text-white sm:p-3 ${
+  const fieldClass = (hasError: boolean) =>
+    `flex items-start gap-3 rounded-lg border bg-(--color-bg-secondary) p-3 transition-colors focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 sm:p-4 ${
       hasError ? "border-red-500" : "border-(--color-border)"
     }`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-sm rounded-2xl border border-(--color-border) bg-white p-4 sm:max-w-md sm:p-6 md:max-w-lg md:p-8 lg:max-w-xl dark:bg-[#0b0809]">
-        <div className="mb-4 flex items-center justify-between sm:mb-6">
-          <h2 className="text-xl font-semibold text-(--color-text-primary) md:text-2xl">
-            Edit Information
-          </h2>
+      <div className="w-full max-w-sm overflow-y-auto rounded-2xl border border-(--color-border) bg-(--color-bg-primary) p-4 sm:max-w-md sm:p-6 md:max-w-lg md:p-8 lg:max-w-xl">
+        {/* ── Header ── */}
+        <div className="mb-5 flex items-start justify-between sm:mb-6">
+          <div>
+            <h2 className="text-xl font-semibold text-(--color-text-primary) md:text-2xl">
+              Edit Information
+            </h2>
+            <p className="mt-1 text-sm text-(--color-text-secondary)">
+              Update your profile details
+            </p>
+          </div>
           <button
             onClick={handleClose}
-            className="cursor-pointer rounded-md p-1 text-gray-500 hover:bg-(--color-bg-secondary) hover:text-(--color-text-primary)"
+            className="cursor-pointer rounded-full bg-(--color-bg-secondary) p-2 text-(--color-text-secondary) hover:text-(--color-text-primary)"
             aria-label="Close"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 sm:h-6 sm:w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <X className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
         </div>
 
         {/* ── Page 1 ── */}
         {page === 1 && (
-          <div className="min-h-[280px] space-y-3 sm:min-h-[340px] sm:space-y-4">
-            {(
-              [
-                {
-                  label: "Name",
-                  value: name,
-                  setter: setName,
-                  key: "name",
-                  placeholder: "Enter your name",
-                },
-                {
-                  label: "Username",
-                  value: username,
-                  setter: setUsername,
-                  key: "username",
-                  placeholder: "Enter your username",
-                },
-              ] as const
-            ).map(({ label, value, setter, key, placeholder }) => (
-              <div key={key}>
-                <label className="mb-1 block text-base font-medium text-gray-700 sm:mb-2 md:text-lg dark:text-gray-300">
-                  {label}
-                </label>
-                <input
-                  type="text"
-                  value={value}
-                  onChange={(e) => {
-                    setter(e.target.value);
-                    if (errors[key]) clearError(key);
-                  }}
-                  className={inputClass(errors[key])}
-                  placeholder={placeholder}
+          <div className="min-h-70 space-y-4 sm:min-h-85">
+            <div className="relative mb-16 sm:mb-20">
+              <div className="relative h-45 w-full overflow-hidden rounded-xl border border-(--color-border)">
+                <img
+                  src={selectedFile.banner_url?.preview || banner_url}
+                  className="h-full w-full object-cover blur-[2px]"
+                  alt=""
                 />
-                {errors[key] && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {label} is required
-                  </p>
-                )}
+                <label className="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center gap-2 text-white">
+                  <div className="rounded-full bg-[rgba(67,67,67,0.7)] p-2 hover:bg-white hover:text-black">
+                    <Camera className="h-5 w-5" />
+                  </div>
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, "banner_url")}
+                  />
+                </label>
               </div>
-            ))}
 
+              <div className="absolute inset-x-0 top-28 ml-5 h-33.5 w-33.5 overflow-hidden rounded-full border-3 border-orange-500 bg-gray-300">
+                <img
+                  src={selectedFile.avatar_url?.preview || avatar_url}
+                  className="h-full w-full object-cover"
+                  alt="Profile"
+                />
+                <label className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center text-white">
+                  <div className="rounded-full bg-[rgba(67,67,67,0.7)] p-2 hover:bg-white hover:text-black">
+                    <Camera className="h-4 w-4" />
+                  </div>
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, "avatar_url")}
+                  />
+                </label>
+              </div>
+            </div>
+
+            {/* Name */}
             <div>
-              <label className="mb-1 block text-base font-medium text-gray-700 sm:mb-2 md:text-lg dark:text-gray-300">
-                Bio
-              </label>
-              <textarea
-                value={bio}
-                onChange={(e) => {
-                  setBio(e.target.value.slice(0, 150));
-                }}
-                className={`h-20 resize-none p-2 sm:h-24 sm:p-3 ${inputClass(errors.bio)}`}
-                placeholder="Write something about yourself..."
-              />
-              <div className="flex justify-between">
-                <p className="mt-1 ml-auto text-sm text-gray-500 dark:text-gray-400">
-                  {bio.length}/150
+              <div className={fieldClass(errors.name)}>
+                <User className="mt-0.5 h-5 w-5 shrink-0 text-(--color-text-secondary)" />
+                <div className="w-full">
+                  <label className="block text-xs font-medium text-(--color-text-secondary)">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      if (errors.name) clearError("name");
+                    }}
+                    className="w-full bg-transparent text-base text-(--color-text-primary) outline-none placeholder:text-(--color-text-secondary)"
+                    placeholder="Enter your name"
+                  />
+                </div>
+              </div>
+              {errors.name && (
+                <p className="mt-1 text-sm text-red-500">Name is required</p>
+              )}
+            </div>
+
+            {/* Username */}
+            <div>
+              <div className={fieldClass(errors.username)}>
+                <AtSign className="mt-0.5 h-5 w-5 shrink-0 text-(--color-text-secondary)" />
+                <div className="w-full">
+                  <label className="block text-xs font-medium text-(--color-text-secondary)">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                      if (errors.username) clearError("username");
+                    }}
+                    className="w-full bg-transparent text-base text-(--color-text-primary) outline-none placeholder:text-(--color-text-secondary)"
+                    placeholder="Enter your username"
+                  />
+                </div>
+              </div>
+              {errors.username && (
+                <p className="mt-1 text-sm text-red-500">
+                  Username is required
                 </p>
+              )}
+            </div>
+
+            {/* Bio */}
+            <div>
+              <div className={`h-22 ${fieldClass(errors.bio)}`}>
+                <MessageSquareQuote className="mt-0.5 h-5 w-5 shrink-0 text-(--color-text-secondary)" />
+                <div className="w-full">
+                  <label className="block text-xs font-medium text-(--color-text-secondary)">
+                    Bio
+                  </label>
+                  <textarea
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value.slice(0, 150))}
+                    className="h-16 w-full resize-none bg-transparent text-base text-(--color-text-primary) outline-none placeholder:text-(--color-text-secondary) sm:h-20"
+                    placeholder="Write something about yourself..."
+                  />
+                  <p className="text-right text-xs text-(--color-text-secondary)">
+                    {bio.length}/150
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -297,9 +451,9 @@ export default function EditModal({
 
         {/* ── Page 2 ── */}
         {page === 2 && (
-          <div className="min-h-[280px] space-y-3 sm:min-h-[340px] sm:space-y-4">
+          <div className="min-h-70 space-y-3 sm:min-h-85 sm:space-y-4">
             <div>
-              <label className="mb-1 block text-base font-medium text-gray-700 sm:mb-2 md:text-lg dark:text-gray-300">
+              <label className="mb-1 block text-base font-medium text-(--color-text-secondary) sm:mb-2 md:text-lg">
                 Country
               </label>
               <Select
@@ -329,7 +483,7 @@ export default function EditModal({
             </div>
 
             <div>
-              <label className="mb-1 block text-base font-medium text-gray-700 sm:mb-2 md:text-lg dark:text-gray-300">
+              <label className="mb-1 block text-base font-medium text-(--color-text-secondary) sm:mb-2 md:text-lg">
                 State
               </label>
               <Select
@@ -357,7 +511,7 @@ export default function EditModal({
             </div>
 
             <div>
-              <label className="mb-1 block text-base font-medium text-gray-700 sm:mb-2 md:text-lg dark:text-gray-300">
+              <label className="mb-1 block text-base font-medium text-(--color-text-secondary) sm:mb-2 md:text-lg">
                 City
               </label>
               <Select
@@ -382,23 +536,24 @@ export default function EditModal({
         )}
 
         {/* ── Footer ── */}
-        <div className="mt-4 flex gap-2 sm:mt-6 sm:gap-3">
+        <div className="mt-5 flex gap-2 sm:mt-6 sm:gap-3">
           {page === 2 && (
             <button
               onClick={() => {
                 setErrors({});
                 setPage(1);
               }}
-              className="flex-1 cursor-pointer rounded-md border border-(--color-border) px-3 py-2 text-sm transition-colors hover:bg-gray-100 sm:px-4 md:text-base dark:text-white dark:hover:bg-neutral-800"
+              className="flex-1 cursor-pointer rounded-lg border border-(--color-border) px-3 py-3 text-sm font-medium text-(--color-text-primary) transition-colors hover:bg-(--color-bg-secondary) sm:px-4 md:text-base"
             >
               Previous
             </button>
           )}
           <button
             onClick={page === 1 ? handleNext : handleSave}
-            className="flex-1 cursor-pointer rounded-md bg-orange-500 px-3 py-2 text-sm text-white transition-colors hover:bg-orange-600 sm:px-4 md:text-base"
+            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-orange-500 px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-orange-600 sm:px-4 md:text-base"
           >
             {page === 1 ? "Next" : "Save"}
+            {page === 1 && <ArrowRight className="h-4 w-4" />}
           </button>
         </div>
       </div>
