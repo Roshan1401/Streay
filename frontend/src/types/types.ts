@@ -52,6 +52,8 @@ interface ProfileRPC {
   is_extension_active: boolean;
 }
 
+type Tab = "Lang Chart" | "Badges";
+
 export type {
   Range,
   UserActivityStats,
@@ -60,4 +62,5 @@ export type {
   ChartProps,
   SearchResult,
   ProfileRPC,
+  Tab,
 };
