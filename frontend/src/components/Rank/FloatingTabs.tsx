@@ -3,7 +3,7 @@ import { useState, useRef, useLayoutEffect } from "react";
 type Tab = {
   value: string;
   label: string;
-  content?: React.ReactNode;
+  icon?: React.ReactNode;
 };
 
 type FloatingTabsProps = {
@@ -53,16 +53,16 @@ export function FloatingTabs({
     onChange?.(value);
   };
 
-  const activeContent = tabs.find((tab) => tab.value === activeTab)?.content;
+  const activeContent = tabs.find((tab) => tab.value === activeTab);
 
   return (
     <div className={className}>
       <div
         ref={containerRef}
-        className="relative flex w-fit items-center gap-1 rounded-lg border border-zinc-800/50 bg-zinc-900/40 p-1"
+        className="relative flex w-fit items-center gap-1 rounded-lg border border-zinc-800/50 p-1 dark:border-zinc-800"
       >
         <div
-          className="absolute h-[calc(100%-8px)] rounded-md bg-zinc-800 transition-all duration-300 ease-out"
+          className="absolute h-[calc(100%-8px)] rounded-md bg-orange-500 transition-all duration-300 ease-out"
           style={indicatorStyle}
         />
 
@@ -71,22 +71,17 @@ export function FloatingTabs({
             key={tab.value}
             data-value={tab.value}
             onClick={() => handleTabChange(tab.value)}
-            className={`relative z-10 cursor-pointer rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors duration-200 ${
+            className={`relative z-10 flex cursor-pointer items-center justify-center gap-2 rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors duration-200 ${
               activeTab === tab.value
-                ? "text-zinc-200"
-                : "text-zinc-500 hover:text-zinc-300"
+                ? "text-white"
+                : "text-zinc-300 hover:text-zinc-500"
             }`}
           >
+            {tab.icon && tab.icon}
             {tab.label}
           </button>
         ))}
       </div>
-
-      {activeContent && (
-        <div className="animate-in fade-in-0 mt-4 duration-200">
-          {activeContent}
-        </div>
-      )}
     </div>
   );
 }

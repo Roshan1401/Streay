@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FloatingTabs } from "../components/Rank/FloatingTabs";
+import { Globe, MapPin } from "lucide-react";
 
 function Rank() {
   const [rankType, setRankType] = useState("global");
@@ -8,11 +9,12 @@ function Rank() {
       <div className="flex justify-center gap-4">
         <FloatingTabs
           tabs={[
-            { value: "global", label: "Global" },
-            { value: "region", label: "Region" },
+            { value: "global", label: "Global", icon: <Globe /> },
+            { value: "region", label: "Region", icon: <MapPin /> },
           ]}
-          defaultValue="global"
           onChange={(value) => setRankType(value)}
+          defaultValue="global"
+          className=""
         />
       </div>
     </div>
