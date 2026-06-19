@@ -54,6 +54,11 @@ interface ProfileRPC {
 
 type Tab = "Lang Chart" | "Badges";
 
+interface SelectOption {
+  label: string;
+  value: string;
+}
+
 export type {
   Range,
   UserActivityStats,
@@ -63,4 +68,5 @@ export type {
   SearchResult,
   ProfileRPC,
   Tab,
+  SelectOption,
 };

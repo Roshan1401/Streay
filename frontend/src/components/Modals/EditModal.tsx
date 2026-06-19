@@ -10,6 +10,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { uploadToCloudinary } from "../../lib/cloudinary";
+import type { SelectOption } from "../../types/types";
 
 interface SelectedCountry {
   isoCode: string;
@@ -23,11 +24,6 @@ interface SelectedState {
 
 interface SelectedCity {
   name: string;
-}
-
-interface SelectOption {
-  label: string;
-  value: string;
 }
 
 interface EditModalProps {
@@ -153,7 +149,10 @@ function resolveCountry(value?: string): SelectedCountry | null {
   return byName ? { isoCode: byName.isoCode, name: byName.name } : null;
 }
 
-function resolveState(countryIso: string, value?: string): SelectedState | null {
+function resolveState(
+  countryIso: string,
+  value?: string,
+): SelectedState | null {
   if (!value?.trim()) return null;
   const trimmed = value.trim();
   const states = State.getStatesOfCountry(countryIso);
@@ -184,7 +183,6 @@ export default function EditModal({
   const [saving, setSaving] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<SelectedFiles>(EMPTY_FILES);
-
 
   useEffect(() => {
     return () => {
@@ -287,9 +285,7 @@ export default function EditModal({
 
       handleClose();
     } catch (error) {
-      setUploadError(
-        error instanceof Error ? error.message : "Upload failed",
-      );
+      setUploadError(error instanceof Error ? error.message : "Upload failed");
     } finally {
       setSaving(false);
     }
@@ -305,9 +301,9 @@ export default function EditModal({
 
   const stateOptions: SelectOption[] = country
     ? State.getStatesOfCountry(country.isoCode).map((s) => ({
-      label: s.name,
-      value: s.isoCode,
-    }))
+        label: s.name,
+        value: s.isoCode,
+      }))
     : [];
 
   const cityOptions: SelectOption[] = (() => {
@@ -322,13 +318,13 @@ export default function EditModal({
   })();
 
   const fieldClass = (hasError: boolean) =>
-    `flex items-start gap-3 rounded-lg border bg-(--color-bg-secondary) p-3 transition-colors focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 sm:p-4 ${hasError ? "border-red-500" : "border-(--color-border)"
+    `flex items-start gap-3 rounded-lg border bg-(--color-bg-secondary) p-3 transition-colors focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 sm:p-4 ${
+      hasError ? "border-red-500" : "border-(--color-border)"
     }`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="max-h-[90vh] w-full max-w-sm overflow-y-auto rounded-2xl border border-(--color-border) bg-(--color-bg-primary) p-4 sm:max-w-md sm:p-6 md:max-w-lg md:p-8 lg:max-w-xl">
-
         <div className="mb-5 flex items-start justify-between sm:mb-6">
           <div>
             <h2 className="text-xl font-semibold text-(--color-text-primary) md:text-2xl">
@@ -351,7 +347,6 @@ export default function EditModal({
         {page === 1 && (
           <div className="min-h-70 space-y-4 sm:min-h-85">
             <div className="relative mb-16 sm:mb-20">
-
               <div className="relative h-45 w-full overflow-hidden rounded-xl border border-(--color-border)">
                 <img
                   src={selectedFile.banner_url?.preview || banner_url}
@@ -362,7 +357,8 @@ export default function EditModal({
                   <div className="rounded-full bg-[rgba(67,67,67,0.7)] p-2 hover:bg-white hover:text-black">
                     <Camera className="h-5 w-5" />
                   </div>
-                  <span className="text-sm font-medium">Change cover</span> {/* ✅ added */}
+                  <span className="text-sm font-medium">Change cover</span>{" "}
+                  {/* ✅ added */}
                   <input
                     type="file"
                     hidden
@@ -436,7 +432,9 @@ export default function EditModal({
                 </div>
               </div>
               {errors.username && (
-                <p className="mt-1 text-sm text-red-500">Username is required</p>
+                <p className="mt-1 text-sm text-red-500">
+                  Username is required
+                </p>
               )}
             </div>
 
@@ -470,9 +468,15 @@ export default function EditModal({
               </label>
               <Select
                 options={countryOptions}
-                value={country ? { label: country.name, value: country.isoCode } : null}
+                value={
+                  country
+                    ? { label: country.name, value: country.isoCode }
+                    : null
+                }
                 onChange={(opt) => {
-                  setCountry(opt ? { isoCode: opt.value, name: opt.label } : null);
+                  setCountry(
+                    opt ? { isoCode: opt.value, name: opt.label } : null,
+                  );
                   setState(null);
                   setCity(null);
                   if (errors.country) clearError("country");
@@ -494,9 +498,13 @@ export default function EditModal({
               </label>
               <Select
                 options={stateOptions}
-                value={state ? { label: state.name, value: state.isoCode } : null}
+                value={
+                  state ? { label: state.name, value: state.isoCode } : null
+                }
                 onChange={(opt) => {
-                  setState(opt ? { isoCode: opt.value, name: opt.label } : null);
+                  setState(
+                    opt ? { isoCode: opt.value, name: opt.label } : null,
+                  );
                   setCity(null);
                   if (errors.state) clearError("state");
                 }}
@@ -545,7 +553,10 @@ export default function EditModal({
         <div className="mt-5 flex gap-2 sm:mt-6 sm:gap-3">
           {page === 2 && (
             <button
-              onClick={() => { setErrors({}); setPage(1); }}
+              onClick={() => {
+                setErrors({});
+                setPage(1);
+              }}
               disabled={saving}
               className="flex-1 cursor-pointer rounded-lg border border-(--color-border) px-3 py-3 text-sm font-medium text-(--color-text-primary) transition-colors hover:bg-(--color-bg-secondary) disabled:opacity-50 sm:px-4 md:text-base"
             >
@@ -554,19 +565,37 @@ export default function EditModal({
           )}
           <button
             onClick={page === 1 ? handleNext : handleSave}
-            disabled={saving}  // ✅ disabled during upload
+            disabled={saving} // ✅ disabled during upload
             className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-orange-500 px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50 sm:px-4 md:text-base"
           >
             {saving ? (
               <>
-                <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                <svg
+                  className="h-4 w-4 animate-spin"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  />
                 </svg>
                 Uploading...
               </>
             ) : page === 1 ? (
-              <><span>Next</span><ArrowRight className="h-4 w-4" /></>
+              <>
+                <span>Next</span>
+                <ArrowRight className="h-4 w-4" />
+              </>
             ) : (
               "Save"
             )}
