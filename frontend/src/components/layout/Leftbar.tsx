@@ -37,7 +37,7 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
       <div
         className={`fixed bottom-0 flex w-full justify-between border-t border-(--color-border) bg-(--color-bg-primary)/50 py-2 backdrop-blur-lg transition-all duration-300 lg:static lg:w-60 lg:flex-col lg:gap-6 lg:border-t-0 lg:border-r lg:bg-(--color-bg-primary) xl:w-65`}
       >
-        <div className="hidden items-center gap-1 border-b border-(--color-border) px-9 py-8 lg:flex">
+        <div className="hidden items-center gap-1 border-b border-(--color-border) px-6 py-8 lg:flex">
           <img src={logo} className="h-15 w-14" alt="logo" />
           <h1 className="flex text-2xl font-bold tracking-tight text-(--color-text-primary)">
             CODE <span className="text-orange-500">PULSE</span>
