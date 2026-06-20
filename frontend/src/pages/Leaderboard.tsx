@@ -55,10 +55,21 @@ function Leaderboard() {
         ) : (
           <div className="mt-8">
             <div className="mt-5 overflow-hidden rounded-2xl border border-(--color-border) bg-white dark:bg-[#0b0809]">
-              <div className="flex justify-center border-b border-(--color-border) px-6 py-4 md:justify-end">
-                <div className="inline-flex items-center gap-2 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) px-4 py-2">
-                  <span className="h-3 w-3 animate-pulse rounded-full bg-orange-500" />
-                  <span className="text-sm font-medium text-(--color-text-primary)">
+              <div className="flex flex-col gap-4 border-b border-(--color-border) px-6 py-4 md:flex-row md:items-center md:justify-between">
+                <div className="max-w-sm text-center text-2xl font-medium text-(--color-text-primary) md:text-left">
+                  <span className="font-bold tracking-tight text-orange-500">
+                    Rohit Singh
+                  </span>{" "}
+                  is surpassing his limits right here, right now.
+                  <div className="mt-1 flex flex-col gap-1 text-sm font-medium text-(--color-text-secondary) md:flex-row md:gap-4">
+                    <span className="">showing top 100 developers.</span>
+                    <span>your rank:#12</span>
+                  </div>
+                </div>
+
+                <div className="mx-auto inline-flex items-center gap-2 rounded-md border border-(--color-border) bg-(--color-bg-secondary) px-4 py-2 md:mx-0 md:shrink-0">
+                  <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-orange-500" />
+                  <span className="text-sm font-medium whitespace-nowrap text-(--color-text-primary)">
                     Updates every 5 minutes
                   </span>
                 </div>
@@ -79,7 +90,7 @@ function Leaderboard() {
                           key={index}
                           className="mx-2 my-3 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) md:m-0 md:rounded-none md:border-0 md:border-t"
                         >
-                          <div className="flex cursor-pointer items-center gap-2 p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6 border-t border-(--color-border) lg:px-4 lg:py-8 xl:px-8">
+                          <div className="flex cursor-pointer items-center gap-2 border-t border-(--color-border) p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6 lg:px-4 lg:py-8 xl:px-8">
                             <div className="col-span-1 flex">
                               <span
                                 className={`flex items-center justify-center rounded-full px-2 py-1 text-xs font-semibold drop-shadow-2xl md:size-9 md:text-lg lg:px-3 ${

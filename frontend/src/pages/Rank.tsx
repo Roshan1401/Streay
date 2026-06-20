@@ -184,12 +184,14 @@ function Rank() {
       </div>
 
       <div className="w-full rounded-md border border-zinc-300 dark:border-zinc-700">
-        <div className="flex items-start justify-between gap-4 rounded-t-md border-b border-zinc-300 px-5 py-4 dark:border-zinc-700">
-          <img
-            src={image}
-            className="size-12 shrink-0 rounded-full border border-zinc-300 dark:border-zinc-700"
-            alt="Rank"
-          />
+        <div className="flex items-center justify-between gap-4 rounded-t-md border-b border-zinc-300 px-5 py-4 dark:border-zinc-700">
+          <div className="max-w-sm text-center text-2xl font-medium text-(--color-text-primary) md:text-left">
+            <span className="font-bold tracking-tight text-orange-500">
+              Rohan Kumar
+            </span>{" "}
+            at the top, setting the standard for everyone else.
+          </div>
+          <img src={image} className="h-20 w-19 shrink-0" alt="Rank" />
         </div>
         <div className="text-md sticky top-0 z-10 hidden grid-cols-12 gap-4 bg-(--color-bg-secondary) px-8 py-4 font-semibold tracking-wide text-neutral-400 md:grid lg:px-4 xl:px-6">
           <div className="col-span-1 ml-1">Rank</div>
@@ -259,7 +261,7 @@ function Rank() {
 
                 <div className="col-span-3 mt-1 flex items-center justify-center gap-1 md:mt-0">
                   <span
-                    className={`flex items-center justify-center gap-1 text-xs font-medium`}
+                    className={`flex items-center justify-center gap-1 text-sm font-medium text-(--color-text-secondary)`}
                   >
                     <Flame
                       size={20}
