@@ -4,7 +4,6 @@ import useProfileStore from "../../../store/useProfileStore";
 
 function ProfileSection() {
   const profile = useProfileStore((state) => state.profile);
-  console.log("Profile data in ProfileSection:", profile?.avatar_url);
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="size-25 overflow-hidden rounded-full border border-orange-400 xl:size-30 dark:border-black">
@@ -26,12 +25,13 @@ function ProfileSection() {
         </span>
       </div>
 
-      <Link to={`/profile/${profile?.username}`}
+      <Link
+        to={`/profile/${profile?.username}`}
         className="text-md flex w-full cursor-pointer items-center justify-center gap-3 rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white shadow-2xl transition-all duration-200 hover:scale-102 hover:bg-orange-400 xl:text-xl"
       >
         <span>View Profile</span>
         <ExternalLinkIcon className="h-4 w-4 xl:h-5 xl:w-5" />
-      </Link >
+      </Link>
     </div>
   );
 }
