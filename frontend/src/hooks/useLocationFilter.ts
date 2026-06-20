@@ -25,10 +25,13 @@ export function useLocationFilter(initial?: InitialLocation) {
   const stateOptions: SelectOption[] = useMemo(
     () =>
       selectedCountry
-        ? State.getStatesOfCountry(selectedCountry).map((s) => ({
-            label: s.name,
-            value: s.isoCode,
-          }))
+        ? [
+            { label: "All states", value: "all" },
+            ...State.getStatesOfCountry(selectedCountry).map((s) => ({
+              label: s.name,
+              value: s.isoCode,
+            })),
+          ]
         : [],
     [selectedCountry],
   );
@@ -36,10 +39,15 @@ export function useLocationFilter(initial?: InitialLocation) {
   const cityOptions: SelectOption[] = useMemo(
     () =>
       selectedCountry && selectedState
-        ? City.getCitiesOfState(selectedCountry, selectedState).map((c) => ({
-            label: c.name,
-            value: c.name,
-          }))
+        ? [
+            { label: "All cities", value: "all" },
+            ...City.getCitiesOfState(selectedCountry, selectedState).map(
+              (c) => ({
+                label: c.name,
+                value: c.name,
+              }),
+            ),
+          ]
         : [],
     [selectedCountry, selectedState],
   );
