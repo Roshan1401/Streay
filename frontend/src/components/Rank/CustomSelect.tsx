@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Check, ChevronDown, X } from "lucide-react";
-import type { SelectOption } from "../../types/types";
-
-type FieldKey = "country" | "state" | "city";
+import type { SelectOption, FieldKey } from "../../types/types";
 
 interface CustomSelectProps {
   fieldKey?: string;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FloatingTabs } from "../components/Rank/FloatingTabs";
 import { Globe, MapPin, Medal, Flame } from "lucide-react";
 import image from "../assets/image.png";
@@ -8,102 +8,90 @@ import { RegionFilters } from "../components/Rank/RegionFilters";
 import { useLocationFilter } from "../hooks/useLocationFilter";
 import useProfileStore from "../store/useProfileStore";
 import { GithubIcon } from "../assets/Icons";
-
-type Mode = "global" | "region";
-
-interface RankUser {
-  rank: number;
-  name: string;
-  username: string;
-  avatar_url: string;
-  hours: number;
-  streakDays: number;
-  location: string;
-  countryIso: string;
-  stateIso: string;
-  city: string;
-}
+import type { FieldKey, Mode, Period, RankUser } from "../types/types";
 
 const sampleRankData: RankUser[] = [
   {
+    id: "1",
     rank: 1,
     name: "Arjun Kumar",
     username: "arjunkumar",
     avatar_url: image,
     hours: 9.2,
-    streakDays: 18,
-    location: "Ahmedabad",
-    countryIso: "IN",
-    stateIso: "GJ",
+    streak_days: 18,
+    country: "IN",
+    state: "GJ",
     city: "Ahmedabad",
   },
   {
+    id: "2",
     rank: 2,
     name: "Priya Shah",
     username: "priyashah",
     avatar_url: image,
     hours: 8.4,
-    streakDays: 9,
-    location: "Surat",
-    countryIso: "IN",
-    stateIso: "GJ",
+    streak_days: 9,
+    country: "IN",
+    state: "GJ",
     city: "Surat",
   },
   {
+    id: "3",
     rank: 3,
     name: "Meet Vora",
     username: "meetvora",
     avatar_url: image,
     hours: 7.1,
-    streakDays: 5,
-    location: "Vadodara",
-    countryIso: "IN",
-    stateIso: "GJ",
+    streak_days: 5,
+    country: "IN",
+    state: "GJ",
     city: "Vadodara",
   },
   {
+    id: "4",
     rank: 4,
     name: "Neel Desai",
     username: "neeldesai",
     avatar_url: image,
     hours: 5.8,
-    streakDays: 3,
-    location: "Ahmedabad",
-    countryIso: "IN",
-    stateIso: "GJ",
+    streak_days: 3,
+    country: "IN",
+    state: "GJ",
     city: "Ahmedabad",
   },
   {
+    id: "5",
     rank: 5,
     name: "Raj Joshi",
     username: "rajjoshi",
     avatar_url: image,
     hours: 4.9,
-    streakDays: 2,
-    location: "Mumbai",
-    countryIso: "IN",
-    stateIso: "MH",
+    streak_days: 2,
+    country: "IN",
+    state: "MH",
     city: "Mumbai",
   },
   {
+    id: "6",
     rank: 6,
     name: "Jake Miller",
     username: "jakemiller",
     avatar_url: image,
     hours: 10.8,
-    streakDays: 31,
-    location: "New York",
-    countryIso: "US",
-    stateIso: "NY",
+    streak_days: 31,
+    country: "US",
+    state: "NY",
     city: "New York",
   },
 ];
 
 function Rank() {
   const [mode, setMode] = useState<Mode>("global");
-  const [period, setPeriod] = useState("allTime");
+  const [period, setPeriod] = useState<Period>("allTime");
   const [selectedGlobalCountry, setSelectedGlobalCountry] =
     useState<string>("all");
+  const [activeField, setActiveField] = useState<FieldKey>("country");
+
   const { profile } = useProfileStore();
 
   const {
@@ -117,21 +105,35 @@ function Rank() {
     handleStateChange,
     setSelectedCity,
   } = useLocationFilter({
-    country: profile?.country || undefined,
-    state: profile?.state || undefined,
-    city: profile?.city || undefined,
+    country: profile?.country || "India",
+    state: profile?.state || "all",
+    city: profile?.city || "all",
   });
+
+  const regionFetchFilters = useMemo(() => {
+    if (activeField === "city") {
+      return {
+        country: selectedCountry,
+        state: selectedState,
+        city: selectedCity,
+      };
+    }
+    if (activeField === "state") {
+      return { country: selectedCountry, state: selectedState, city: null };
+    }
+    return { country: selectedCountry, state: null, city: null };
+  }, [activeField, selectedCountry, selectedState, selectedCity]);
 
   const filteredData = sampleRankData.filter((user) => {
     if (mode === "global") {
       if (selectedGlobalCountry === "all") return true;
-      return user.countryIso === selectedGlobalCountry;
+      return user.country === selectedGlobalCountry;
     }
 
     // Region mode
     if (selectedCity) return user.city === selectedCity;
-    if (selectedState) return user.stateIso === selectedState;
-    if (selectedCountry) return user.countryIso === selectedCountry;
+    if (selectedState) return user.state === selectedState;
+    if (selectedCountry) return user.country === selectedCountry;
     return true; // no filter selected -> show all
   });
 
@@ -178,6 +180,8 @@ function Rank() {
               onCountryChange={handleCountryChange}
               onStateChange={handleStateChange}
               onCityChange={setSelectedCity}
+              activeField={activeField}
+              setActiveField={setActiveField}
             />
           )}
         </div>
@@ -267,12 +271,15 @@ function Rank() {
                       size={20}
                       className="fill-orange-500 text-orange-500"
                     />
-                    {user.streakDays}d
+                    {user.streak_days}d
                   </span>
                 </div>
 
-                <div className="text-md col-span-2 mt-1 text-center font-semibold text-(--color-text-secondary) md:mt-0">
-                  {user.location}
+                <div className="text-md col-span-2 mt-1 flex flex-col text-center font-semibold text-(--color-text-secondary) md:mt-0">
+                  {user.city}
+                  <span>
+                    {user.state}, {user.country}
+                  </span>
                 </div>
               </div>
             </div>

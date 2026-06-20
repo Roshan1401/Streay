@@ -1,6 +1,6 @@
 import { Flag, Building2, MapPinned } from "lucide-react";
 import { CustomSelect } from "./CustomSelect";
-import type { SelectOption } from "../../types/types";
+import type { FieldKey, SelectOption } from "../../types/types";
 import { useState } from "react";
 
 interface RegionFiltersProps {
@@ -10,11 +10,12 @@ interface RegionFiltersProps {
   selectedCountry: string | null;
   selectedState: string | null;
   selectedCity: string | null;
+  activeField: FieldKey;
+  setActiveField: (field: FieldKey) => void;
   onCountryChange: (value: string | null) => void;
   onStateChange: (value: string | null) => void;
   onCityChange: (value: string | null) => void;
 }
-type FieldKey = "country" | "state" | "city";
 
 export function RegionFilters({
   countryOptions,
@@ -23,13 +24,12 @@ export function RegionFilters({
   selectedCountry,
   selectedState,
   selectedCity,
-
+  activeField,
+  setActiveField,
   onCountryChange,
   onStateChange,
   onCityChange,
 }: RegionFiltersProps) {
-  const [activeField, setActiveField] = useState<FieldKey>("country");
-
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
       <CustomSelect
