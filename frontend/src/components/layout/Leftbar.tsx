@@ -4,6 +4,7 @@ import { Sun, Moon } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import useProfileStore from "../../store/useProfileStore";
+import logo from "../../assets/image.png";
 
 interface Props {
   onThemeToggle: () => void;
@@ -36,10 +37,10 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
       <div
         className={`fixed bottom-0 flex w-full justify-between border-t border-(--color-border) bg-(--color-bg-primary)/50 py-2 backdrop-blur-lg transition-all duration-300 lg:static lg:w-60 lg:flex-col lg:gap-6 lg:border-t-0 lg:border-r lg:bg-(--color-bg-primary) xl:w-65`}
       >
-        <div className="hidden items-center gap-3 border-b border-(--color-border) px-9 py-8 lg:flex">
-          <span className="h-3 w-3 rounded-full bg-orange-500" />
-          <h1 className="text-2xl font-bold tracking-tight text-(--color-text-primary)">
-            Devsteak
+        <div className="hidden items-center gap-1 border-b border-(--color-border) px-9 py-8 lg:flex">
+          <img src={logo} className="h-15 w-14" alt="logo" />
+          <h1 className="flex text-2xl font-bold tracking-tight text-(--color-text-primary)">
+            CODE <span className="text-orange-500">PULSE</span>
           </h1>
         </div>
 
@@ -121,11 +122,11 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
             </button>
           ) : profileLoading ? (
             <div className="hidden items-center gap-5 rounded-full p-2 lg:flex">
-              <div className="size-12 skeleton rounded-full" />
+              <div className="skeleton size-12 rounded-full" />
 
               <div className="flex flex-col gap-2">
-                <div className="h-4 w-28 skeleton rounded-md" />
-                <div className="h-3 w-20 skeleton rounded-md" />
+                <div className="skeleton h-4 w-28 rounded-md" />
+                <div className="skeleton h-3 w-20 rounded-md" />
               </div>
             </div>
           ) : (
