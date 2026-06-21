@@ -48,7 +48,7 @@ export function RankUser({ user }: { user: RankUser }) {
         </div>
 
         <div
-          className={`mt-1 flex-1 items-center text-right font-mono text-xs font-medium sm:text-sm md:col-span-2 md:text-center md:text-base md:font-semibold ${
+          className={`mt-1 flex-1 items-center text-right font-mono text-xs font-medium sm:text-sm md:col-span-2 md:text-center md:text-xl md:font-semibold ${
             user.rank === 1
               ? "text-orange-500 md:rounded-lg md:bg-orange-500/10 md:py-1"
               : "text-(--color-text-primary) md:rounded-lg md:bg-neutral-100 md:py-1 dark:md:bg-neutral-900/50"
