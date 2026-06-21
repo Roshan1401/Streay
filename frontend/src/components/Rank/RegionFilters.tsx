@@ -1,7 +1,6 @@
 import { Flag, Building2, MapPinned } from "lucide-react";
 import { CustomSelect } from "./CustomSelect";
 import type { FieldKey, SelectOption } from "../../types/types";
-import { useState } from "react";
 
 interface RegionFiltersProps {
   countryOptions: SelectOption[];
