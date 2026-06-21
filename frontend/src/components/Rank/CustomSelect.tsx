@@ -53,7 +53,7 @@ export function CustomSelect({
   return (
     <div className="relative w-full" ref={ref}>
       <label
-        className={`mb-2 flex w-fit cursor-pointer items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium font-semibold text-(--color-text-secondary) ${activeField === fieldKey ? "bg-orange-500 text-white" : ""}`}
+        className={`mb-2 flex w-fit cursor-pointer items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium text-(--color-text-secondary) ${activeField === fieldKey ? "bg-orange-500 text-white" : ""}`}
         onClick={() =>
           setActiveField && fieldKey && setActiveField(fieldKey as FieldKey)
         }

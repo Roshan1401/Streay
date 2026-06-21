@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import banner from "../../assets/banner.jpg";
 import {
   SocialLinkModal,
   platforms,
