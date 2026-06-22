@@ -92,15 +92,15 @@ function Leaderboard() {
                   {leaderboardData.map(
                     (user: LeaderboardUser, index: number) => {
                       return (
-                        <Link
-                          to={`/profile/${user.username}`}
+                        <div
                           key={index}
                           className="mx-2 my-3 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) md:m-0 md:rounded-none md:border-0 md:border-t"
                         >
                           <div className="flex cursor-pointer items-center gap-2 border-t border-(--color-border) p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6 lg:px-4 lg:py-8 xl:px-8">
-                            <div className="col-span-1 flex">
+                            {/* Rank badge */}
+                            <div className="col-span-1 flex shrink-0">
                               <span
-                                className={`flex items-center justify-center rounded-full px-2 py-1 text-xs font-semibold drop-shadow-2xl md:size-9 md:text-lg lg:px-3 ${
+                                className={`flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold drop-shadow-2xl md:size-9 md:text-lg ${
                                   user.rank === 1
                                     ? "animate-pulse bg-yellow-100 text-yellow-500 shadow-[0_0_16px_4px_rgba(234,179,8,1)]"
                                     : user.rank === 2
@@ -110,62 +110,92 @@ function Leaderboard() {
                                         : "border border-(--color-border-secondary) bg-neutral-200 text-(--color-text-primary) dark:bg-neutral-800"
                                 }`}
                               >
-                                {user.rank === 1 ||
-                                user.rank === 2 ||
-                                user.rank === 3 ? (
-                                  <Medal />
+                                {user.rank <= 3 ? (
+                                  <Medal className="size-4 md:size-5" />
                                 ) : (
                                   user.rank
                                 )}
                               </span>
                             </div>
-                            <div className="col-span-5 flex items-center gap-3">
-                              <div className="size-8 overflow-hidden rounded-full transition-all duration-75 ease-out hover:scale-103 md:size-11 dark:border-black">
+
+                            {/* Avatar — mobile only */}
+                            <div className="shrink-0 md:hidden">
+                              <div className="size-8 overflow-hidden rounded-full">
                                 <img
                                   src={user?.avatar_url}
                                   className="h-full w-full object-cover"
                                   alt="Profile"
                                 />
                               </div>
-                              <div>
-                                <Link
-                                  to={`/profile/${user.username}`}
-                                  className="w-20 truncate text-sm font-medium text-(--color-text-primary) hover:underline md:w-fit md:text-lg md:font-semibold md:whitespace-normal"
-                                >
-                                  {user.name}
-                                </Link>
-                                <div className="group justify-left hidden items-center gap-1 md:flex">
-                                  <GithubIcon className="inline-block h-4 w-4 text-(--color-text-secondary) group-hover:text-orange-500" />
-                                  <span className="text-sm text-(--color-text-secondary) group-hover:text-orange-500">
-                                    Roshan1401
-                                  </span>
+                            </div>
+
+                            {/* Name + time row — mobile flex, desktop grid columns */}
+                            <div className="flex min-w-0 flex-1 items-center justify-between gap-2 md:contents">
+                              {/* Developer info */}
+                              <div className="col-span-5 flex min-w-0 items-center gap-3">
+                                {/* Avatar — desktop only */}
+                                <div className="hidden shrink-0 overflow-hidden rounded-full md:block md:size-11">
+                                  <img
+                                    src={user?.avatar_url}
+                                    className="h-full w-full object-cover"
+                                    alt="Profile"
+                                  />
+                                </div>
+                                <div className="min-w-0">
+                                  <Link
+                                    to={`/profile/${user.username}`}
+                                    className="block text-sm font-medium text-(--color-text-primary) hover:underline md:text-lg md:font-semibold"
+                                  >
+                                    {/* ✅ max 15 chars then ... on mobile, full name on desktop */}
+                                    <span className="md:hidden">
+                                      {user.name && user.name.length > 15
+                                        ? `${user.name.slice(0, 15)}...`
+                                        : user.name}
+                                    </span>
+                                    <span className="hidden md:inline">
+                                      {user.name}
+                                    </span>
+                                  </Link>
+                                  <div className="group hidden items-center gap-1 md:flex">
+                                    <GithubIcon className="inline-block h-4 w-4 text-(--color-text-secondary) group-hover:text-orange-500" />
+                                    <span className="max-w-32 truncate text-sm text-(--color-text-secondary) group-hover:text-orange-500">
+                                      {user.username}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
+
+                              {/* Time spent */}
+                              <div
+                                className={`shrink-0 font-mono text-xs font-medium sm:text-sm md:col-span-2 md:text-center md:text-base md:font-semibold ${
+                                  user.rank === 1
+                                    ? "text-orange-500 md:rounded-lg md:bg-orange-500/10 md:py-1"
+                                    : "text-(--color-text-primary) md:rounded-lg md:bg-neutral-100 md:py-1 dark:md:bg-neutral-900/50"
+                                }`}
+                              >
+                                {formatTime(Math.floor(user.timeSpent))}
+                              </div>
                             </div>
-                            <div
-                              className={`mt-1 flex-1 items-center text-right font-mono text-xs font-medium sm:text-sm md:col-span-2 md:text-center md:text-base md:font-semibold ${
-                                user.rank === 1
-                                  ? "text-orange-500 md:rounded-lg md:bg-orange-500/10 md:py-1"
-                                  : "text-(--color-text-primary) md:rounded-lg md:bg-neutral-100 md:py-1 dark:md:bg-neutral-900/50"
-                              }`}
-                            >
-                              {formatTime(Math.floor(user.timeSpent))}
-                            </div>
+
+                            {/* Arrow — mobile only */}
                             <button
-                              className="md:hidden"
-                              onClick={() =>
+                              className="shrink-0 md:hidden"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
                                 setOpenDropdown(
                                   index === openDropdown ? null : index,
-                                )
-                              }
+                                );
+                              }}
                             >
                               {index === openDropdown ? (
-                                <IoIosArrowUp className="mt-1 h-5 w-5 text-(--color-text-secondary)" />
+                                <IoIosArrowUp className="h-5 w-5 text-(--color-text-secondary)" />
                               ) : (
-                                <IoIosArrowDown className="mt-1 h-5 w-5 text-(--color-text-secondary)" />
+                                <IoIosArrowDown className="h-5 w-5 text-(--color-text-secondary)" />
                               )}
                             </button>
 
+                            {/* Top Languages — desktop only */}
                             <div className="hidden justify-end gap-2 md:col-span-4 md:flex">
                               {user.byLanguage.slice(0, 3).map((lang, i) => (
                                 <span
@@ -227,7 +257,7 @@ function Leaderboard() {
                               </div>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       );
                     },
                   )}
