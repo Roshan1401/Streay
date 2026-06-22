@@ -15,6 +15,7 @@ interface LeaderboardUser {
   name: string | null;
   username: string | null;
   avatar_url: string;
+  github_url: string;
   timeSpent: number;
   byLanguage: {
     language: string;
@@ -65,7 +66,7 @@ function Leaderboard() {
               <div className="flex flex-col gap-4 border-b border-(--color-border) px-6 py-4 md:flex-row md:items-center md:justify-between">
                 <div className="max-w-sm text-center text-2xl font-medium text-(--color-text-primary) md:text-left">
                   <span className="font-bold tracking-tight text-orange-500">
-                    Rohit Singh
+                    {leaderboardData[0]?.name || "Top Developer"}
                   </span>{" "}
                   is surpassing his limits right here, right now.
                   <div className="mt-1 flex flex-col gap-1 text-sm font-medium text-(--color-text-secondary) md:flex-row md:gap-4">
@@ -97,7 +98,6 @@ function Leaderboard() {
                           className="mx-2 my-3 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) md:m-0 md:rounded-none md:border-0 md:border-t"
                         >
                           <div className="flex cursor-pointer items-center gap-2 border-t border-(--color-border) p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6 lg:px-4 lg:py-8 xl:px-8">
-                            {/* Rank badge */}
                             <div className="col-span-1 flex shrink-0">
                               <span
                                 className={`flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold drop-shadow-2xl md:size-9 md:text-lg ${
@@ -118,7 +118,6 @@ function Leaderboard() {
                               </span>
                             </div>
 
-                            {/* Avatar — mobile only */}
                             <div className="shrink-0 md:hidden">
                               <div className="size-8 overflow-hidden rounded-full">
                                 <img
@@ -129,11 +128,8 @@ function Leaderboard() {
                               </div>
                             </div>
 
-                            {/* Name + time row — mobile flex, desktop grid columns */}
                             <div className="flex min-w-0 flex-1 items-center justify-between gap-2 md:contents">
-                              {/* Developer info */}
                               <div className="col-span-5 flex min-w-0 items-center gap-3">
-                                {/* Avatar — desktop only */}
                                 <div className="hidden shrink-0 overflow-hidden rounded-full md:block md:size-11">
                                   <img
                                     src={user?.avatar_url}
@@ -146,7 +142,6 @@ function Leaderboard() {
                                     to={`/profile/${user.username}`}
                                     className="block text-sm font-medium text-(--color-text-primary) hover:underline md:text-lg md:font-semibold"
                                   >
-                                    {/* ✅ max 15 chars then ... on mobile, full name on desktop */}
                                     <span className="md:hidden">
                                       {user.name && user.name.length > 15
                                         ? `${user.name.slice(0, 15)}...`
@@ -156,16 +151,20 @@ function Leaderboard() {
                                       {user.name}
                                     </span>
                                   </Link>
-                                  <div className="group hidden items-center gap-1 md:flex">
-                                    <GithubIcon className="inline-block h-4 w-4 text-(--color-text-secondary) group-hover:text-orange-500" />
-                                    <span className="max-w-32 truncate text-sm text-(--color-text-secondary) group-hover:text-orange-500">
-                                      {user.username}
-                                    </span>
-                                  </div>
+                                  {user.github_url && (
+                                    <Link
+                                      to={`https://github.com/${user.github_url}`}
+                                      className="group hidden items-center gap-1 md:flex"
+                                    >
+                                      <GithubIcon className="inline-block h-4 w-4 text-(--color-text-secondary) group-hover:text-orange-500" />
+                                      <span className="max-w-32 truncate text-sm text-(--color-text-secondary) group-hover:text-orange-500">
+                                        {user.github_url}
+                                      </span>
+                                    </Link>
+                                  )}
                                 </div>
                               </div>
 
-                              {/* Time spent */}
                               <div
                                 className={`shrink-0 font-mono text-xs font-medium sm:text-sm md:col-span-2 md:text-center md:text-base md:font-semibold ${
                                   user.rank === 1
@@ -177,7 +176,6 @@ function Leaderboard() {
                               </div>
                             </div>
 
-                            {/* Arrow — mobile only */}
                             <button
                               className="shrink-0 md:hidden"
                               onClick={(e) => {
@@ -195,7 +193,6 @@ function Leaderboard() {
                               )}
                             </button>
 
-                            {/* Top Languages — desktop only */}
                             <div className="hidden justify-end gap-2 md:col-span-4 md:flex">
                               {user.byLanguage.slice(0, 3).map((lang, i) => (
                                 <span
@@ -224,18 +221,23 @@ function Leaderboard() {
                                 : "max-h-0 opacity-0"
                             }`}
                           >
-                            <div className="flex items-center gap-2 px-4 py-3">
-                              <GithubIcon className="h-4 w-4 text-(--color-text-secondary)" />
-                              <span className="text-sm font-medium text-(--color-text-secondary)">
-                                Roshan1401
-                              </span>
-                            </div>
+                            {user.github_url && (
+                              <Link
+                                to={`https://github.com/${user.github_url}`}
+                                className="flex items-center gap-2 px-4 py-3"
+                              >
+                                <GithubIcon className="h-4 w-4 text-(--color-text-secondary)" />
+                                <span className="max-w-32 truncate text-sm text-(--color-text-secondary) group-hover:text-orange-500">
+                                  {user.github_url}
+                                </span>
+                              </Link>
+                            )}
                             <div className="border-t border-(--color-border) px-4 py-3">
                               <div className="mb-2 text-sm font-medium text-(--color-text-secondary)">
                                 Top Languages
                               </div>
                               <div className="flex flex-wrap gap-2">
-                                {user.byLanguage.slice(0, 8).map((lang, i) => (
+                                {user.byLanguage.slice(0, 5).map((lang, i) => (
                                   <span
                                     key={i}
                                     className="rounded-md p-1.5 text-xl font-medium"
@@ -249,9 +251,9 @@ function Leaderboard() {
                                   </span>
                                 ))}
 
-                                {user.byLanguage.length > 8 && (
+                                {user.byLanguage.length > 5 && (
                                   <span className="flex h-10 w-10 items-center justify-center rounded-md border border-(--color-border) bg-(--color-bg-secondary) text-sm font-semibold text-(--color-text-secondary)">
-                                    +{user.byLanguage.length - 8}
+                                    +{user.byLanguage.length - 5}
                                   </span>
                                 )}
                               </div>
