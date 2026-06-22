@@ -17,7 +17,6 @@ const navItems = [
   { name: "Explore", path: "/explore", icon: Compass },
   { name: "Rank", path: "/rank", icon: Trophy },
   { name: "Get Started", path: "/get-started", icon: Rocket },
-  { name: "Profile", path: "/profile", icon: User },
 ];
 
 function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
@@ -31,6 +30,8 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
   const username = profile?.username;
 
   const navigate = useNavigate();
+
+  const profilePath = user && username ? `/profile/${username}` : "/login";
 
   return (
     <div className="flex lg:min-h-screen">
@@ -48,14 +49,12 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
           {navItems.map((item) => {
             const Icon = item.icon;
             const isGetStarted = item.name === "Get Started";
-            const isProfile = item.name === "Profile";
 
             return (
               <li
                 key={item.name}
                 className={[
                   isGetStarted ? "hidden lg:block" : "",
-                  isProfile ? "block lg:hidden" : "",
                   "w-full lg:w-auto",
                 ].join(" ")}
               >
@@ -67,7 +66,6 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
                       isActive
                         ? "text-orange-500 lg:border-orange-500 lg:bg-orange-500/20 lg:text-(--color-text-primary)"
                         : "border-transparent text-(--color-text-secondary) hover:bg-orange-500/15 hover:text-(--color-text-primary)",
-                      `${item.name === "Profile" ? "flex lg:hidden" : ""}`,
                       `${item.name === "Get Started" ? "hidden lg:flex" : ""}`,
                     ].join(" ")
                   }
@@ -91,6 +89,36 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
               </li>
             );
           })}
+
+          <li className="block w-full lg:hidden lg:w-auto">
+            <NavLink
+              to={profilePath}
+              className={({ isActive }) =>
+                [
+                  "flex cursor-pointer flex-col items-center gap-2 text-left text-xs font-medium transition-colors",
+                  isActive
+                    ? "text-orange-500"
+                    : "text-(--color-text-secondary) hover:text-(--color-text-primary)",
+                ].join(" ")
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <span
+                    className={[
+                      "flex items-center justify-center rounded-full p-2",
+                      isActive
+                        ? "bg-orange-200/50 text-orange-500 dark:bg-orange-400/30"
+                        : "",
+                    ].join(" ")}
+                  >
+                    <User className="h-4 w-4 xl:h-5 xl:w-5" />
+                  </span>
+                  Profile
+                </>
+              )}
+            </NavLink>
+          </li>
         </ul>
 
         <div className="flex-1 justify-end gap-4 lg:flex lg:flex-col lg:p-6">
