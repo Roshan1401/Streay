@@ -123,6 +123,9 @@ export function CustomSelect({
                     onChange(opt.value);
                     setOpen(false);
                     setSearch("");
+                    setActiveField &&
+                      fieldKey &&
+                      setActiveField(fieldKey as FieldKey);
                   }}
                   className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm transition-colors hover:bg-orange-50 dark:hover:bg-orange-950/30 ${
                     opt.value === value
