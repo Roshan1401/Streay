@@ -220,7 +220,12 @@ function Rank() {
         ) : (
           <div className="space-y-1">
             {rankings.map((user) => (
-              <RankUserComponent key={user.id} user={user} />
+              <RankUserComponent
+                key={user.id}
+                user={user}
+                mode={mode}
+                isAllCountries={selectedGlobalCountry === "all"}
+              />
             ))}
           </div>
         )}

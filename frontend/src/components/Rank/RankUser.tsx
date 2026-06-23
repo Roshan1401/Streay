@@ -4,15 +4,20 @@ import { Flame, Medal, MapPin } from "lucide-react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GithubIcon } from "../../assets/Icons";
 import type { RankUser } from "../../types/types";
+import type { Mode } from "../../types/types";
+import { CountryFlag } from "../../utils/countryFlag";
+interface RankUserProps {
+  user: RankUser;
+  mode: Mode;
+  isAllCountries: boolean;
+}
 
-export function RankUser({ user }: { user: RankUser }) {
+export function RankUser({ user, mode, isAllCountries }: RankUserProps) {
   const [openDropdown, setOpenDropdown] = useState(false);
 
   return (
     <div className="mx-2 my-3 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) md:m-0 md:rounded-none md:border-0 md:border-t">
-      {/* ── Main Row ── */}
       <div className="flex cursor-pointer items-center gap-2 border-(--color-border) p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6 lg:px-4 lg:py-8 xl:px-8">
-        {/* Rank */}
         <div className="col-span-1 flex shrink-0">
           <span
             className={`flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold drop-shadow-2xl md:size-9 md:text-lg ${
@@ -107,12 +112,19 @@ export function RankUser({ user }: { user: RankUser }) {
         </div>
 
         <div className="col-span-2 mt-1 hidden flex-col items-center justify-center gap-0.5 md:mt-0 md:flex">
+          {mode === "global" && isAllCountries && (
+            <CountryFlag countryName={user.country} />
+          )}
           <span className="text-sm font-semibold text-(--color-text-primary)">
-            {user.city || "—"}
+            {mode === "global" && isAllCountries
+              ? user.country || "—"
+              : user.city || "—"}{" "}
           </span>
-          <span className="text-xs text-(--color-text-secondary)">
-            {[user.state].filter(Boolean).join(", ")}
-          </span>
+          {!(mode === "global" && isAllCountries) && (
+            <span className="text-xs text-(--color-text-secondary)">
+              {[user.state].filter(Boolean).join(", ")}
+            </span>
+          )}
         </div>
       </div>
 
