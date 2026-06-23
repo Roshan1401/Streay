@@ -186,7 +186,7 @@ function ProfileHeader({ profileData }: ProfileHeaderProps) {
             alt="Banner"
           />
         </div>
-        <div className="lg:-bottom-15.7 absolute -bottom-12 left-4 size-26 transform overflow-hidden rounded-full border-2 border-orange-400 transition-all duration-200 hover:scale-105 md:-bottom-18 md:left-6 md:size-36 xl:-bottom-25 xl:left-1/8 xl:size-50 xl:-translate-x-1/2 2xl:left-30 dark:border-black">
+        <div className="lg:-bottom-15.7 absolute -bottom-12 left-1 size-26 transform overflow-hidden rounded-full border-2 border-orange-400 transition-all duration-200 hover:scale-105 md:-bottom-18 md:left-2 md:size-36 xl:-bottom-25 xl:left-1/8 xl:size-50 xl:-translate-x-1/2 2xl:left-30 dark:border-black">
           <img
             src={profile?.avatar_url}
             className="h-full w-full object-cover"
@@ -195,7 +195,7 @@ function ProfileHeader({ profileData }: ProfileHeaderProps) {
         </div>
       </div>
       <div className="relative pt-15 md:pt-22 xl:pt-32">
-        <div className="flex flex-col gap-1 px-4 md:gap-2 xl:px-10">
+        <div className="flex flex-col px-4 md:gap-2 xl:px-10">
           <span className="text-2xl font-bold text-(--color-text-primary) md:text-3xl xl:text-4xl">
             {profile?.name || "Adam"}
           </span>

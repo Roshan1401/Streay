@@ -111,7 +111,7 @@ export function RankUser({ user, mode, isAllCountries }: RankUserProps) {
           </span>
         </div>
 
-        <div className="col-span-2 mt-1 hidden flex-col items-center justify-center gap-0.5 md:mt-0 md:flex">
+        <div className="col-span-2 mt-1 hidden flex-col items-center justify-center gap-0.5 text-center md:mt-0 md:flex">
           {mode === "global" && isAllCountries && (
             <CountryFlag countryName={user.country} />
           )}

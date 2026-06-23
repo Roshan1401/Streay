@@ -145,12 +145,12 @@ function Rank() {
 
   return (
     <div className="flex flex-col gap-4 px-5 py-5 xl:px-15">
-      <div className="flex flex-col items-center justify-center gap-5 border-b border-zinc-300 pb-4 md:flex-row md:items-center md:justify-between md:gap-0 dark:border-zinc-700">
-        <div className="border-b border-zinc-300 px-4 pb-2 md:border-b-0 md:p-0 md:pb-5 dark:border-zinc-700">
+      <div className="flex flex-col items-center justify-center gap-5 border-b border-zinc-300 pb-3 text-center md:flex-row md:items-center md:justify-between md:gap-0 dark:border-zinc-700">
+        <div className="flex flex-col items-center justify-center border-b border-zinc-300 px-4 pb-2 md:border-b-0 md:p-0 dark:border-zinc-700">
           <h1 className="text-2xl font-bold text-zinc-800 dark:text-zinc-100">
             Developer Rankings
           </h1>
-          <p className="text-sm text-zinc-400">
+          <p className="text-center text-xs text-zinc-400 md:text-sm">
             Discover top developers in your region
           </p>
         </div>
@@ -189,7 +189,7 @@ function Rank() {
         <div className="flex items-center justify-between gap-4 rounded-t-md border-b border-zinc-300 px-5 py-4 dark:border-zinc-700">
           <div className="text-md max-w-sm text-center font-medium text-(--color-text-primary) md:text-left md:text-2xl">
             <span className="font-bold tracking-tight text-orange-500">
-              Rohan Kumar
+              {rankings.length > 0 ? rankings[0].name : "Top Developer"}
             </span>{" "}
             at the top, setting the standard for everyone else.
           </div>

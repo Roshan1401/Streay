@@ -1,4 +1,3 @@
-import { SignOutIcon } from "../../../assets/Icons/index";
 import { CircleAlert, CopyIcon, ShieldCheck } from "lucide-react";
 import useTokenStore from "../../../store/useTokenStore";
 import { createApiToken } from "../../../api/token";
@@ -8,12 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
-interface ActionProps {
-  handleLogout: () => void;
-}
-
-function ActionsSection(props: ActionProps) {
-  const { handleLogout } = props;
+function ActionsSection() {
   const user = useUserStore((state) => state.user);
   let { isActive, fetchStatus } = useExtensionStatus(user?.id || "");
   const token = useTokenStore((state) => state.token);
@@ -107,14 +101,6 @@ function ActionsSection(props: ActionProps) {
           )}
         </button>
       </div>
-
-      <button
-        className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-orange-500/30 bg-(--color-bg-primary) px-3 py-2 text-xs font-bold text-orange-500 transition-colors hover:border-orange-500/60 active:border-orange-500 active:bg-orange-500/20 active:text-orange-100 xl:text-sm"
-        onClick={handleLogout}
-      >
-        <SignOutIcon className="h-4 w-4 xl:h-5 xl:w-5" />
-        <span>Sign Out</span>
-      </button>
     </div>
   );
 }

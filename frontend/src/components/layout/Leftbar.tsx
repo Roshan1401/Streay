@@ -1,7 +1,11 @@
 import { Trophy, Compass, Rocket, User } from "lucide-react";
-import { LeaderboardIcon, SignInIcon } from "../../assets/Icons/index";
+import {
+  LeaderboardIcon,
+  SignInIcon,
+  SignOutIcon,
+} from "../../assets/Icons/index";
 import { Sun, Moon } from "lucide-react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import useProfileStore from "../../store/useProfileStore";
 import logo from "../../assets/image.png";
@@ -28,7 +32,7 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
   const avatar_url = profile?.avatar_url;
   const name = profile?.name;
   const username = profile?.username;
-
+  const logOut = useUserStore((state) => state.logOut);
   const navigate = useNavigate();
 
   const profilePath = user && username ? `/profile/${username}` : "/login";
@@ -158,22 +162,40 @@ function Navbar({ onThemeToggle, isDarkTheme = false }: Props) {
               </div>
             </div>
           ) : (
-            <div className="hidden cursor-pointer items-center gap-5 rounded-full border border-(--color-border-secondary) p-2 hover:border-orange-500 hover:bg-(--color-bg-secondary) lg:flex dark:border-black">
-              <div className="relative size-12 overflow-hidden rounded-full dark:border-black">
-                <img
-                  src={avatar_url}
-                  className="h-full w-full object-cover"
-                  alt="Profile"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-md font-semibold text-(--color-text-primary)">
-                  {name}
-                </span>
-                <span className="text-sm text-(--color-text-secondary)">
-                  {username}
-                </span>
-              </div>
+            <div className="hidden cursor-pointer items-center justify-between gap-2 rounded-md border border-(--color-border-secondary) px-3 py-2.5 hover:border-orange-500 hover:bg-(--color-bg-secondary) lg:flex">
+              <Link to={`/profile/${username}`} className="flex gap-2">
+                <div className="relative size-10 overflow-hidden rounded-full dark:border-black">
+                  <img
+                    src={avatar_url}
+                    className="h-full w-full object-cover"
+                    alt="Profile"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-md font-semibold text-(--color-text-primary)">
+                    {name}
+                  </span>
+                  <span className="text-sm text-(--color-text-secondary)">
+                    {username}
+                  </span>
+                </div>
+              </Link>
+              <button
+                className="cursor-pointer hover:scale-110"
+                onClick={async () => {
+                  try {
+                    await logOut();
+                    navigate("/login");
+                  } catch (error) {
+                    console.error("Logout failed:", error);
+                    alert(
+                      "An error occurred while logging out. Please try again.",
+                    );
+                  }
+                }}
+              >
+                <SignOutIcon className="h-5 w-5 text-orange-500 transition-colors" />
+              </button>
             </div>
           )}
         </div>

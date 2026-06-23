@@ -20,16 +20,6 @@ function Rightbar() {
 
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await logOut();
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed:", error);
-      alert("An error occurred while logging out. Please try again.");
-    }
-  };
-
   useEffect(() => {
     if (user) {
       fetchProfile();
@@ -39,7 +29,7 @@ function Rightbar() {
   }, [user?.id, setProfile, fetchProfile]);
 
   return (
-    <div className="flex min-h-screen flex-col gap-6 px-7 py-6 lg:w-55 xl:w-75">
+    <div className="flex min-h-screen flex-col gap-6 px-7 py-3 lg:w-55 xl:w-75">
       {!loading && !user ? (
         <div className="mt-15">
           <h2 className="xl:text-md text-center text-sm font-semibold text-(--color-text-secondary)">
@@ -63,7 +53,7 @@ function Rightbar() {
         <>
           <ProfileSection />
           <ActivitySection />
-          <ActionsSection handleLogout={handleLogout} />
+          <ActionsSection />
         </>
       )}
     </div>

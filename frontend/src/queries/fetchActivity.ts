@@ -1,27 +1,16 @@
 import { supabase } from "../lib/supabase";
 import { getStartRange } from "./getStartRange";
-import type { UserActivityStats } from "../types/types";
+import type { UserActivityStats, Range } from "../types/types";
 
 export async function fetchActivity(
   userId: string,
+  range: Range,
 ): Promise<UserActivityStats | null> {
   try {
-    const { data: userSession, error: checkError } = await supabase
-      .from("sessions")
-      .select("duration_seconds")
-      .eq("user_id", userId)
-      .gte("recorded_at", getStartRange("24h"))
-      .limit(1);
-
-    if (checkError) throw checkError;
-
-    if (!userSession || userSession.length === 0)
-      return { rank: null, streak: 0, timeSpent: 0 };
-
     const { data: allSessions, error: allSessionError } = await supabase
       .from("sessions")
       .select("user_id, duration_seconds")
-      .gte("recorded_at", getStartRange("24h"));
+      .gte("recorded_at", getStartRange(range));
 
     if (allSessionError) throw allSessionError;
 
@@ -42,6 +31,14 @@ export async function fetchActivity(
     const rankedIndex = ranked.findIndex(([id]) => id === userId);
     const rank = rankedIndex !== -1 ? rankedIndex + 1 : null;
     const timeSpent = userMap[userId] || 0;
+
+    if (timeSpent === 0) {
+      return {
+        rank: null,
+        streak: 0,
+        timeSpent: 0,
+      };
+    }
 
     const { data: streakData, error: streakError } = await supabase
       .from("profile_stats")

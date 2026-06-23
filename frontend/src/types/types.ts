@@ -76,6 +76,19 @@ interface RankUser {
   city: string;
 }
 
+interface LeaderboardUser {
+  rank: number;
+  name: string | null;
+  username: string | null;
+  avatar_url: string;
+  github_url: string;
+  timeSpent: number;
+  byLanguage: {
+    language: string;
+    hours: string;
+  }[];
+}
+
 export type {
   Range,
   UserActivityStats,
@@ -90,4 +103,5 @@ export type {
   Mode,
   Period,
   RankUser,
+  LeaderboardUser,
 };

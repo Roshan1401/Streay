@@ -15,11 +15,11 @@ function ActivitySection() {
 
     const loadActivity = async () => {
       setLoading(true);
-      const data = await fetchActivity(userId);
+      const data = await fetchActivity(userId, "24h");
       setActivity(data);
       setLoading(false);
     };
-    const interval = setInterval(loadActivity, 5 * 60 * 1000); // Refresh every 5 minutes
+    const interval = setInterval(loadActivity, 5 * 60 * 1000); // refresh every 5 minute
     loadActivity();
     return () => clearInterval(interval);
   }, [userId]);
