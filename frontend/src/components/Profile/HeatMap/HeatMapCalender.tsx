@@ -163,7 +163,7 @@ function HeatMapCalender({
       {tooltip &&
         ReactDOM.createPortal(
           <div
-            className="pointer-events-none fixed z-[9999] flex -translate-x-1/2 -translate-y-full flex-col rounded-md border border-(--color-border-secondary) bg-(--color-bg-primary) px-3 py-2 text-sm font-semibold whitespace-nowrap text-(--color-text-primary) shadow-lg"
+            className="pointer-events-none fixed z-9999 flex -translate-x-1/2 -translate-y-full flex-col rounded-md border border-(--color-border-secondary) bg-(--color-bg-primary) px-3 py-2 text-sm font-semibold whitespace-nowrap text-(--color-text-primary) shadow-lg"
             style={{
               left: tooltip.x,
               top: tooltip.y - 8,

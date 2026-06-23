@@ -1,14 +1,21 @@
-import type { RankUser } from "../../types/types";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Flame, Medal, MapPin } from "lucide-react";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GithubIcon } from "../../assets/Icons";
-import { Flame, Medal } from "lucide-react";
+import type { RankUser } from "../../types/types";
 
 export function RankUser({ user }: { user: RankUser }) {
+  const [openDropdown, setOpenDropdown] = useState(false);
+
   return (
-    <div className="mx-2 my-3 rounded-xl border border-(--color-border) md:m-0 md:rounded-none md:border-0 md:border-t">
-      <div className="flex cursor-pointer items-center gap-2 border-t border-(--color-border) p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6 lg:px-4 lg:py-8 xl:px-8">
-        <div className="col-span-1 flex">
+    <div className="mx-2 my-3 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) md:m-0 md:rounded-none md:border-0 md:border-t">
+      {/* ── Main Row ── */}
+      <div className="flex cursor-pointer items-center gap-2 border-(--color-border) p-3 transition-colors hover:bg-(--color-bg-secondary) sm:px-3.5 sm:py-4 md:grid md:grid-cols-12 md:gap-4 md:px-8 md:py-6 lg:px-4 lg:py-8 xl:px-8">
+        {/* Rank */}
+        <div className="col-span-1 flex shrink-0">
           <span
-            className={`flex items-center justify-center rounded-full px-2 py-1 text-xs font-semibold drop-shadow-2xl md:size-9 md:text-lg lg:px-3 ${
+            className={`flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold drop-shadow-2xl md:size-9 md:text-lg ${
               user.rank === 1
                 ? "animate-pulse bg-yellow-100 text-yellow-500 shadow-[0_0_16px_4px_rgba(234,179,8,1)]"
                 : user.rank === 2
@@ -18,59 +25,118 @@ export function RankUser({ user }: { user: RankUser }) {
                     : "border border-(--color-border-secondary) bg-neutral-200 text-(--color-text-primary) dark:bg-neutral-800"
             }`}
           >
-            {user.rank === 1 || user.rank === 2 || user.rank === 3 ? (
-              <Medal />
+            {user.rank <= 3 ? (
+              <Medal className="size-4 md:size-5" />
             ) : (
               user.rank
             )}
           </span>
         </div>
 
-        <div className="col-span-4 flex items-center gap-3">
-          <div className="size-8 overflow-hidden rounded-full transition-all duration-75 ease-out hover:scale-103 md:size-11 dark:border-black">
+        <div className="shrink-0 md:hidden">
+          <div className="size-8 overflow-hidden rounded-full">
             <img
               src={user.avatar_url}
               className="h-full w-full object-cover"
               alt="Profile"
             />
           </div>
-          <div>
-            <div className="w-20 truncate text-sm font-medium text-(--color-text-primary) hover:underline md:w-fit md:text-lg md:font-semibold md:whitespace-normal">
-              {user.name}
+        </div>
+
+        <div className="flex min-w-0 flex-1 items-center justify-between gap-2 md:contents">
+          <div className="col-span-4 flex min-w-0 items-center gap-3">
+            <div className="hidden shrink-0 overflow-hidden rounded-full md:block md:size-11 dark:border-black">
+              <img
+                src={user.avatar_url}
+                className="h-full w-full object-cover"
+                alt="Profile"
+              />
             </div>
-            <div className="group justify-left hidden items-center gap-1 md:flex">
-              <GithubIcon className="inline-block h-4 w-4 text-(--color-text-secondary) group-hover:text-orange-500" />
-              <span className="text-sm text-(--color-text-secondary) group-hover:text-orange-500">
-                {user.username}
-              </span>
+            <div className="min-w-0">
+              <Link
+                to={`/profile/${user.username}`}
+                className="block text-sm font-medium text-(--color-text-primary) hover:underline md:text-lg md:font-semibold"
+              >
+                <span className="md:hidden">
+                  {user.name && user.name.length > 15
+                    ? `${user.name.slice(0, 15)}...`
+                    : user.name}
+                </span>
+                <span className="hidden md:inline">{user.name}</span>
+              </Link>
+              <div className="group hidden items-center gap-1 md:flex">
+                <GithubIcon className="inline-block h-4 w-4 text-(--color-text-secondary) group-hover:text-orange-500" />
+                <span className="max-w-32 truncate text-sm text-(--color-text-secondary) group-hover:text-orange-500">
+                  {user.username}
+                </span>
+              </div>
             </div>
+          </div>
+
+          <div
+            className={`shrink-0 font-mono text-xs font-medium sm:text-sm md:col-span-2 md:text-center md:text-lg md:font-medium ${
+              user.rank === 1
+                ? "text-orange-500 md:rounded-lg md:bg-orange-500/10 md:py-1"
+                : "text-(--color-text-primary) md:rounded-lg md:bg-neutral-100 md:py-1 dark:md:bg-neutral-900/50"
+            }`}
+          >
+            {user.hours}h
           </div>
         </div>
 
-        <div
-          className={`mt-1 flex-1 items-center text-right font-mono text-xs font-medium sm:text-sm md:col-span-2 md:text-center md:text-xl md:font-semibold ${
-            user.rank === 1
-              ? "text-orange-500 md:rounded-lg md:bg-orange-500/10 md:py-1"
-              : "text-(--color-text-primary) md:rounded-lg md:bg-neutral-100 md:py-1 dark:md:bg-neutral-900/50"
-          }`}
+        <button
+          className="shrink-0 md:hidden"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setOpenDropdown((prev) => !prev);
+          }}
         >
-          {user.hours}h
-        </div>
+          {openDropdown ? (
+            <IoIosArrowUp className="h-5 w-5 text-(--color-text-secondary)" />
+          ) : (
+            <IoIosArrowDown className="h-5 w-5 text-(--color-text-secondary)" />
+          )}
+        </button>
 
-        <div className="col-span-3 mt-1 flex items-center justify-center gap-1 md:mt-0">
-          <span
-            className={`flex items-center justify-center gap-1 text-sm font-medium text-(--color-text-secondary)`}
-          >
+        <div className="col-span-3 mt-1 hidden items-center justify-center gap-1 md:mt-0 md:flex">
+          <span className="flex items-center justify-center gap-1 text-sm font-medium text-(--color-text-primary)">
             <Flame size={20} className="fill-orange-500 text-orange-500" />
             {user.streak_days}d
           </span>
         </div>
 
-        <div className="text-md col-span-2 mt-1 flex flex-col text-center font-semibold text-(--color-text-secondary) md:mt-0">
-          {user.city}
-          <span>
-            {user.state}, {user.country}
+        <div className="col-span-2 mt-1 hidden flex-col items-center justify-center gap-0.5 md:mt-0 md:flex">
+          <span className="text-sm font-semibold text-(--color-text-primary)">
+            {user.city || "—"}
           </span>
+          <span className="text-xs text-(--color-text-secondary)">
+            {[user.state].filter(Boolean).join(", ")}
+          </span>
+        </div>
+      </div>
+
+      <div
+        className={`flex flex-col overflow-hidden border-t border-(--color-border) transition-all duration-500 ease-in-out md:hidden ${
+          openDropdown ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="flex items-center gap-2 px-4 py-3">
+          <Flame size={16} className="fill-orange-500 text-orange-500" />
+          <span className="text-sm font-medium text-(--color-text-secondary)">
+            {user.streak_days}d streak
+          </span>
+        </div>
+
+        <div className="border-t border-(--color-border) px-4 py-3">
+          <div className="flex items-center gap-1.5">
+            <MapPin className="size-3.5 shrink-0 text-(--color-text-secondary)" />
+            <span className="text-sm text-(--color-text-secondary)">
+              {[user.city, user.state, user.country]
+                .filter(Boolean)
+                .join(", ") || "—"}
+            </span>
+          </div>
         </div>
       </div>
     </div>

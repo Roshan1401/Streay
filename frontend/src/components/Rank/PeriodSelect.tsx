@@ -16,7 +16,7 @@ export function PeriodSelect({ value, onChange }: PeriodSelectProps) {
   return (
     <div className="relative">
       <select
-        className="h-11 w-44 appearance-none rounded-md border border-zinc-300 bg-zinc-50 px-4 pr-10 text-sm font-medium text-zinc-800 transition-all outline-none hover:border-zinc-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+        className="h-8 w-40 appearance-none rounded-md border border-zinc-300 bg-zinc-50 px-4 pr-10 text-sm font-medium text-zinc-800 transition-all outline-none hover:border-zinc-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 md:h-11 md:w-44 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
         value={value}
         onChange={(e) => onChange(e.target.value as Period)}
       >

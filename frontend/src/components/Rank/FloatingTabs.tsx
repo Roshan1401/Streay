@@ -54,7 +54,7 @@ export function FloatingTabs({
     <div className={className}>
       <div
         ref={containerRef}
-        className="relative flex w-fit items-center gap-1 rounded-lg border border-zinc-300 p-1 dark:border-zinc-800"
+        className="relative z-20 flex w-fit items-center gap-1 rounded-lg border border-zinc-300 p-0.5 md:p-1 dark:border-zinc-800"
       >
         <div
           className="absolute h-[calc(100%-8px)] rounded-md bg-orange-500 transition-all duration-300 ease-out"
