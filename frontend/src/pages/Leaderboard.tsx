@@ -68,6 +68,10 @@ function Leaderboard() {
     fetchRank();
   }, [userId, activeRow, userLoading, profileLoading, currentUser?.rank]);
 
+  useEffect(() => {
+    localStorage.setItem("leaderboardActiveRow", activeRow);
+  }, [activeRow]);
+
   return (
     <>
       <div className="px-5 py-5 xl:px-15">
@@ -105,7 +109,7 @@ function Leaderboard() {
                   <div className="col-span-2 text-center">Time Spent</div>
                   <div className="col-span-4 text-right">Top Languages</div>
                 </div>
-                <div className="space-y-1">
+                <div className="relative space-y-1">
                   {currentUser && (
                     <UserRow
                       user={currentUser}
