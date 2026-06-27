@@ -5,6 +5,7 @@ import { GithubIcon } from "../../assets/Icons";
 import { formatTime } from "../../utils/formatTime";
 import type { LeaderboardUser } from "../../types/types";
 import You from "../You";
+import UserHoverCard from "./UserHoverCard";
 
 interface UserRowProps {
   user: LeaderboardUser;
@@ -68,9 +69,17 @@ function UserRow({
                     ? `${user.name.slice(0, 15)}...`
                     : user.name}
                 </span>
-                <div className="hidden items-center gap-2 md:flex">
-                  <span className="hidden md:inline">{user.name}</span>
+                <div className="group relative hidden items-center gap-2 md:flex">
+                  <span className="hidden cursor-pointer md:inline">
+                    {user.name}
+                  </span>
                   {isCurrentUser && <You />}
+                  <div className="pointer-events-none absolute top-full left-20 z-50 mt-3 scale-95 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100">
+                    <UserHoverCard
+                      rank={user.rank}
+                      username={user?.username || ""}
+                    />
+                  </div>
                 </div>
               </Link>
               {user.github_url && (

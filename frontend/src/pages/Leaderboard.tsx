@@ -24,6 +24,10 @@ function Leaderboard() {
   const currentUser =
     leaderboardData.find((u) => u.username === userProfile?.username) ?? null;
 
+  const otherUsers = leaderboardData.filter(
+    (u) => u.username !== userProfile?.username,
+  );
+
   useEffect(() => {
     if (userLoading) return;
     if (user && profileLoading) return;
@@ -111,20 +115,18 @@ function Leaderboard() {
                       setOpenDropdown={setOpenDropdown}
                     />
                   )}
-                  {leaderboardData.map(
-                    (user: LeaderboardUser, index: number) => {
-                      return (
-                        <UserRow
-                          user={user}
-                          index={index}
-                          key={user.username || index}
-                          isCurrentUser={false}
-                          openDropdown={openDropdown}
-                          setOpenDropdown={setOpenDropdown}
-                        />
-                      );
-                    },
-                  )}
+                  {otherUsers.map((user: LeaderboardUser, index: number) => {
+                    return (
+                      <UserRow
+                        user={user}
+                        index={index}
+                        key={user.username || index}
+                        isCurrentUser={false}
+                        openDropdown={openDropdown}
+                        setOpenDropdown={setOpenDropdown}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             </div>

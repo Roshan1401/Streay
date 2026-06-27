@@ -1,10 +1,5 @@
 import type { ReactNode } from "react";
-import {
-  FlameIcon,
-  ClockIcon,
-  CodeIcon,
-  ChartIcon,
-} from "../../assets/Icons";
+import { FlameIcon, ClockIcon, CodeIcon, ChartIcon } from "../../assets/Icons";
 import type { PublicProfileStats } from "../../types/types";
 
 interface StatusItemProps {
@@ -35,7 +30,7 @@ function StatusItem({ label, value, unit, icon }: StatusItemProps) {
   );
 }
 
-function  Status({stats}: {stats: PublicProfileStats | null}) {
+function Status({ stats }: { stats: PublicProfileStats | null }) {
   return (
     <div className="grid grid-cols-1 gap-5 px-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-5 xl:px-10">
       <StatusItem
@@ -64,7 +59,7 @@ function  Status({stats}: {stats: PublicProfileStats | null}) {
       />
       <StatusItem
         label="Daily Avg"
-        value={stats?.avg_hours.toFixed(1) || 0}
+        value={stats?.avg_hours || 0}
         unit="hours"
         icon={
           <ChartIcon className="h-4 w-4 shrink-0 text-emerald-500 xl:h-5 xl:w-5" />

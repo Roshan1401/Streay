@@ -203,11 +203,11 @@ function ProfileHeader({ profileData }: ProfileHeaderProps) {
           <span className="text-md text-(--color-text-secondary) md:text-lg xl:text-xl">
             @{profile?.username || "adamBoka"}
           </span>
-          <span className="mt-1 text-lg text-neutral-200">
+          <span className="text-lg text-neutral-800 dark:text-neutral-200">
             {profile?.bio || "I am the first man on earth"}
           </span>
           <div className="flex gap-5">
-            <div className="mt-2 flex w-fit items-center gap-1 text-(--color-text-secondary) md:mt-3">
+            <div className="flex w-fit items-center gap-1 text-(--color-text-secondary)">
               <MapPin className="h-4 w-4 text-(--color-text-secondary) md:h-5 md:w-5" />
               <span className="text-md ml-1 flex items-center text-center text-(--color-text-secondary) md:text-lg">
                 {profile?.city && profile?.state && profile?.country
@@ -215,7 +215,7 @@ function ProfileHeader({ profileData }: ProfileHeaderProps) {
                   : "Location not set"}
               </span>
             </div>
-            <div className="mt-2 flex w-fit items-center gap-1 text-(--color-text-secondary) md:mt-3">
+            <div className="flex w-fit items-center gap-1 text-(--color-text-secondary)">
               <Calendar className="h-4 w-4 text-(--color-text-secondary) md:h-5 md:w-5" />
               <span className="text-md ml-1 flex items-center text-center text-(--color-text-secondary) md:text-lg">
                 Joined October 2023
