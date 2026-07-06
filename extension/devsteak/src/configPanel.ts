@@ -4,6 +4,10 @@ export function configPanel(
   webview: vscode.Webview,
   context: vscode.ExtensionContext,
 ): string {
+  const logo = webview.asWebviewUri(
+    vscode.Uri.joinPath(context.extensionUri, "src", "assets", "Streaky.ico"),
+  );
+
   return /* html */ `
 <!DOCTYPE html>
 <html lang="en">
@@ -42,14 +46,9 @@ export function configPanel(
       margin-bottom: 1.75rem;
     }
     .logo-icon {
-      width: 40px;
-      height: 40px;
-      background: #f97316;
+      width: 70px;
+      height: 70px;
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
     }
     .logo-name {
       font-size: 20px;
@@ -230,6 +229,7 @@ export function configPanel(
 
 <div class="card">
   <div class="logo">
+  <img src="${logo}" alt="Streaky Logo" class="logo-icon" />
     <span class="logo-name">Stre<span>aky</span></span>
   </div>
 
