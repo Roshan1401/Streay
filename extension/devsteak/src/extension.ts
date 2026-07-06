@@ -6,11 +6,11 @@ import { startSendingSessions } from "./sender";
 let globalUserId: string | undefined = undefined;
 
 export async function activate(context: vscode.ExtensionContext) {
-  const token = await context.secrets.get("devsteak_api_token");
-  const user_id = await context.secrets.get("devsteak_user_id");
+  const token = await context.secrets.get("streaky_api_token");
+  const user_id = await context.secrets.get("streaky_user_id");
 
   vscode.window.showInformationMessage(
-    `DevSteak extension activated. API token ${token ? "found" : "not found"}. User ID ${user_id ? "found" : "not found"}.`,
+    `Streaky extension activated. API token ${token ? "found" : "not found"}. User ID ${user_id ? "found" : "not found"}.`,
   );
 
   if (token && user_id) {
@@ -26,7 +26,7 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   const connectAccount = vscode.commands.registerCommand(
-    "devsteak.configureApiKey",
+    "streaky.configureApiKey",
     async () => {
       const token = await vscode.window.showInputBox({
         placeHolder: "Paste your API token ",
@@ -53,8 +53,8 @@ export async function activate(context: vscode.ExtensionContext) {
           return;
         }
 
-        await context.secrets.store("devsteak_api_token", token);
-        await context.secrets.store("devsteak_user_id", data.user_id);
+        await context.secrets.store("streaky_api_token", token);
+        await context.secrets.store("streaky_user_id", data.user_id);
 
         globalUserId = data.user_id;
 
@@ -71,17 +71,17 @@ export async function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage("API token saved successfully.");
       } catch (error: unknown) {
         vscode.window.showErrorMessage(
-          "Failed to connect to DevSteak: " + error,
+          "Failed to connect to Streaky: " + error,
         );
       }
     },
   );
 
   const disconnectAccount = vscode.commands.registerCommand(
-    "devsteak.clearApiKey",
+    "streaky.clearApiKey",
     async () => {
-      await context.secrets.delete("devsteak_api_token");
-      await context.secrets.delete("devsteak_user_id");
+      await context.secrets.delete("streaky_api_token");
+      await context.secrets.delete("streaky_user_id");
 
       if (globalUserId) {
         await supabase
@@ -96,10 +96,10 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   const checkToken = vscode.commands.registerCommand(
-    "devsteak.checkToken",
+    "streaky.checkToken",
     async () => {
-      const token = await context.secrets.get("devsteak_api_token");
-      const user_id = await context.secrets.get("devsteak_user_id");
+      const token = await context.secrets.get("streaky_api_token");
+      const user_id = await context.secrets.get("streaky_user_id");
 
       console.log("Token:", token);
       console.log("User ID:", user_id);

@@ -1,6 +1,6 @@
 {
-  "name": "devsteak",
-  "displayName": "DevSteak",
+  "name": "streaky",
+  "displayName": "Streaky",
   "description": "Track coding activity",
   "version": "0.0.1",
   "engines": {
@@ -16,16 +16,16 @@
   "contributes": {
     "commands": [
       {
-        "command": "devsteak.configureApiKey",
-        "title": "DevSteak: Configure API Key"
+        "command": "streaky.configureApiKey",
+        "title": "Streaky: Configure API Key"
       },
       {
-        "command": "devsteak.clearApiKey",
-        "title": "DevSteak: Clear API Key"
+        "command": "streaky.clearApiKey",
+        "title": "Streaky: Clear API Key"
       },
       {
-        "command": "devsteak.checkToken",
-        "title": "DevSteak: Check API Token"
+        "command": "streaky.checkToken",
+        "title": "Streaky: Check API Token"
       }
     ]
   },

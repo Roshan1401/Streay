@@ -7,10 +7,10 @@ export async function startSendingSessions(context: vscode.ExtensionContext) {
   setInterval(
     async () => {
       vscode.window.showInformationMessage(
-        "Sending coding sessions to DevSteak...",
+        "Sending coding sessions to Streaky...",
       );
-      const token = await context.secrets.get("devsteak_api_token");
-      const user_id = await context.secrets.get("devsteak_user_id");
+      const token = await context.secrets.get("streaky_api_token");
+      const user_id = await context.secrets.get("streaky_user_id");
 
       if (!token || !user_id) {
         vscode.window.showErrorMessage(
@@ -41,7 +41,7 @@ export async function startSendingSessions(context: vscode.ExtensionContext) {
         );
 
         vscode.window.showInformationMessage(
-          `Sessions sent to DevSteak successfully. Data: ${JSON.stringify(data)}`,
+          `Sessions sent to Streaky successfully. Data: ${JSON.stringify(data)}`,
         );
 
         if (error) {
