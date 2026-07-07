@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { getLanguageColor, getLanguageIcon } from "../../utils/languageConfig";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { Flame } from "lucide-react";
 import { GithubIcon } from "../../assets/Icons";
 import { formatTime } from "../../utils/formatTime";
 import type { LeaderboardUser } from "../../types/types";
@@ -57,7 +58,7 @@ function UserRow({
           </div>
 
           <div className="flex min-w-0 flex-1 items-center justify-between gap-2 md:contents">
-            <div className="col-span-5 flex min-w-0 items-center gap-3">
+            <div className="col-span-4 flex min-w-0 items-center gap-3">
               <div className="relative shrink-0 rounded-full">
                 <img
                   src={user?.avatar_url}
@@ -121,6 +122,13 @@ function UserRow({
             >
               {formatTime(Math.floor(user.timeSpent))}
             </div>
+
+            <div className="col-span-2 hidden items-center justify-center gap-1 md:flex">
+              <Flame size={20} className="fill-orange-500 text-orange-500" />
+              <span className="text-sm font-medium text-(--color-text-primary)">
+                {user.streak}d
+              </span>
+            </div>
           </div>
 
           <button
@@ -139,11 +147,11 @@ function UserRow({
             )}
           </button>
 
-          <div className="hidden justify-end gap-2 md:col-span-4 md:flex">
+          <div className="hidden justify-end gap-2 md:col-span-3 md:flex">
             {user.byLanguage.slice(0, 3).map((lang, i) => (
               <div className="group relative flex" key={i}>
                 <span
-                  className="flex h-10 w-9 items-center justify-center rounded-md p-1.5 text-2xl font-medium transition-all duration-200 group-hover:scale-110"
+                  className="flex h-9 w-8.5 items-center justify-center rounded-md p-1.5 text-2xl font-medium transition-all duration-200 group-hover:scale-110"
                   style={{
                     backgroundColor: `${getLanguageColor(lang.language)}20`,
                     color: getLanguageColor(lang.language),
@@ -152,14 +160,14 @@ function UserRow({
                 >
                   {getLanguageIcon(lang.language)}
                 </span>
-                <span className="absolute top-12 right-0 z-9999 hidden rounded-md bg-(--color-bg-primary) px-2 py-1 text-xs font-medium text-(--color-text-primary) shadow-lg group-hover:block">
+                <span className="absolute right-0 bottom-12 z-9999 hidden rounded-md bg-(--color-bg-primary) px-2 py-1 text-xs font-medium text-(--color-text-primary) shadow-lg group-hover:block">
                   {lang.language}
                 </span>
               </div>
             ))}
             {user.byLanguage.length > 3 && (
               <div className="group relative">
-                <span className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border border-(--color-border) bg-(--color-bg-secondary) text-sm font-semibold text-(--color-text-secondary)">
+                <span className="flex h-9 w-8.5 cursor-pointer items-center justify-center rounded-md border border-(--color-border) bg-(--color-bg-secondary) text-xs font-semibold text-(--color-text-secondary)">
                   +{user.byLanguage.length - 3}
                 </span>
 
@@ -206,15 +214,21 @@ function UserRow({
               </span>
             </Link>
           )}
-          <div className="border-t border-(--color-border) px-4 py-3">
+          <div className="flex items-center gap-2 border-t border-(--color-border) px-4 py-2">
+            <Flame size={16} className="fill-orange-500 text-orange-500" />
+            <span className="text-sm font-medium text-(--color-text-secondary)">
+              {user.streak}d streak
+            </span>
+          </div>
+          <div className="border-t border-(--color-border) px-4 py-2">
             <div className="mb-2 text-sm font-medium text-(--color-text-secondary)">
               Top Languages
             </div>
             <div className="flex flex-wrap gap-2">
-              {user.byLanguage.slice(0, 5).map((lang, i) => (
+              {user.byLanguage.slice(0, 4).map((lang, i) => (
                 <div className="group relative flex" key={i}>
                   <span
-                    className="flex h-9 w-9 items-center justify-center rounded-md p-1.5 text-2xl font-medium transition-all duration-200 group-hover:scale-110"
+                    className="flex h-8 w-8 items-center justify-center rounded-md p-1.5 text-2xl font-medium transition-all duration-200 group-hover:scale-110"
                     style={{
                       backgroundColor: `${getLanguageColor(lang.language)}20`,
                       color: getLanguageColor(lang.language),
@@ -228,9 +242,9 @@ function UserRow({
                   </span>
                 </div>
               ))}
-              {user.byLanguage.length > 5 && (
-                <span className="flex h-10 w-10 items-center justify-center rounded-md border border-(--color-border) bg-(--color-bg-secondary) text-sm font-semibold text-(--color-text-secondary)">
-                  +{user.byLanguage.length - 5}
+              {user.byLanguage.length > 4 && (
+                <span className="flex h-8 w-8 items-center justify-center rounded-md border border-(--color-border) bg-(--color-bg-secondary) text-xs font-semibold text-(--color-text-secondary)">
+                  +{user.byLanguage.length - 4}
                 </span>
               )}
             </div>

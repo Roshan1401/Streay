@@ -105,9 +105,10 @@ function Leaderboard() {
               <div className="">
                 <div className="text-md sticky top-0 z-10 hidden grid-cols-12 gap-4 bg-(--color-bg-secondary) px-8 py-4 font-semibold tracking-wide text-(--color-text-secondary) md:grid lg:px-4 xl:px-8">
                   <div className="col-span-1">Rank</div>
-                  <div className="col-span-5 text-left">Developer</div>
+                  <div className="col-span-4 text-left">Developer</div>
                   <div className="col-span-2 text-center">Time Spent</div>
-                  <div className="col-span-4 text-right">Top Languages</div>
+                  <div className="col-span-2 text-center">Streak</div>
+                  <div className="col-span-3 text-right">Top Languages</div>
                 </div>
                 <div className="relative space-y-1">
                   {currentUser && (

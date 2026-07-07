@@ -85,6 +85,7 @@ interface LeaderboardUser {
   is_extension_active: boolean;
   github_url: string;
   timeSpent: number;
+  streak: number;
   byLanguage: {
     language: string;
     hours: string;
