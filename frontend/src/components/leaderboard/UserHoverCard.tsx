@@ -14,7 +14,7 @@ function UserHoverCard(props: Props) {
   const userProfile = profile?.profile;
 
   return (
-    <div className="w-[300px] overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-primary) px-2 py-3 shadow-2xl">
+    <div className="w-75 overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-primary) px-2 py-3 shadow-2xl">
       {/* Banner */}
       <div className="relative">
         <div className="absolute top-3 right-3 rounded-lg bg-orange-500 px-3 py-1 text-sm font-bold text-white">

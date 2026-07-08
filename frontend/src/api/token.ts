@@ -1,14 +1,6 @@
 import { supabase } from "../lib/supabase";
 
-interface ApiToken {
-  user_id: string;
-  token: string;
-  revoked: boolean;
-}
-
-export async function getApiToken(
-  userId: string,
-): Promise<string | null> {
+export async function getApiToken(userId: string): Promise<string | null> {
   const { data, error } = await supabase
     .from("api_tokens")
     .select("*")
@@ -24,9 +16,7 @@ export async function getApiToken(
   return data?.token ?? null;
 }
 
-export async function createApiToken(
-  userId: string,
-): Promise<string | null> {
+export async function createApiToken(userId: string): Promise<string | null> {
   const token = crypto.randomUUID();
 
   const { data, error } = await supabase
