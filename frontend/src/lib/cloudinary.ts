@@ -1,6 +1,9 @@
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
+if (!CLOUD_NAME) throw new Error("Missing VITE_CLOUDINARY_CLOUD_NAME env variable");
+if (!UPLOAD_PRESET) throw new Error("Missing VITE_CLOUDINARY_UPLOAD_PRESET env variable");
+
 export async function uploadToCloudinary(
     file: File,
     folder: "avatars" | "banners",
