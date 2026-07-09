@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
 import {
@@ -8,8 +8,10 @@ import {
   MessageSquareQuote,
   X,
   ArrowRight,
+  Loader2,
 } from "lucide-react";
 import { uploadToCloudinary } from "../../lib/cloudinary";
+import { supabase } from "../../lib/supabase";
 import type { SelectOption } from "../../types/types";
 
 interface SelectedCountry {
@@ -39,6 +41,7 @@ interface EditModalProps {
     state?: string;
     city?: string;
   };
+  userId?: string;
   onSave?: (data: {
     name: string;
     username: string;
@@ -48,7 +51,7 @@ interface EditModalProps {
     country: string;
     state: string;
     city: string;
-  }) => void;
+  }) => Promise<{ error?: string } | void>;
 }
 
 interface FilePreview {
@@ -168,6 +171,7 @@ export default function EditModal({
   isOpen,
   onClose,
   initialData,
+  userId,
   onSave,
 }: EditModalProps) {
   const [page, setPage] = useState(1);
@@ -182,7 +186,31 @@ export default function EditModal({
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [saving, setSaving] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [usernameError, setUsernameError] = useState<string | null>(null);
+  const [usernameFormatError, setUsernameFormatError] = useState<string | null>(
+    null,
+  );
+  const [usernameAvail, setUsernameAvail] = useState<
+    "idle" | "checking" | "available" | "taken"
+  >("idle");
   const [selectedFile, setSelectedFile] = useState<SelectedFiles>(EMPTY_FILES);
+  const initialUsername = initialData?.username ?? "";
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+
+  const validateUsernameFormat = (val: string): string | null => {
+    if (!val.trim()) return null;
+    if (val.length < 3) return "Username must be at least 3 characters.";
+    if (val.length > 20) return "Username must be 20 characters or fewer.";
+    if (!/^[a-zA-Z0-9._]+$/.test(val))
+      return "Only letters, numbers, periods, and underscores allowed.";
+    if (val.startsWith(".") || val.endsWith("."))
+      return "Username cannot start or end with a period.";
+    if (/\.{2,}/.test(val))
+      return "Username cannot contain consecutive periods.";
+    return null;
+  };
 
   useEffect(() => {
     const prevAvatar = selectedFile.avatar_url?.preview;
@@ -199,6 +227,9 @@ export default function EditModal({
     setPage(1);
     setErrors({});
     setUploadError(null);
+    setUsernameAvail("idle");
+    setUsernameError(null);
+    setUsernameFormatError(null);
     setSelectedFile(EMPTY_FILES);
     setName(initialData?.name ?? "");
     setUsername(initialData?.username ?? "");
@@ -229,6 +260,46 @@ export default function EditModal({
     initialData?.city,
   ]);
 
+  useEffect(() => {
+    if (!userId) return;
+
+    if (username === initialUsername || !username.trim()) {
+      setUsernameAvail("idle");
+      setUsernameError(null);
+      return;
+    }
+
+    const formatErr = validateUsernameFormat(username);
+    if (formatErr) {
+      setUsernameAvail("idle");
+      setUsernameError(null);
+      return;
+    }
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    setUsernameAvail("checking");
+    debounceRef.current = setTimeout(async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("username", username.trim())
+        .maybeSingle();
+
+      if (data && data.id !== userId) {
+        setUsernameAvail("taken");
+        setUsernameError("This username is already taken.");
+      } else {
+        setUsernameAvail("available");
+        setUsernameError(null);
+      }
+    }, 500);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [username, userId, initialUsername]);
+
   if (!isOpen) return null;
 
   const clearError = (key: string) =>
@@ -243,7 +314,9 @@ export default function EditModal({
   };
 
   const handleNext = () => {
-    if (validate({ name, username })) setPage(2);
+    if (!validate({ name, username })) return;
+    if (usernameFormatError) return;
+    setPage(2);
   };
 
   const handleFileChange = (
@@ -259,8 +332,11 @@ export default function EditModal({
   const handleSave = async () => {
     if (!validate({ country, state, city }) || !onSave) return;
 
+    if (usernameFormatError || usernameAvail === "taken") return;
+
     setSaving(true);
     setUploadError(null);
+    setUsernameError(null);
 
     try {
       const [finalAvatarUrl, finalBannerUrl] = await Promise.all([
@@ -272,7 +348,7 @@ export default function EditModal({
           : Promise.resolve(banner_url),
       ]);
 
-      onSave({
+      const result = await onSave({
         name,
         username,
         bio,
@@ -282,6 +358,11 @@ export default function EditModal({
         state: state?.name ?? "",
         city: city?.name ?? "",
       });
+
+      if (result?.error) {
+        setUsernameError(result.error);
+        return;
+      }
 
       handleClose();
     } catch (error) {
@@ -295,6 +376,8 @@ export default function EditModal({
     setPage(1);
     setErrors({});
     setUploadError(null);
+    setUsernameError(null);
+    setUsernameAvail("idle");
     setSelectedFile(EMPTY_FILES);
     onClose();
   };
@@ -324,7 +407,7 @@ export default function EditModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="max-h-[90vh] w-full max-w-sm overflow-y-auto rounded-2xl border border-(--color-border) bg-(--color-bg-primary) p-4 sm:max-w-md sm:p-6 md:max-w-lg md:p-8 lg:max-w-xl">
+      <div className="md:p- max-h-[90vh] w-full max-w-sm overflow-y-auto rounded-2xl border border-(--color-border) bg-(--color-bg-primary) p-4 sm:max-w-md sm:p-6 md:max-w-lg lg:max-w-xl">
         <div className="mb-5 flex items-start justify-between sm:mb-6">
           <div>
             <h2 className="text-xl font-semibold text-(--color-text-primary) md:text-2xl">
@@ -346,8 +429,8 @@ export default function EditModal({
 
         {page === 1 && (
           <div className="min-h-70 space-y-4 sm:min-h-85">
-            <div className="relative mb-16 sm:mb-20">
-              <div className="relative h-45 w-full overflow-hidden rounded-xl border border-(--color-border)">
+            <div className="relative sm:mb-16">
+              <div className="relative h-40 w-full overflow-hidden rounded-xl border border-(--color-border)">
                 <img
                   src={selectedFile.banner_url?.preview || banner_url}
                   className="h-full w-full object-cover blur-[2px]"
@@ -358,7 +441,6 @@ export default function EditModal({
                     <Camera className="h-5 w-5" />
                   </div>
                   <span className="text-sm font-medium">Change cover</span>{" "}
-                  {/* ✅ added */}
                   <input
                     type="file"
                     hidden
@@ -368,7 +450,7 @@ export default function EditModal({
                 </label>
               </div>
 
-              <div className="absolute inset-x-0 top-28 ml-5 h-33.5 w-33.5 overflow-hidden rounded-full border-3 border-orange-500 bg-gray-300">
+              <div className="absolute inset-x-0 top-28 ml-5 h-25 w-25 overflow-hidden rounded-full border-3 border-orange-500 bg-gray-300">
                 <img
                   src={selectedFile.avatar_url?.preview || avatar_url}
                   className="h-full w-full object-cover"
@@ -423,8 +505,10 @@ export default function EditModal({
                     type="text"
                     value={username}
                     onChange={(e) => {
-                      setUsername(e.target.value);
+                      const val = e.target.value;
+                      setUsername(val);
                       if (errors.username) clearError("username");
+                      setUsernameFormatError(validateUsernameFormat(val));
                     }}
                     className="w-full bg-transparent text-base text-(--color-text-primary) outline-none placeholder:text-(--color-text-secondary)"
                     placeholder="Enter your username"
@@ -435,6 +519,42 @@ export default function EditModal({
                 <p className="mt-1 text-sm text-red-500">
                   Username is required
                 </p>
+              )}
+              {usernameFormatError && (
+                <p className="mt-1 text-sm text-red-500">
+                  {usernameFormatError}
+                </p>
+              )}
+              {!usernameFormatError &&
+                username !== initialUsername &&
+                username.trim() && (
+                  <div className="mt-1 flex items-center gap-1.5 text-sm">
+                    {usernameAvail === "checking" && (
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin text-(--color-text-secondary)" />
+                        <span className="text-(--color-text-secondary)">
+                          Checking...
+                        </span>
+                      </>
+                    )}
+                    {usernameAvail === "available" && (
+                      <>
+                        <span className="font-bold text-emerald-500">✓</span>
+                        <span className="text-emerald-500">Available</span>
+                      </>
+                    )}
+                    {usernameAvail === "taken" && (
+                      <>
+                        <span className="font-bold text-red-500">✗</span>
+                        <span className="text-red-500">
+                          Username is already taken
+                        </span>
+                      </>
+                    )}
+                  </div>
+                )}
+              {usernameError && usernameAvail !== "taken" && (
+                <p className="mt-1 text-sm text-red-500">{usernameError}</p>
               )}
             </div>
 

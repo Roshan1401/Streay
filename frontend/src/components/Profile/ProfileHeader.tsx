@@ -112,7 +112,7 @@ function ProfileHeader({ profileData }: ProfileHeaderProps) {
     state: string;
     city: string;
   }) => {
-    if (!profile?.id) return;
+    if (!profile?.id) return { error: "Profile not found" };
 
     const updatedFields: Record<string, string> = {};
 
@@ -133,6 +133,18 @@ function ProfileHeader({ profileData }: ProfileHeaderProps) {
       return;
     }
 
+    if (updatedFields.username) {
+      const { data: existing } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("username", updatedFields.username)
+        .maybeSingle();
+
+      if (existing && existing.id !== profile.id) {
+        return { error: "This username is already taken." };
+      }
+    }
+
     const { error } = await supabase
       .from("profiles")
       .update(updatedFields)
@@ -140,7 +152,7 @@ function ProfileHeader({ profileData }: ProfileHeaderProps) {
 
     if (error) {
       console.error("Failed to update profile:", error.message);
-      return;
+      return { error: error.message };
     }
 
     if (isOwnProfile) {
@@ -166,6 +178,7 @@ function ProfileHeader({ profileData }: ProfileHeaderProps) {
       <EditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
+        userId={profile?.id}
         initialData={{
           name: profile?.name || "",
           username: profile?.username || "",
