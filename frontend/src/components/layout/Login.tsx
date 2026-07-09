@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { GithubIcon } from "../../assets/Icons";
 import image from "../../assets/devstreakLogo.svg";
-import bgImage from "../../assets/BG1.jpg";
+import bgImage from "../../assets/images/BG1.jpg";
 import { supabase } from "../../lib/supabase.ts";
 import { FloatingBox } from "../../components/layout/FloatingBox.tsx";
 const Login = () => {
