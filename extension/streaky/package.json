@@ -3,7 +3,7 @@
   "displayName": "Streaky",
   "publisher": "streaky",
   "description": "Track coding activity",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.118.0"
   },
