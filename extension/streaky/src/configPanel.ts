@@ -14,7 +14,7 @@ export function configPanel(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Streaky — Connect Account</title>
+  <title>Streaky — Connect</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -31,71 +31,66 @@ export function configPanel(
 
     .card {
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       background: var(--vscode-sideBar-background);
       border: 1px solid var(--vscode-panel-border);
       border-radius: 12px;
       padding: 2rem;
+      animation: fadeIn 0.25s ease-out;
     }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Logo */
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .header {
+      text-align: center;
       margin-bottom: 1.75rem;
     }
-    .logo-icon {
-      width: 70px;
-      height: 70px;
+    .header img {
+      width: 56px;
+      height: 56px;
       border-radius: 10px;
+      margin-bottom: 0.75rem;
     }
-    .logo-name {
-      font-size: 20px;
+    .header h1 {
+      font-size: 18px;
       font-weight: 600;
       color: var(--vscode-foreground);
     }
-    .logo-name span { color: #f97316; }
-
-    /* Heading */
-    h2 {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--vscode-foreground);
-    }
-    .sub {
+    .header h1 span { color: #f97316; }
+    .header p {
       font-size: 13px;
       color: var(--vscode-descriptionForeground);
-      margin-bottom: 1.5rem;
+      margin-top: 4px;
       line-height: 1.5;
     }
 
-    /* Steps */
     .steps {
+      background: var(--vscode-editor-background);
+      border: 1px solid var(--vscode-panel-border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.25rem;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-bottom: 1.5rem;
+      gap: 6px;
     }
     .step {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 10px;
       font-size: 12px;
       color: var(--vscode-descriptionForeground);
     }
-    .step-num {
-      width: 20px;
-      height: 20px;
+    .step .num {
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
-      background: var(--vscode-badge-background);
-      color: var(--vscode-badge-foreground);
+      background: #f97316;
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 10px;
+      font-weight: 700;
       flex-shrink: 0;
     }
     .step a {
@@ -105,39 +100,38 @@ export function configPanel(
     }
     .step a:hover { text-decoration: underline; }
 
-    /* Divider */
-    .divider {
-      height: 1px;
-      background: var(--vscode-panel-border);
-      margin: 1.25rem 0;
-    }
-
-    /* Input */
     label {
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 500;
-      margin-bottom: 6px;
-      color: var(--vscode-foreground);
+      margin-bottom: 5px;
+      color: var(--vscode-descriptionForeground);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .input-wrap {
       position: relative;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
     input {
       width: 100%;
-      padding: 9px 38px 9px 12px;
+      padding: 10px 40px 10px 12px;
       background: var(--vscode-input-background);
       border: 1px solid var(--vscode-input-border, #3c3c3c);
-      border-radius: 6px;
+      border-radius: 8px;
       color: var(--vscode-input-foreground);
-      font-size: 18px;
+      font-size: 14px;
       font-family: var(--vscode-editor-font-family);
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    input:focus { border-color: #f97316; }
+    input:focus {
+      border-color: #f97316;
+      box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15);
+    }
     input::placeholder { color: var(--vscode-input-placeholderForeground); }
+    input.error { border-color: #ef4444; }
+
     .eye-btn {
       position: absolute;
       right: 10px;
@@ -147,70 +141,71 @@ export function configPanel(
       border: none;
       cursor: pointer;
       color: var(--vscode-descriptionForeground);
-      font-size: 15px;
-      padding: 0;
+      padding: 4px;
+      border-radius: 4px;
       line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s;
     }
     .eye-btn:hover { color: var(--vscode-foreground); }
 
-    /* Error / Success */
     .message {
       font-size: 12px;
       padding: 8px 12px;
-      border-radius: 6px;
-      margin-bottom: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
       display: none;
+      line-height: 1.4;
+      animation: fadeIn 0.2s ease-out;
     }
     .message.error {
       background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      border: 1px solid rgba(239, 68, 68, 0.25);
       color: #f87171;
     }
     .message.success {
       background: rgba(34, 197, 94, 0.1);
-      border: 1px solid rgba(34, 197, 94, 0.3);
+      border: 1px solid rgba(34, 197, 94, 0.25);
       color: #4ade80;
     }
-    .message.show { display: block; }
+    .message.show { display: flex; align-items: center; gap: 6px; }
 
-    /* Buttons */
-    .btn-primary {
+    .btn {
       width: 100%;
-      padding: 9px 16px;
-      background: #f97316;
+      padding: 10px 16px;
       border: none;
-      border-radius: 6px;
-      color: white;
+      border-radius: 8px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.15s, opacity 0.15s;
+      transition: background 0.15s, opacity 0.15s, transform 0.1s;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
     }
-    .btn-primary:hover { background: #ea6c0a; }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn:active { transform: scale(0.98); }
 
-    .btn-link {
-      width: 100%;
-      margin-top: 10px;
-      padding: 8px 16px;
+    .btn-primary {
+      background: #f97316;
+      color: white;
+    }
+    .btn-primary:hover { background: #ea6c0a; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-secondary {
+      margin-top: 8px;
       background: transparent;
       border: 1px solid var(--vscode-panel-border);
-      border-radius: 6px;
       color: var(--vscode-descriptionForeground);
-      font-size: 12px;
-      cursor: pointer;
-      transition: border-color 0.15s, color 0.15s;
     }
-    .btn-link:hover {
+    .btn-secondary:hover {
       border-color: #f97316;
       color: #f97316;
     }
 
-    /* Spinner */
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner {
       width: 14px;
@@ -223,59 +218,80 @@ export function configPanel(
     }
     .loading .spinner { display: block; }
     .loading .btn-text { display: none; }
+
+    .connected-state {
+      text-align: center;
+      padding: 0.5rem 0;
+    }
+    .connected-state .check {
+      font-size: 32px;
+      margin-bottom: 0.5rem;
+    }
+    .connected-state p {
+      font-size: 13px;
+      color: var(--vscode-descriptionForeground);
+      line-height: 1.5;
+    }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <div class="logo">
-  <img src="${logo}" alt="Streaky Logo" class="logo-icon" />
-    <span class="logo-name">Stre<span>aky</span></span>
+<div class="card" id="card">
+  <div class="header">
+    <img src="${logo}" alt="Streaky" />
+    <h1>Stre<span>aky</span></h1>
+    <p>Paste your API token to start tracking</p>
   </div>
-
-  <h2>Connect your account</h2>
-  <p class="sub">
-    Paste your API token to start tracking your coding sessions automatically.
-  </p>
 
   <div class="steps">
     <div class="step">
-      <div class="step-num">1</div>
-      <span>Go to <a id="dashboard-link" src="http://localhost:5173/leaderboard">streaky → Dashboard</a></span>
+      <span class="num">1</span>
+      <span>Open <a id="dashboard-link">Streaky Dashboard</a> → Copy API Token</span>
     </div>
     <div class="step">
-      <div class="step-num">2</div>
-      <span>Click <strong>Copy API Token</strong></span>
+      <span class="num">2</span>
+      <span>Paste the token below</span>
     </div>
     <div class="step">
-      <div class="step-num">3</div>
-      <span>Paste it below and click Connect</span>
+      <span class="num">3</span>
+      <span>Click Connect — done!</span>
     </div>
   </div>
 
-  <div class="divider"></div>
+  <div id="connect-form">
+    <label for="token-input">API Token</label>
+    <div class="input-wrap">
+      <input
+        id="token-input"
+        type="password"
+        placeholder="sk-xxxxxxxxxxxxxxxxxxxx"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button class="eye-btn" id="eye-btn" title="Toggle visibility">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+    </div>
 
-  <label for="token-input">API Token</label>
-  <div class="input-wrap">
-    <input
-      id="token-input"
-      type="password"
-      placeholder="sk-xxxxxxxxxxxxxxxxxxxx"
-      autocomplete="off"
-      spellcheck="false"
-    />
-    <button class="eye-btn" id="eye-btn" title="Toggle visibility">👁</button>
+    <div class="message" id="message"></div>
+
+    <button class="btn btn-primary" id="connect-btn">
+      <div class="spinner"></div>
+      <span class="btn-text">Connect Account</span>
+    </button>
   </div>
 
-  <div class="message" id="message"></div>
+  <div id="connected-state" class="connected-state hidden">
+    <div class="check">🎉</div>
+    <p><strong style="color: var(--vscode-foreground);">Connected!</strong><br/>Your coding sessions are being tracked.</p>
+  </div>
 
-  <button class="btn-primary" id="connect-btn">
-    <div class="spinner"></div>
-    <span class="btn-text">Connect Account</span>
-  </button>
-
-  <button class="btn-link" id="dashboard-btn"">
-     Streaky Dashboard ↗
+  <button class="btn btn-secondary" id="dashboard-btn">
+    Open Streaky Dashboard ↗
   </button>
 </div>
 
@@ -286,54 +302,64 @@ export function configPanel(
   const connectBtn = document.getElementById("connect-btn");
   const messageEl  = document.getElementById("message");
   const eyeBtn     = document.getElementById("eye-btn");
+  const form       = document.getElementById("connect-form");
+  const connected  = document.getElementById("connected-state");
 
-  // Toggle password visibility
+  let hidden = true;
+
   eyeBtn.addEventListener("click", () => {
-    const isPassword = tokenInput.type === "password";
-    tokenInput.type = isPassword ? "text" : "password";
-    eyeBtn.textContent = isPassword ? "🙈" : "👁";
+    hidden = !hidden;
+    tokenInput.type = hidden ? "password" : "text";
+    eyeBtn.innerHTML = hidden
+      ? \`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>\`
+      : \`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>\`;
   });
 
-  // Open dashboard
-  document.getElementById("dashboard-link").addEventListener("click", () => {
+  function openDashboard() {
     vscode.postMessage({ command: "openDashboard" });
-  });
-  document.getElementById("dashboard-btn").addEventListener("click", () => {
-    vscode.postMessage({ command: "openDashboard" });
-  });
+  }
 
-  // Submit token
+  document.getElementById("dashboard-link").addEventListener("click", openDashboard);
+  document.getElementById("dashboard-btn").addEventListener("click", openDashboard);
+
   connectBtn.addEventListener("click", () => {
     const token = tokenInput.value.trim();
     if (!token) {
       showMessage("error", "Please paste your API token first.");
+      tokenInput.classList.add("error");
       return;
     }
-
+    tokenInput.classList.remove("error");
     setLoading(true);
     hideMessage();
     vscode.postMessage({ command: "connect", token });
   });
 
-  // Enter key submit
   tokenInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") connectBtn.click();
   });
 
-  // Handle messages from extension
+  tokenInput.addEventListener("input", () => {
+    tokenInput.classList.remove("error");
+  });
+
   window.addEventListener("message", (event) => {
-    const { command, text } = event.data;
+    const { command, message } = event.data;
 
     if (command === "success") {
       setLoading(false);
-      showMessage("success", "✅ Connected successfully! Tracking started.");
+      showMessage("success", "✅ Connected! Tracking started.");
       tokenInput.value = "";
       connectBtn.disabled = true;
+      setTimeout(() => {
+        form.classList.add("hidden");
+        connected.classList.remove("hidden");
+      }, 600);
     }
 
     if (command === "error") {
       setLoading(false);
-      showMessage("error", text || "Something went wrong.");
+      showMessage("error", message || "Something went wrong. Please try again.");
     }
   });
 
