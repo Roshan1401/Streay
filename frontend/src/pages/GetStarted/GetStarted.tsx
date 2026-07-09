@@ -1,3 +1,9 @@
+import step1 from "../../assets/images/step1.png";
+import step2 from "../../assets/images/step2.png";
+import step3 from "../../assets/images/step3.png";
+import step4 from "../../assets/images/step4.png";
+import step5 from "../../assets/images/step5.png";
+
 interface StepCardProps {
   num: string;
   title: string;
@@ -41,35 +47,35 @@ const steps = [
     num: "01",
     title: "Install Extension",
     desc: "Install the Streaky VS Code extension from the marketplace. It runs silently in the background and tracks your coding activity automatically.",
-    img: "/src/assets/images/step1.png",
+    img: step1,
     side: "left" as const,
   },
   {
     num: "02",
     title: "Sign In to Your Account",
     desc: "Sign in with GitHub to create your Streaky profile. Your coding journey starts here — no complicated setup needed.",
-    img: "/src/assets/images/step2.png",
+    img: step2,
     side: "right" as const,
   },
   {
     num: "03",
     title: "Copy Your API Token",
     desc: "Open the Streaky dashboard and click Copy API Token. This unique key connects your editor activity to your account.",
-    img: "/src/assets/images/step3.png",
+    img: step3,
     side: "left" as const,
   },
   {
     num: "04",
     title: "Paste API Token",
     desc: "In VS Code, run the 'Connect to Streaky' command and paste the token. The extension links to your account instantly.",
-    img: "/src/assets/images/step4.png",
+    img: step4,
     side: "right" as const,
   },
   {
     num: "05",
     title: "Start Coding",
     desc: "Start coding! Watch your streaks grow, climb the leaderboard, and compete with developers around the world.",
-    img: "/src/assets/images/step5.png",
+    img: step5,
     side: "left" as const,
   },
 ];
