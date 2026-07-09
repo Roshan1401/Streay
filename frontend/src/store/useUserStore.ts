@@ -36,6 +36,10 @@ const useUserStore = create<UserState>((set) => ({
 
     set({ user: user ?? null, loading: false });
 
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+
     if (authListener) {
       authListener.data.subscription.unsubscribe();
     }
