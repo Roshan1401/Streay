@@ -52,10 +52,10 @@ const Login = () => {
           <img
             src={image}
             alt="Logo"
-            className="h-16 w-16 opacity-90 sm:h-20 sm:w-20 md:h-24 md:w-24"
+            className="h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24"
             style={{
               filter:
-                "invert(100%) sepia(0%) saturate(0%) brightness(200%) contrast(100%)",
+                "invert(100%) sepia(0%) saturate(0%) brightness(250%) contrast(100%)",
             }}
           />
           <div className="mt-3 flex flex-col items-center gap-1 text-white md:mt-4 md:gap-2">

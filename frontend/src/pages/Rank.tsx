@@ -242,7 +242,7 @@ function Rank() {
           </div>
           <img
             src={logo}
-            className="h-10 w-10 shrink-0 md:h-20 md:w-19"
+            className="h-8 w-8 shrink-0 md:h-20 md:w-19"
             alt="Rank"
           />
         </div>
